@@ -1,0 +1,105 @@
+version: 2
+
+defaults: &defaults
+  working_directory: ~/souka
+  docker:
+    - image: circleci/node:8.14-browsers
+  environment:
+    TZ: '/usr/share/zoneinfo/America/Los_Angeles'
+
+aliases:
+  - &restore-cache
+    keys:
+      - souka-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+      - souka-{{ checksum "yarn.lock" }}
+      - souka-
+  - &save-cache
+      key: souka-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+      paths:
+        - ~/.cache/yarn
+        - node_modules
+  - &yarn
+    name: Install Dependencies
+    command: yarn install --frozen-lockfile --non-interactive --cache-folder=~/.cache/yarn
+  - &lint
+    name: Lint
+    command: yarn lint
+  - &test
+    name: Test
+    command: yarn test
+  - &teste2e
+    name: Test
+    command: yarn test:e2e
+
+jobs:
+  install:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache: *restore-cache
+      - run: date
+      - run: *yarn
+      - save_cache: *save-cache
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/souka
+      - run: *lint
+  test:
+    <<: *defaults
+    parallelism: 4
+    steps:
+      - attach_workspace:
+          at: ~/souka
+      - run: *test
+      - run:
+          name: Send CodeCov Results
+          command: bash <(curl -s https://codecov.io/bash) -t $CODECOV_KEY
+  teste2e:
+    <<: *defaults
+    parallelism: 4
+    steps:
+      - attach_workspace:
+          at: ~/souka
+      - run: *teste2e
+      - run:
+          name: Send CodeCov Results
+          command: bash <(curl -s https://codecov.io/bash) -t $CODECOV_KEY
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/souka
+      - run:
+          name: Build
+          command: yarn build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - install
+
+      - lint:
+          requires:
+            - install
+
+      - test:
+          requires:
+            - install
+
+      - teste2e:
+          requires:
+            - install
+
+      - build:
+          requires:
+            - install
