@@ -87,7 +87,7 @@ typings/
 # End of https://www.gitignore.io/api/node
 
 ### VisualStudioCode ###
-.vscode/*
+.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
