@@ -1,6 +1,9 @@
 import { Theme } from '@material-ui/core';
 import { createStyles } from '@material-ui/core/styles';
 
+const dzShadow =
+  '0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12)';
+
 export const styles = ({ spacing }: Theme) =>
   createStyles({
     paper: {
@@ -32,8 +35,7 @@ export const styles = ({ spacing }: Theme) =>
       position: 'fixed',
       top: '60%',
       left: '35%',
-      boxShadow:
-        '0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12)',
+      boxShadow: dzShadow,
       backgroundColor: '#fff',
       zIndex: 99
     },

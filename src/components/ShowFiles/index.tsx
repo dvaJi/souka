@@ -38,7 +38,7 @@ type Props = {
 };
 
 class ShowFiles extends React.Component<Props> {
-  onDrop(files: File[]) {
+  onDrop = (files: File[]) => {
     const { addAll } = this.props;
     const filesFormatted = files.map(file =>
       Object.assign(file, {
@@ -47,14 +47,19 @@ class ShowFiles extends React.Component<Props> {
       })
     );
     addAll(filesFormatted);
-  }
+  };
 
-  async selectFile() {
+  selectFile = async () => {
     const { select, init, files, history } = this.props;
     await init(files.keys);
     await select(files.keys[0]);
     history.push(routes.TRANSLATE_FILE);
-  }
+  };
+
+  handleOnRemove = (file: File | any) => () => {
+    const { remove } = this.props;
+    remove(file);
+  };
 
   render() {
     const { classes, remove, removeAll, files } = this.props;
@@ -74,7 +79,7 @@ class ShowFiles extends React.Component<Props> {
             <Paper className={classes.paper}>
               <div className={classes.actions}>
                 <Button
-                  onClick={this.selectFile.bind(this)}
+                  onClick={this.selectFile}
                   color="primary"
                   variant="contained"
                   className={classes.buttons}
@@ -95,7 +100,7 @@ class ShowFiles extends React.Component<Props> {
                 </Button>
               </div>
               <div className={classes.dropzone}>
-                <Dropzone accept="image/*" onDrop={this.onDrop.bind(this)} disableClick>
+                <Dropzone accept="image/*" onDrop={this.onDrop} disableClick>
                   {({ getRootProps, getInputProps, isDragActive }) => (
                     <div className={classes.dropzone} {...getRootProps()}>
                       <input {...getInputProps()} />
@@ -118,7 +123,7 @@ class ShowFiles extends React.Component<Props> {
                                 subtitle={<span>by: {files.files[key].size}</span>}
                                 actionIcon={
                                   <IconButton className={classes.icon}>
-                                    <DeleteIcon onClick={() => remove(files.files[key])} />
+                                    <DeleteIcon onClick={this.handleOnRemove(files.files[key])} />
                                   </IconButton>
                                 }
                               />

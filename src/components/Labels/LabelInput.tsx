@@ -15,6 +15,11 @@ type Props = {
 
 function LabelInput(props: Props) {
   const { text, classes, handleOnChange } = props;
+  const handleValueChange = (e: React.SyntheticEvent) => {
+    const element = e.target as HTMLInputElement;
+    handleOnChange(element.value);
+  };
+
   return (
     <div style={{ width: '100%', padding: '10px 20px' }}>
       <TextField
@@ -24,7 +29,7 @@ function LabelInput(props: Props) {
         rowsMax="4"
         className={classes.textArea}
         value={text}
-        onChange={e => handleOnChange(e.target.value)}
+        onChange={handleValueChange}
         margin="normal"
         spellCheck
         fullWidth

@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
+import { History } from 'history';
 import Root from './containers/Root';
 import { configureStore, history } from './store/configureStore';
-import { History } from 'history';
 
 const store = configureStore();
 

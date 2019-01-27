@@ -3,24 +3,36 @@ import * as React from 'react';
 // UI Imports
 import Grid from '@material-ui/core/Grid';
 
-type Props = {
+interface Props {
   zoomIn: () => void;
   zoomOut: () => void;
   reset: () => void;
-};
+}
 
 class ImageViewer extends React.Component<Props> {
+  handleReset = () => {
+    const { reset } = this.props;
+    reset();
+  };
+  handleZoomIn = () => {
+    const { zoomIn } = this.props;
+    zoomIn();
+  };
+  handleZoomOut = () => {
+    const { zoomOut } = this.props;
+    zoomOut();
+  };
+
   render() {
-    const { zoomIn, zoomOut, reset } = this.props;
     return (
-      <Grid container spacing={0}>
-        <button type="button" onClick={() => reset()}>
+      <Grid container={true} spacing={0}>
+        <button type="button" onClick={this.handleReset}>
           100%
         </button>
-        <button type="button" onClick={() => zoomIn()}>
+        <button type="button" onClick={this.handleZoomIn}>
           ZOOM IN
         </button>
-        <button type="button" onClick={() => zoomOut()}>
+        <button type="button" onClick={this.handleZoomOut}>
           ZOOM OUT
         </button>
       </Grid>

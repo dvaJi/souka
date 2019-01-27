@@ -16,11 +16,11 @@ type Props = {
 };
 
 class ImageViewer extends React.Component<Props> {
-  handleOnClick(event: React.MouseEvent<HTMLImageElement, MouseEvent>) {
+  handleOnClick = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     const element = event.target as HTMLImageElement;
     const { select } = this.props;
     select(element.alt);
-  }
+  };
 
   render() {
     const { images, keys, classes } = this.props;
@@ -29,7 +29,7 @@ class ImageViewer extends React.Component<Props> {
         {keys.map((key: string) => (
           <img
             key={key}
-            onClick={this.handleOnClick.bind(this)}
+            onClick={this.handleOnClick}
             className={classes.image}
             src={images[key].preview}
             alt={images[key].filename}

@@ -1,8 +1,8 @@
-import { Application } from 'spectron';
 import * as electronPath from 'electron';
 import * as path from 'path';
+import { Application } from 'spectron';
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 describe('Main window', () => {
   let app: Application;

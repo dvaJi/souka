@@ -42,14 +42,9 @@ const configureStore = (initialState?: RootState) => {
     ...routerActions
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
-  /* eslint-disable no-underscore-dangle */
   const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // Options: http://extension.remotedev.io/docs/API/Arguments.html
-        actionCreators
-      })
+    ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ actionCreators })
     : compose;
-  /* eslint-enable no-underscore-dangle */
 
   // Apply Middleware & Compose Enhancers
   enhancers.push(applyMiddleware(...middleware));
@@ -59,11 +54,7 @@ const configureStore = (initialState?: RootState) => {
   const store = createStore(rootReducer, initialState, enhancer);
 
   if (module.hot) {
-    module.hot.accept(
-      '../reducers',
-      // eslint-disable-next-line global-require
-      () => store.replaceReducer(require('../reducers').default)
-    );
+    module.hot.accept('../reducers', () => store.replaceReducer(require('../reducers').default));
   }
 
   return store;

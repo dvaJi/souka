@@ -31,32 +31,37 @@ type Props = {
 };
 
 class LabelList extends React.Component<Props> {
-  handleOnSelectLabel = (key: string) => {
+  handleOnSelectLabel = (key: string) => () => {
     const { labels, onSelectLabel } = this.props;
     if (labels[key] !== undefined) {
       onSelectLabel(labels[key]);
     }
   };
 
-  handleOnRemoveLabel = (key: string) => {
+  handleOnRemoveLabel = (key: string) => () => {
     const { labels, onRemoveLabel } = this.props;
     if (labels[key] !== undefined) {
       onRemoveLabel(labels[key]);
     }
   };
 
+  handleOnAddLabel = (type = 'normal') => () => {
+    const { onAddLabel } = this.props;
+    onAddLabel({ ...emptyLabel, type });
+  };
+
   render() {
-    const { keys, labels, file, classes, onAddLabel } = this.props;
+    const { keys, labels, file, classes } = this.props;
     return (
       <div>
         <Grid container spacing={0}>
-          <button onClick={() => onAddLabel(emptyLabel)} type="button">
+          <button onClick={this.handleOnAddLabel()} type="button">
             Add text
           </button>
-          <button onClick={() => onAddLabel({ ...emptyLabel, type: 'sfx' })} type="button">
+          <button onClick={this.handleOnAddLabel('sfx')} type="button">
             Add sfx
           </button>
-          <button onClick={() => onAddLabel({ ...emptyLabel, type: 'tln' })} type="button">
+          <button onClick={this.handleOnAddLabel('tln')} type="button">
             Add note
           </button>
         </Grid>
@@ -68,7 +73,7 @@ class LabelList extends React.Component<Props> {
                   key={`label-${key}`}
                   hover
                   className={classes.tableRow}
-                  onClick={() => this.handleOnSelectLabel(key)}
+                  onClick={this.handleOnSelectLabel(key)}
                 >
                   <TableCell
                     component="th"
@@ -79,7 +84,7 @@ class LabelList extends React.Component<Props> {
                   </TableCell>
                   <TableCell style={{ padding: '1px' }}>{labels[key].type}</TableCell>
                   <TableCell align="right">
-                    <button onClick={() => this.handleOnRemoveLabel(key)} type="button">
+                    <button onClick={this.handleOnRemoveLabel(key)} type="button">
                       Delete
                     </button>
                   </TableCell>
