@@ -1,23 +1,29 @@
 {
   "name": "souka",
   "version": "0.0.1",
-  "description": "",
+  "description": "It is a free and open source comic translation aid, which aims to provide a working platform for translators and reduce the cost of translation work",
   "main": "./dist/main.js",
   "scripts": {
+    "clean:deps": "npx del 'node_modules/**/{README,LICENSE,license,.travis.yml,tsconfig.json,*.{md,MD,map,png,svg,ts}}' '!node_modules/**/*.d.ts'",
+    "clean:dist": "del-cli dist",
+    "clean:releases": "del-cli release",
+    "clean": "yarn clean:dist && yarn clean:releases",
     "build-main": "cross-env NODE_ENV=production webpack --config webpack.main.prod.config.js",
     "build-renderer": "cross-env NODE_ENV=production webpack --config webpack.renderer.prod.config.js",
-    "build": "npm run build-main && npm run build-renderer",
+    "build": "yarn clean:deps && yarn build-main && yarn build-renderer",
     "start-renderer-dev": "webpack-dev-server --config webpack.renderer.dev.config.js",
     "start-main-dev": "webpack --config webpack.main.config.js && electron ./dist/main.js",
-    "start-dev": "cross-env START_HOT=1 npm run start-renderer-dev",
-    "prestart": "npm run build",
+    "start-dev": "cross-env START_HOT=1 yarn start-renderer-dev",
+    "prestart": "yarn build",
     "start": "electron .",
     "lint": "tslint '{src,test,mocks}/**/*.{ts,tsx}' -c tslint.json",
     "test": "jest --config jest.config.js",
-    "pretest:e2e": "npm run build",
+    "pretest:e2e": "yarn build",
     "test:e2e": "jest --config jest.config.integration.js",
-    "pack": "npm run build && electron-builder --dir",
-    "dist": "npm run build && electron-builder",
+    "dist:mac": "yarn build && electron-builder --mac",
+    "dist:win": "yarn build && electron-builder --win",
+    "dist:linux": "yarn build && electron-builder --linux",
+    "dist:all": "yarn clean:releases && yarn build && electron-builder -mwl",
     "postinstall": "electron-builder install-app-deps",
     "release": "standard-version"
   },
@@ -36,7 +42,14 @@
     "appId": "dvaJi.souka",
     "copyright": "Copyright © 2019 dvaJi",
     "mac": {
-      "category": "public.app-category.graphics-design"
+      "target": [
+        "dmg",
+        "pkg",
+        "zip"
+      ],
+      "category": "public.app-category.graphics-design",
+      "icon": "resources/icon/icon.png",
+      "type": "distribution"
     },
     "directories": {
       "output": "release"
@@ -47,10 +60,62 @@
       "package.json"
     ],
     "linux": {
-      "target": "deb"
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm",
+        "snap"
+      ],
+      "icon": "resources/icon",
+      "category": "Utility"
+    },
+    "dmg": {
+      "background": "resources/dmg_background/background.png",
+      "iconSize": 160,
+      "iconTextSize": 12,
+      "window": {
+        "width": 660,
+        "height": 400
+      },
+      "contents": [
+        {
+          "x": 180,
+          "y": 170,
+          "type": "file"
+        },
+        {
+          "x": 480,
+          "y": 170,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "pkg": {
+      "license": "LICENSE"
     },
     "win": {
-      "target": "nsis"
+      "target": [
+        "nsis",
+        "portable",
+        "zip"
+      ],
+      "icon": "resources/icon/icon.ico"
+    },
+    "nsis": {
+      "installerIcon": "resources/icon/icon.ico",
+      "license": "LICENSE",
+      "warningsAsErrors": false
+    },
+    "snap": {
+      "grade": "stable",
+      "summary": "It is a free and open source comic translation aid, which aims to provide a working platform for translators and reduce the cost of translation work."
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "dvaJi",
+      "releaseType": "release",
+      "publishAutoUpdate": true
     }
   },
   "repository": {
@@ -91,6 +156,8 @@
     "babel-loader": "^8.0.5",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
+    "del": "^3.0.0",
+    "del-cli": "^1.1.0",
     "electron": "^3.1.2",
     "electron-builder": "^20.38.5",
     "electron-devtools-installer": "^2.2.4",
