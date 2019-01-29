@@ -20,6 +20,7 @@
     "test": "jest --config jest.config.js",
     "pretest:e2e": "yarn build",
     "test:e2e": "jest --config jest.config.integration.js",
+    "dist": "yarn build && electron-builder",
     "dist:mac": "yarn build && electron-builder --mac",
     "dist:win": "yarn build && electron-builder --win",
     "dist:linux": "yarn build && electron-builder --linux",
