@@ -6,6 +6,9 @@ const dzShadow =
 
 export const styles = ({ spacing }: Theme) =>
   createStyles({
+    container: {
+      marginTop: 20
+    },
     paper: {
       padding: spacing.unit * 2,
       marginLeft: 10,

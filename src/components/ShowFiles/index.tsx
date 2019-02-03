@@ -62,18 +62,10 @@ class ShowFiles extends React.Component<Props> {
   };
 
   render() {
-    const { classes, remove, removeAll, files } = this.props;
+    const { classes, removeAll, files } = this.props;
     const hasFiles = files.keys.length > 0;
     return (
-      <Grid container spacing={0}>
-        <Grid item xs={12}>
-          <Grow in timeout={500}>
-            <Typography component="h2" variant="h1" align="center" gutterBottom>
-              Drop files
-            </Typography>
-          </Grow>
-        </Grid>
-
+      <Grid className={classes.container} container spacing={0}>
         <Grid item xs={12}>
           <Grow in timeout={200}>
             <Paper className={classes.paper}>

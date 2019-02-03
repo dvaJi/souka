@@ -13,6 +13,21 @@ export default ({ spacing }: Theme) =>
     tableRow: {
       cursor: 'pointer'
     },
+    actionIcon: {
+      fontSize: 14,
+      marginRight: 5
+    },
+    textCell: {
+      wordWrap: 'break-word',
+      maxWidth: 120,
+      textOverflow: 'ellipsis',
+      padding: '4px 10px'
+    },
+    deleteCell: {
+      width: 48,
+      padding: 4,
+      paddingRight: '4px !important'
+    },
     rownormal: {
       borderLeft: '2px solid yellow',
       '&:hover': {

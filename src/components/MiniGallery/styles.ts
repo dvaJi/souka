@@ -1,4 +1,4 @@
-import { createStyles } from "@material-ui/core/styles";
+import { createStyles } from '@material-ui/core/styles';
 
 const styles = createStyles({
   container: {
@@ -8,7 +8,14 @@ const styles = createStyles({
   image: {
     height: 100,
     border: '1px solid #000',
-    margin: 2
+    margin: 2,
+    '&:hover': {
+      filter: 'brightness(0.5)',
+      transition: 'all .15s ease'
+    }
+  },
+  imageActive: {
+    filter: 'brightness(0.7)'
   }
 });
 
