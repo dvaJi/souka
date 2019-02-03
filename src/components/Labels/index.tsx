@@ -59,7 +59,7 @@ class LabelContainer extends React.Component<Props> {
     const actualLabel = labels[file][label];
     return keys.length > 0 ? (
       <Grid container spacing={0} className={classes.containerLabels}>
-        <Grid item>
+        <Grid item style={{ width: '100%' }}>
           <LabelList
             file={file}
             keys={labelKeys}

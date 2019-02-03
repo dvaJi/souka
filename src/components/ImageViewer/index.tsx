@@ -12,13 +12,14 @@ import { renderIf } from '../../utils/helpers';
 type Props = {
   classes: any;
   image: File;
+  availableHeight: number;
 };
 
 class ImageViewer extends React.Component<Props> {
   render() {
-    const { image, classes } = this.props;
+    const { image, availableHeight, classes } = this.props;
     return (
-      <Grid container spacing={0}>
+      <Grid container spacing={0} style={{ height: availableHeight }}>
         {renderIf(image !== undefined, () => (
           <div className={classes.container}>
             <img className={classes.image} src={image.preview} alt={image.filename} />

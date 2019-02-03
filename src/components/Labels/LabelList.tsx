@@ -1,12 +1,20 @@
 import * as React from 'react';
+import classnames from 'classnames';
 
 // UI Imports
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
+
+import IconButton from '@material-ui/core/IconButton';
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+import SurroundSoundIcon from '@material-ui/icons/SurroundSound';
+import DeleteIcon from '@material-ui/icons/Delete';
+import NoteIcon from '@material-ui/icons/Note';
 
 // App imports
 import styles from './styles';
@@ -55,15 +63,18 @@ class LabelList extends React.Component<Props> {
     return (
       <div>
         <Grid container spacing={0}>
-          <button onClick={this.handleOnAddLabel()} type="button">
+          <Button onClick={this.handleOnAddLabel()} size="small" className={classes.margin}>
+            <ChatBubbleIcon className={classes.actionIcon} />
             Add text
-          </button>
-          <button onClick={this.handleOnAddLabel('sfx')} type="button">
+          </Button>
+          <Button onClick={this.handleOnAddLabel('sfx')} size="small" className={classes.margin}>
+            <SurroundSoundIcon className={classes.actionIcon} />
             Add sfx
-          </button>
-          <button onClick={this.handleOnAddLabel('tln')} type="button">
+          </Button>
+          <Button onClick={this.handleOnAddLabel('tln')} size="small" className={classes.margin}>
+            <NoteIcon className={classes.actionIcon} />
             Add note
-          </button>
+          </Button>
         </Grid>
         <Grid container spacing={0}>
           <Table className={classes.table}>
@@ -78,15 +89,19 @@ class LabelList extends React.Component<Props> {
                   <TableCell
                     component="th"
                     scope="row"
-                    className={classes[`row${labels[key].type}`]}
+                    className={classnames(classes[`row${labels[key].type}`], classes.textCell)}
                   >
                     {labels[key].text}
                   </TableCell>
-                  <TableCell style={{ padding: '1px' }}>{labels[key].type}</TableCell>
-                  <TableCell align="right">
-                    <button onClick={this.handleOnRemoveLabel(key)} type="button">
-                      Delete
-                    </button>
+                  {/*<TableCell style={{ padding: '1px' }}>{labels[key].type}</TableCell>*/}
+                  <TableCell align="right" className={classes.deleteCell}>
+                    <IconButton
+                      onClick={this.handleOnRemoveLabel(key)}
+                      color="inherit"
+                      aria-label="Menu"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
