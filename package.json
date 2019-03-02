@@ -1,219 +1,50 @@
 {
   "name": "souka",
-  "version": "0.0.1",
-  "description": "It is a free and open source comic translation aid, which aims to provide a working platform for translators and reduce the cost of translation work",
-  "main": "./dist/main.js",
-  "scripts": {
-    "clean:deps": "npx del 'node_modules/**/{README,LICENSE,license,.travis.yml,tsconfig.json,*.{md,MD,map,png,svg,ts}}' '!node_modules/**/*.d.ts'",
-    "clean:dist": "del-cli dist",
-    "clean:releases": "del-cli release",
-    "clean": "yarn clean:dist && yarn clean:releases",
-    "build-main": "cross-env NODE_ENV=production webpack --config webpack.main.prod.config.js",
-    "build-renderer": "cross-env NODE_ENV=production webpack --config webpack.renderer.prod.config.js",
-    "build": "yarn clean:deps && yarn build-main && yarn build-renderer",
-    "start-renderer-dev": "webpack-dev-server --config webpack.renderer.dev.config.js",
-    "start-main-dev": "webpack --config webpack.main.config.js && electron ./dist/main.js",
-    "start-dev": "cross-env START_HOT=1 yarn start-renderer-dev",
-    "prestart": "yarn build",
-    "start": "electron .",
-    "lint": "tslint '{src,test,mocks}/**/*.{ts,tsx}' -c tslint.json",
-    "test": "jest --config jest.config.js",
-    "pretest:e2e": "yarn build",
-    "test:e2e": "jest --config jest.config.integration.js",
-    "dist": "yarn build && electron-builder",
-    "dist:mac": "yarn build && electron-builder --mac",
-    "dist:win": "yarn build && electron-builder --win",
-    "dist:linux": "yarn build && electron-builder --linux",
-    "dist:all": "yarn clean:releases && yarn build && electron-builder -mwl",
-    "postinstall": "electron-builder install-app-deps",
-    "release": "standard-version"
-  },
-  "lint-staged": {
-    "{src,test,mocks}/**/*.{js,ts,tsx,json,css,scss,md}": [
-      "prettier --config ./.prettierrc --write",
-      "git add"
-    ],
-    "{src,test,mocks}/**/*.{js,ts,tsx}": [
-      "tslint -c tslint.json --fix",
-      "git add"
-    ]
-  },
-  "build": {
-    "productName": "Souka",
-    "appId": "dvaJi.souka",
-    "copyright": "Copyright © 2019 dvaJi",
-    "mac": {
-      "target": [
-        "dmg",
-        "pkg",
-        "zip"
-      ],
-      "category": "public.app-category.graphics-design",
-      "icon": "resources/icon/icon.png",
-      "type": "distribution"
-    },
-    "directories": {
-      "output": "release"
-    },
-    "files": [
-      "dist/",
-      "node_modules/",
-      "package.json"
-    ],
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb",
-        "rpm",
-        "snap"
-      ],
-      "icon": "resources/icon",
-      "category": "Utility"
-    },
-    "dmg": {
-      "background": "resources/dmg_background/background.png",
-      "iconSize": 160,
-      "iconTextSize": 12,
-      "window": {
-        "width": 660,
-        "height": 400
-      },
-      "contents": [
-        {
-          "x": 180,
-          "y": 170,
-          "type": "file"
-        },
-        {
-          "x": 480,
-          "y": 170,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
-    "pkg": {
-      "license": "LICENSE"
-    },
-    "win": {
-      "target": [
-        "nsis",
-        "portable",
-        "zip"
-      ],
-      "icon": "resources/icon/icon.ico"
-    },
-    "nsis": {
-      "installerIcon": "resources/icon/icon.ico",
-      "license": "LICENSE",
-      "warningsAsErrors": false
-    },
-    "snap": {
-      "grade": "stable",
-      "summary": "It is a free and open source comic translation aid, which aims to provide a working platform for translators and reduce the cost of translation work."
-    },
-    "publish": {
-      "provider": "github",
-      "owner": "dvaJi",
-      "releaseType": "release",
-      "publishAutoUpdate": true
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com:dvaJi/souka.git"
-  },
-  "author": {
-    "name": "dvaJi",
-    "email": "francisco_p@outlook.com"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dvaJi/souka/issues"
-  },
-  "homepage": "https://github.com/dvaJi/souka",
-  "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-class-properties": "^7.3.0",
-    "@babel/plugin-proposal-decorators": "^7.3.0",
-    "@babel/preset-env": "^7.3.1",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/preset-typescript": "^7.1.0",
-    "@types/classnames": "^2.2.7",
-    "@types/electron-devtools-installer": "^2.2.0",
-    "@types/enzyme": "^3.1.15",
-    "@types/jest": "^23.3.13",
-    "@types/material-ui": "^0.21.5",
-    "@types/react": "^16.7.21",
-    "@types/react-dom": "^16.0.11",
-    "@types/react-hot-loader": "^4.1.0",
-    "@types/react-redux": "^7.0.1",
-    "@types/react-router": "^4.4.3",
-    "@types/react-router-dom": "^4.3.1",
-    "@types/react-test-renderer": "^16.0.3",
-    "@types/redux-logger": "^3.0.6",
-    "@types/webdriverio": "^4.8.7",
-    "@types/webpack-env": "^1.13.6",
-    "awesome-typescript-loader": "^5.2.1",
-    "babel-loader": "^8.0.5",
-    "cross-env": "^5.2.0",
-    "css-loader": "^2.1.0",
-    "del": "^3.0.0",
-    "del-cli": "^1.1.0",
-    "electron": "^3.1.2",
-    "electron-builder": "^20.38.5",
-    "electron-devtools-installer": "^2.2.4",
-    "enzyme": "^3.8.0",
-    "enzyme-adapter-react-16": "^1.8.0",
-    "file-loader": "^3.0.1",
-    "html-webpack-plugin": "^3.2.0",
-    "husky": "^1.3.1",
-    "image-webpack-loader": "^4.6.0",
-    "jest": "^24.0.0",
-    "lint-staged": "^8.1.0",
-    "node-sass": "^4.11.0",
-    "prettier": "^1.16.1",
-    "react-hot-loader": "^4.6.3",
-    "react-test-renderer": "^16.7.0",
-    "redux-devtools-extension": "^2.13.7",
-    "sass-loader": "^7.1.0",
-    "source-map-loader": "^0.2.4",
-    "spectron": "^5.0.0",
-    "standard-version": "^4.4.0",
-    "style-loader": "^0.23.1",
-    "ts-jest": "^23.10.5",
-    "tslint": "^5.12.1",
-    "tslint-config-airbnb": "^5.11.1",
-    "tslint-config-prettier": "^1.17.0",
-    "tslint-react": "^3.6.0",
-    "typescript": "3.1.6",
-    "uglifyjs-webpack-plugin": "^2.1.1",
-    "webpack": "^4.29.0",
-    "webpack-cli": "^3.2.1",
-    "webpack-dev-server": "^3.1.14",
-    "webpack-merge": "^4.2.1"
-  },
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@ajainarayanan/react-pan-zoom": "^0.0.3",
-    "@material-ui/core": "^3.9.1",
+    "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "classnames": "^2.2.6",
-    "connected-react-router": "^6.2.2",
+    "connected-react-router": "^6.3.1",
+    "file-saver": "^2.0.1",
     "history": "^4.7.2",
-    "html2canvas": "^1.0.0-alpha.12",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-dropzone": "^8.0.3",
-    "react-redux": "^6.0.0",
-    "react-router": "^4.3.1",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-dropzone": "^9.0.0",
+    "react-redux": "^6.0.1",
     "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.5",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "typescript": "3.3.3333"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  }
+  "devDependencies": {
+    "@types/classnames": "^2.2.7",
+    "@types/file-saver": "^2.0.0",
+    "@types/jest": "24.0.9",
+    "@types/node": "11.9.6",
+    "@types/react": "16.8.6",
+    "@types/react-dom": "16.8.2",
+    "@types/react-redux": "^7.0.1",
+    "@types/react-router-dom": "^4.3.1",
+    "@types/redux-logger": "^3.0.7",
+    "@types/webpack-env": "^1.13.8"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

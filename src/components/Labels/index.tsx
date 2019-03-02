@@ -57,6 +57,7 @@ class LabelContainer extends React.Component<Props> {
       return <Redirect to="/" />;
     }
     const actualLabel = labels[file][label];
+    console.log(this.props.labels);
     return keys.length > 0 ? (
       <Grid container spacing={0} className={classes.containerLabels}>
         <Grid item style={{ width: '100%' }}>
