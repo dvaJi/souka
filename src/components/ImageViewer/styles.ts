@@ -4,10 +4,12 @@ import { createStyles } from '@material-ui/core/styles';
 const styles = ({ spacing }: Theme) =>
   createStyles({
     image: {
-      maxWidth: '100%'
+      maxWidth: '100%',
+      paddingTop: 10
     },
     container: {
       width: '100vw',
+      height: '100%',
       overflow: 'auto',
       display: 'block',
       justifyContent: 'center',
