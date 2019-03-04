@@ -4,7 +4,7 @@ import { createStyles } from '@material-ui/core/styles';
 const dzShadow =
   '0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12)';
 
-export const styles = ({ spacing }: Theme) =>
+export const styles = ({ spacing, palette }: Theme) =>
   createStyles({
     container: {
       marginTop: 20
@@ -39,7 +39,7 @@ export const styles = ({ spacing }: Theme) =>
       top: '60%',
       left: '35%',
       boxShadow: dzShadow,
-      backgroundColor: '#fff',
+      backgroundColor: palette.background.default,
       zIndex: 99
     },
     gridList: {
