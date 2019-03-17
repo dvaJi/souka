@@ -28,7 +28,7 @@ const emptyLabel: Label = {
   filename: ''
 };
 
-type Props = {
+interface Props {
   onAddLabel: (label: Label) => void;
   onRemoveLabel: (label: Label) => void;
   onSelectLabel: (label: Label) => void;
@@ -36,7 +36,7 @@ type Props = {
   keys: LabelsKeys;
   labels: { [id: string]: Label };
   file: string;
-};
+}
 
 class LabelList extends React.Component<Props> {
   handleOnSelectLabel = (key: string) => () => {

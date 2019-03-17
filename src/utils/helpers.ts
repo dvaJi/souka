@@ -1,7 +1,7 @@
 import FileSaver from 'file-saver';
 
 // Render element or component by provided condition
-export function renderIf(condition: boolean, renderFn: Function) {
+export function renderIf(condition: boolean, renderFn: () => void) {
   return condition ? renderFn() : null;
 }
 
@@ -19,11 +19,10 @@ export function isEmpty(obj: any) {
   return true;
 }
 
-export const fileTemplate =
-  '1,0\n-\nInside the box\nOutside the box\n-\nExported by Souka\n';
+export const fileTemplate = '1,0\n-\nInside the box\nOutside the box\n-\nExported by Souka\n';
 
 export function exportFile(filename: string, data: string) {
-  var blob = new Blob([data], {
+  const blob = new Blob([data], {
     type: 'text/plain;charset=utf-8',
     endings: 'native'
   });

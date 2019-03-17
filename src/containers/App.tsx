@@ -4,10 +4,10 @@ import { withStyles, Theme } from '@material-ui/core/styles';
 
 import Header from '../components/Layout/Header';
 
-type Props = {
+interface Props {
   classes: { root: string };
   children: React.ReactNode;
-};
+}
 
 const styles = (theme: Theme) => ({
   root: {

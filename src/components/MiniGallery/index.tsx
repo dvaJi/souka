@@ -10,14 +10,14 @@ import styles from './styles';
 import { File } from '../../types/File';
 import { Files } from '../../types/States';
 
-type Props = {
+interface Props {
   select: (filename: string) => void;
   availableHeight: number;
   classes: any;
   images: Files;
   selected: File;
   keys: string[];
-};
+}
 
 class ImageViewer extends React.Component<Props> {
   handleOnClick = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {

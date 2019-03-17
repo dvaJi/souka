@@ -6,9 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-type Props = {
+interface Props {
   classes: { root: string; menuButton: string };
-};
+}
 const styles = {
   root: {
     flexGrow: 1
