@@ -75,11 +75,9 @@ class LabelContainer extends React.Component<Props> {
           />
         </Grid>
         <Grid item style={{ width: '100%' }}>
-          {renderIf(actualLabel !== undefined, () => (
-            <Grid container spacing={0}>
-              <LabelInput text={actualLabel.text} handleOnChange={this.handleOnChange} />
-            </Grid>
-          ))}
+          <Grid container spacing={0}>
+            <LabelInput text={actualLabel.text} handleOnChange={this.handleOnChange} />
+          </Grid>
         </Grid>
       </Grid>
     ) : (
