@@ -7,11 +7,11 @@ import { withStyles } from '@material-ui/core/styles';
 // App imports
 import styles from './styles';
 
-type Props = {
+interface Props {
   handleOnChange: (text: string) => void;
   classes: any;
   text: string;
-};
+}
 
 function LabelInput(props: Props) {
   const { text, classes, handleOnChange } = props;

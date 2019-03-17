@@ -13,7 +13,7 @@ import styles from './styles';
 import { Label } from '../../types/Label';
 import { FilesState, LabelState } from '../../types/States';
 
-type Props = {
+interface Props {
   add: (label: Label) => void;
   remove: (label: Label) => void;
   update: (label: Label) => void;
@@ -21,12 +21,16 @@ type Props = {
   classes: any;
   files: FilesState;
   labels: LabelState;
-};
+}
 
 class LabelContainer extends React.Component<Props> {
   handleOnAddLabel = (label: Label) => {
     const { labels, files, add, selectLabel } = this.props;
-    const newLabel: Label = { ...label, filename: files.file ? files.file : '', id: labels.lastId };
+    const newLabel: Label = {
+      ...label,
+      filename: files.file ? files.file : '',
+      id: labels.lastId
+    };
     add(newLabel);
     selectLabel(labels.lastId);
   };
@@ -57,7 +61,7 @@ class LabelContainer extends React.Component<Props> {
       return <Redirect to="/" />;
     }
     const actualLabel = labels[file][label];
-    console.log(this.props.labels);
+
     return keys.length > 0 ? (
       <Grid container spacing={0} className={classes.containerLabels}>
         <Grid item style={{ width: '100%' }}>
@@ -71,11 +75,9 @@ class LabelContainer extends React.Component<Props> {
           />
         </Grid>
         <Grid item style={{ width: '100%' }}>
-          {renderIf(actualLabel !== undefined, () => (
-            <Grid container spacing={0}>
-              <LabelInput text={actualLabel.text} handleOnChange={this.handleOnChange} />
-            </Grid>
-          ))}
+          <Grid container spacing={0}>
+            <LabelInput text={actualLabel.text} handleOnChange={this.handleOnChange} />
+          </Grid>
         </Grid>
       </Grid>
     ) : (

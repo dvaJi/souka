@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 // UI Imports
 import Grid from '@material-ui/core/Grid';
@@ -9,22 +9,20 @@ import styles from './styles';
 import { File } from '../../types/File';
 import { renderIf } from '../../utils/helpers';
 
-type Props = {
+interface Props {
   classes: any;
   image: File;
   availableHeight: number;
-};
+}
 
 class ImageViewer extends React.Component<Props> {
   render() {
     const { image, availableHeight, classes } = this.props;
     return (
       <Grid container spacing={0} style={{ height: availableHeight }}>
-        {renderIf(image !== undefined, () => (
-          <div className={classes.container}>
-            <img className={classes.image} src={image.preview} alt={image.filename} />
-          </div>
-        ))}
+        <div className={classes.container}>
+          <img className={classes.image} src={image.preview} alt={image.filename} />
+        </div>
       </Grid>
     );
   }
