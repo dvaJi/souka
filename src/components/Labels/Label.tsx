@@ -6,13 +6,13 @@ import Zoom from '@material-ui/core/Zoom';
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-type Props = {
+interface Props {
   onRemove: () => void;
   classes: any;
-  number: number;
+  labelNumber: number;
   type: string;
   position: React.CSSProperties;
-};
+}
 
 export const styles = ({ spacing }: Theme) =>
   createStyles({
@@ -52,7 +52,7 @@ class Label extends React.Component<Props, { isHover: boolean }> {
 
   render() {
     const { isHover } = this.state;
-    const { number, type, position, classes, onRemove } = this.props;
+    const { labelNumber, type, position, classes, onRemove } = this.props;
     return (
       <button
         onMouseEnter={this.handleOnHover}
@@ -65,7 +65,7 @@ class Label extends React.Component<Props, { isHover: boolean }> {
           <Zoom in={isHover}>
             <CloseIcon className={classes.closeIcon} />
           </Zoom>
-          {!isHover && number}
+          {!isHover && labelNumber}
         </div>
       </button>
     );

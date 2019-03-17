@@ -5,6 +5,8 @@ import { History } from 'history';
 import Root from './containers/Root';
 import { configureStore, history } from './store/configureStore';
 import * as serviceWorker from './serviceWorker';
+import { Store, AnyAction } from 'redux';
+import { RootState } from './types/States';
 
 const store = configureStore();
 
@@ -15,18 +17,18 @@ document.body.appendChild(mainElement);
 // Render components
 const render = (
   Component: (props: any) => JSX.Element,
-  store: any,
-  history: History
+  elstore: Store<RootState, AnyAction>,
+  elhistory: History
 ) => {
-  ReactDOM.render(<Component store={store} history={history} />, mainElement);
+  ReactDOM.render(<Component store={elstore} history={elhistory} />, mainElement);
 };
 
 render(Root, store, history);
 
 if (module.hot) {
   module.hot.accept('./containers/Root', () => {
-    import('./containers/Root').then(Root => {
-      render(Root.default, store, history);
+    import('./containers/Root').then(RootContainer => {
+      render(RootContainer.default, store, history);
     });
   });
 }

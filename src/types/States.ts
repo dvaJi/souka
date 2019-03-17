@@ -1,30 +1,30 @@
 import { File } from './File';
 import { Label } from './Label';
 
-export type LabelsKeys = {
+export interface LabelsKeys {
   [filename: string]: string[];
-};
+}
 
-export type Labels = {
+export interface Labels {
   [filename: string]: { [id: string]: Label };
-};
+}
 
-export type LabelState = {
+export interface LabelState {
   label: string;
   labels: Labels;
   keys: LabelsKeys;
   lastId: number;
-};
+}
 
-export type Files = {
+export interface Files {
   [filename: string]: File;
-};
+}
 
-export type FilesState = {
+export interface FilesState {
   file: string;
   files: Files;
   keys: string[];
-};
+}
 
 export interface RootState {
   router: any;

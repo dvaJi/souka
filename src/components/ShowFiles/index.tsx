@@ -25,7 +25,7 @@ import { styles } from './styles';
 import routes from '../../constants/routes';
 import { FilesState } from '../../types/States';
 
-type Props = {
+interface Props {
   init: (keys: string[]) => void;
   select: (filename: string) => void;
   add: (file: File) => void;
@@ -35,7 +35,7 @@ type Props = {
   classes: any;
   files: FilesState;
   history: History;
-};
+}
 
 class ShowFiles extends React.Component<Props> {
   onDrop = (files: File[]) => {
@@ -104,36 +104,22 @@ class ShowFiles extends React.Component<Props> {
                       <Grow in={!hasFiles || isDragActive}>
                         <div className={classes.dropzoneContent}>
                           <Typography variant="overline" gutterBottom>
-                            <CloudIcon className={classes.cloudIcon} /> Drop
-                            your files here
+                            <CloudIcon className={classes.cloudIcon} /> Drop your files here
                           </Typography>
                         </div>
                       </Grow>
 
                       {renderIf(hasFiles, () => (
-                        <GridList
-                          cellHeight={180}
-                          className={classes.gridList}
-                          cols={4}
-                        >
+                        <GridList cellHeight={180} className={classes.gridList} cols={4}>
                           {files.keys.map((key: string) => (
                             <GridListTile key={files.files[key].name}>
-                              <img
-                                alt={files.files[key].name}
-                                src={files.files[key].preview}
-                              />
+                              <img alt={files.files[key].name} src={files.files[key].preview} />
                               <GridListTileBar
                                 title={files.files[key].name}
-                                subtitle={
-                                  <span>by: {files.files[key].size}</span>
-                                }
+                                subtitle={<span>by: {files.files[key].size}</span>}
                                 actionIcon={
                                   <IconButton className={classes.icon}>
-                                    <DeleteIcon
-                                      onClick={this.handleOnRemove(
-                                        files.files[key]
-                                      )}
-                                    />
+                                    <DeleteIcon onClick={this.handleOnRemove(files.files[key])} />
                                   </IconButton>
                                 }
                               />

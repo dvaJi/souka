@@ -9,10 +9,10 @@ import { Store } from '../reducers/types';
 import Routes from '../Routes';
 import { History } from 'history';
 
-type Props = {
+interface Props {
   store: Store;
   history: History;
-};
+}
 
 const theme = createMuiTheme({
   palette: {
