@@ -22,18 +22,18 @@ import LabelContainer from '../containers/LabelContainer';
 import { FilesState, LabelState } from '../types/States';
 import { exportFile } from '../utils/helpers';
 
-type Props = {
+interface Props {
   select: (id: string) => void;
   files: FilesState;
   labels: LabelState;
   classes: any;
-};
+}
 
-type State = {
+interface State {
   translationName: string;
   isTLNameModalOpen: boolean;
   availableHeight: number;
-};
+}
 
 function getModalStyle() {
   const top = 50;
@@ -142,11 +142,7 @@ class TranslateFile extends React.Component<Props, State> {
       <div>
         <AppBar position="static" color="default">
           <Toolbar style={{ justifyContent: 'space-between' }} variant="dense">
-            <IconButton
-              component={GoBackLink}
-              color="inherit"
-              aria-label="Menu"
-            >
+            <IconButton component={GoBackLink} color="inherit" aria-label="Menu">
               <ArrowBackIcon />
             </IconButton>
             <Button color="primary" onClick={this.handleModalToggle}>
@@ -157,12 +153,7 @@ class TranslateFile extends React.Component<Props, State> {
         </AppBar>
         <Grid container spacing={0}>
           <Grid item xs={8}>
-            {file && (
-              <ImageViewer
-                image={files[file]}
-                availableHeight={availableHeight - 105}
-              />
-            )}
+            {file && <ImageViewer image={files[file]} availableHeight={availableHeight - 105} />}
             <MiniGallery
               images={files}
               selected={files[file]}

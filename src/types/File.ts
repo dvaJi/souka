@@ -1,4 +1,4 @@
-export type File = {
+export interface File {
   lastModified: number;
   lastModifiedDate: Date;
   name: string;
@@ -7,4 +7,4 @@ export type File = {
   type: string;
   webkitRelativePath: any;
   filename: string;
-};
+}

@@ -1,6 +1,6 @@
-export type Label = {
+export interface Label {
   id: number;
   text: string;
   type: string;
   filename: string;
-};
+}
