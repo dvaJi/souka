@@ -20,10 +20,13 @@ import ImageViewer from './ImageViewer';
 import MiniGallery from './MiniGallery';
 import LabelContainer from '../containers/LabelContainer';
 import { FilesState, LabelState } from '../types/States';
-import { exportFile } from '../utils/helpers';
+import { exportFile, fileTemplate } from '../utils/helpers';
+import { Label } from '../types/Label';
 
 interface Props {
   select: (id: string) => void;
+  addLabel: (label: Label) => void;
+  selectLabel: (id: number) => void;
   files: FilesState;
   labels: LabelState;
   classes: any;
@@ -72,6 +75,7 @@ class TranslateFile extends React.Component<Props, State> {
     this.handleModalToggle = this.handleModalToggle.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.generateFile = this.generateFile.bind(this);
+    this.handleInsertLabel = this.handleInsertLabel.bind(this);
   }
 
   componentDidMount() {
@@ -111,14 +115,16 @@ class TranslateFile extends React.Component<Props, State> {
   }
 
   generateFile() {
-    let file = '';
+    let file = fileTemplate;
     const keys = Object.keys(this.props.labels.labels);
     keys.forEach(key => {
       file += `\n>>>>>>>>[${key}]<<<<<<<<\n`;
       const labels = this.props.labels.labels[key];
       const labelsKeys = Object.keys(this.props.labels.labels[key]);
       labelsKeys.forEach(ki => {
-        // file += `----------------[${ki}]----------------\n`;
+        const y = labels[ki].y.toFixed(3);
+        const x = labels[ki].x.toFixed(3);
+        file += `----------------[${ki}]----------------[${x},${y},1]\n`;
         if (labels[ki].type !== 'normal') {
           file += `${labels[ki].type}: `;
         }
@@ -134,10 +140,27 @@ class TranslateFile extends React.Component<Props, State> {
     this.setState({ isTLNameModalOpen: !this.state.isTLNameModalOpen });
   }
 
+  handleInsertLabel(off: { x: number; y: number }, image: { x: number; y: number }) {
+    const { labels, files, addLabel, selectLabel } = this.props;
+    const newLabel: Label = {
+      ...off,
+      image,
+      text: '',
+      type: 'normal',
+      filename: files.file ? files.file : '',
+      id: labels.lastId
+    };
+    addLabel(newLabel);
+    selectLabel(labels.lastId);
+  }
+
   render() {
     const { availableHeight, translationName, isTLNameModalOpen } = this.state;
-    const { files: fileList, select, classes } = this.props;
+    const { files: fileList, labels: labelList, select, classes } = this.props;
+    const { labels, label, keys: labelKeys } = labelList;
     const { files, file, keys } = fileList;
+
+    const actualLabels = labelKeys[file].map((lk: string) => labels[file][lk]);
     return (
       <div>
         <AppBar position="static" color="default">
@@ -153,7 +176,14 @@ class TranslateFile extends React.Component<Props, State> {
         </AppBar>
         <Grid container spacing={0}>
           <Grid item xs={8}>
-            {file && <ImageViewer image={files[file]} availableHeight={availableHeight - 105} />}
+            {file && (
+              <ImageViewer
+                labels={actualLabels}
+                insertLabel={this.handleInsertLabel}
+                image={files[file]}
+                availableHeight={availableHeight - 105}
+              />
+            )}
             <MiniGallery
               images={files}
               selected={files[file]}

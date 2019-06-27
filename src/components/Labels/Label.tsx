@@ -10,8 +10,7 @@ interface Props {
   onRemove: () => void;
   classes: any;
   labelNumber: number;
-  type: string;
-  position: React.CSSProperties;
+  label: any;
 }
 
 export const styles = ({ spacing }: Theme) =>
@@ -21,8 +20,8 @@ export const styles = ({ spacing }: Theme) =>
       backgroundColor: '#2196f3',
       outline: 'none',
       border: 0,
-      minHeight: 54,
-      minWidth: 54,
+      height: 54,
+      width: 54,
       borderRadius: '50%',
       '&:hover': {
         backgroundColor: '#0c83e4'
@@ -52,14 +51,15 @@ class Label extends React.Component<Props, { isHover: boolean }> {
 
   render() {
     const { isHover } = this.state;
-    const { labelNumber, type, position, classes, onRemove } = this.props;
+    const { labelNumber, label, classes, onRemove } = this.props;
+    const positionStyle = { top: label.image.y, left: label.image.x };
     return (
       <button
         onMouseEnter={this.handleOnHover}
         onMouseLeave={this.handleOnHover}
         type="button"
         className={classes.labelChip}
-        style={position}
+        style={positionStyle}
       >
         <div>
           <Zoom in={isHover}>

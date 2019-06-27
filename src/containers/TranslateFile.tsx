@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
 import TranslateFile from '../components/TranslateFile';
 import * as FileActions from '../actions/files';
+import * as LabelActions from '../actions/labels';
 import { RootState } from '../types/States';
+import { Label } from '../types/Label';
 
 function mapStateToProps({ files, labels }: RootState) {
   return {
@@ -12,7 +14,9 @@ function mapStateToProps({ files, labels }: RootState) {
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    select: (filename: string) => dispatch(FileActions.select(filename))
+    select: (filename: string) => dispatch(FileActions.select(filename)),
+    addLabel: (label: Label) => dispatch(LabelActions.add(label)),
+    selectLabel: (id: number) => dispatch(LabelActions.selectLabel(id))
   };
 }
 
