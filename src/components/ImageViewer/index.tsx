@@ -67,7 +67,7 @@ class ImageViewer extends React.Component<Props> {
         <div ref={this.containerRef} className={classes.container}>
           <>
             {labels.map((l: any, index: number) => (
-              <Label labelNumber={index} label={l} onRemove={this.onRemove} />
+              <Label key={l.id} labelNumber={index} label={l} onRemove={this.onRemove} />
             ))}
             <img
               ref={this.imageRef}
