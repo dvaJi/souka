@@ -25,8 +25,9 @@ import { Label } from '../types/Label';
 
 interface Props {
   select: (id: string) => void;
-  addLabel: (label: Label) => void;
   selectLabel: (id: number) => void;
+  addLabel: (label: Label) => void;
+  removeLabel: (label: Label) => void;
   files: FilesState;
   labels: LabelState;
   classes: any;
@@ -156,7 +157,7 @@ class TranslateFile extends React.Component<Props, State> {
 
   render() {
     const { availableHeight, translationName, isTLNameModalOpen } = this.state;
-    const { files: fileList, labels: labelList, select, classes } = this.props;
+    const { files: fileList, labels: labelList, select, removeLabel, classes } = this.props;
     const { labels, label, keys: labelKeys } = labelList;
     const { files, file, keys } = fileList;
 
@@ -182,6 +183,7 @@ class TranslateFile extends React.Component<Props, State> {
                 insertLabel={this.handleInsertLabel}
                 image={files[file]}
                 availableHeight={availableHeight - 105}
+                onRemoveLabel={removeLabel}
               />
             )}
             <MiniGallery

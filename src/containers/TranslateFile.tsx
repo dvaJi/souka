@@ -16,6 +16,7 @@ function mapDispatchToProps(dispatch: any) {
   return {
     select: (filename: string) => dispatch(FileActions.select(filename)),
     addLabel: (label: Label) => dispatch(LabelActions.add(label)),
+    removeLabel: (label: Label) => dispatch(LabelActions.remove(label)),
     selectLabel: (id: number) => dispatch(LabelActions.selectLabel(id))
   };
 }

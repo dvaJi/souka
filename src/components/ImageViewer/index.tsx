@@ -16,6 +16,7 @@ interface Props {
   availableHeight: number;
   labels: any;
   insertLabel: (offset: { x: number; y: number }, image: { x: number; y: number }) => void;
+  onRemoveLabel: (label: any) => void;
 }
 
 const calculatePosition = (clickPosition: number, resizeValue: number, originalValue: number) => {
@@ -55,19 +56,15 @@ class ImageViewer extends React.Component<Props> {
     }
   };
 
-  onRemove() {
-    // TODO: call remove label function
-  }
-
   render() {
-    const { image, labels, availableHeight, classes } = this.props;
+    const { image, labels, availableHeight, classes, onRemoveLabel } = this.props;
 
     return (
       <Grid container spacing={0} style={{ height: availableHeight }}>
         <div ref={this.containerRef} className={classes.container}>
           <>
             {labels.map((l: any, index: number) => (
-              <Label key={l.id} labelNumber={index} label={l} onRemove={this.onRemove} />
+              <Label key={l.id} labelNumber={index} label={l} onRemove={onRemoveLabel} />
             ))}
             <img
               ref={this.imageRef}
