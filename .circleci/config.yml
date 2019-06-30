@@ -41,6 +41,7 @@ jobs:
       - restore_cache: *restore-cache
       - run: date
       - run: *yarn
+      - run: yarn global add core-js
       - save_cache: *save-cache
       - persist_to_workspace:
           root: .
