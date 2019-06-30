@@ -25,7 +25,13 @@ const emptyLabel: Label = {
   id: 1,
   text: '',
   type: 'normal',
-  filename: ''
+  filename: '',
+  x: 0,
+  y: 0,
+  image: {
+    x: 0,
+    y: 0
+  }
 };
 
 interface Props {
