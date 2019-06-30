@@ -74,11 +74,13 @@ class LabelContainer extends React.Component<Props> {
             onRemoveLabel={this.handleOnRemoveLabel}
           />
         </Grid>
-        <Grid item style={{ width: '100%' }}>
-          <Grid container spacing={0}>
-            <LabelInput text={actualLabel.text} handleOnChange={this.handleOnChange} />
+        {actualLabel && (
+          <Grid item style={{ width: '100%' }}>
+            <Grid container spacing={0}>
+              <LabelInput text={actualLabel.text} handleOnChange={this.handleOnChange} />
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </Grid>
     ) : (
       <Redirect to="/" />
