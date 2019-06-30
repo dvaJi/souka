@@ -8,7 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Label from '../Labels/Label';
 import styles from './styles';
 import { File } from '../../types/File';
-import { renderIf } from '../../utils/helpers';
 
 interface Props {
   classes: any;

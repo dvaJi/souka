@@ -158,7 +158,7 @@ class TranslateFile extends React.Component<Props, State> {
   render() {
     const { availableHeight, translationName, isTLNameModalOpen } = this.state;
     const { files: fileList, labels: labelList, select, removeLabel, classes } = this.props;
-    const { labels, label, keys: labelKeys } = labelList;
+    const { labels, keys: labelKeys } = labelList;
     const { files, file, keys } = fileList;
 
     const actualLabels = labelKeys[file].map((lk: string) => labels[file][lk]);
