@@ -8,7 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 // App imports
 import LabelInput from './LabelInput';
 import LabelList from './LabelList';
-import { renderIf } from '../../utils/helpers';
 import styles from './styles';
 import { Label } from '../../types/Label';
 import { FilesState, LabelState } from '../../types/States';
@@ -74,11 +73,13 @@ class LabelContainer extends React.Component<Props> {
             onRemoveLabel={this.handleOnRemoveLabel}
           />
         </Grid>
-        <Grid item style={{ width: '100%' }}>
-          <Grid container spacing={0}>
-            <LabelInput text={actualLabel.text} handleOnChange={this.handleOnChange} />
+        {actualLabel && (
+          <Grid item style={{ width: '100%' }}>
+            <Grid container spacing={0}>
+              <LabelInput text={actualLabel.text} handleOnChange={this.handleOnChange} />
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </Grid>
     ) : (
       <Redirect to="/" />

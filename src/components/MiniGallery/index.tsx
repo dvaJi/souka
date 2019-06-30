@@ -19,7 +19,7 @@ interface Props {
   keys: string[];
 }
 
-class ImageViewer extends React.Component<Props> {
+class MiniGallery extends React.Component<Props> {
   handleOnClick = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     const element = event.target as HTMLImageElement;
     const { select } = this.props;
@@ -47,4 +47,4 @@ class ImageViewer extends React.Component<Props> {
   }
 }
 
-export default withStyles(styles)(ImageViewer);
+export default withStyles(styles)(MiniGallery);
