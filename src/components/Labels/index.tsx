@@ -8,7 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 // App imports
 import LabelInput from './LabelInput';
 import LabelList from './LabelList';
-import { renderIf } from '../../utils/helpers';
 import styles from './styles';
 import { Label } from '../../types/Label';
 import { FilesState, LabelState } from '../../types/States';
