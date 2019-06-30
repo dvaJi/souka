@@ -5,7 +5,7 @@ const styles = ({ spacing }: Theme) =>
   createStyles({
     image: {
       maxWidth: '100%',
-      paddingTop: 10
+      marginTop: 10
     },
     container: {
       width: '100vw',
@@ -15,7 +15,8 @@ const styles = ({ spacing }: Theme) =>
       justifyContent: 'center',
       textAlign: 'center',
       alignItems: 'center',
-      zIndex: 1
+      zIndex: 1,
+      position: 'sticky'
     },
     fab: {
       position: 'absolute',
