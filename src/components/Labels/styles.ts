@@ -8,7 +8,7 @@ export default ({ spacing }: Theme) =>
       margin: 5
     },
     labelChip: {
-      margin: spacing.unit
+      margin: spacing()
     },
     tableRow: {
       cursor: 'pointer'
