@@ -10,7 +10,7 @@ export const styles = ({ spacing, palette }: Theme) =>
       marginTop: 20
     },
     paper: {
-      padding: spacing.unit * 2,
+      padding: spacing(2),
       marginLeft: 10,
       marginRight: 10
     },
