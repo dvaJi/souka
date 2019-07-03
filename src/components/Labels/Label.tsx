@@ -28,8 +28,8 @@ export const styles = ({ spacing }: Theme) =>
       },
       fontSize: 26,
       position: 'absolute',
-      bottom: spacing.unit * 2,
-      right: spacing.unit * 2,
+      bottom: spacing(2),
+      right: spacing(2),
       cursor: 'pointer'
     },
     closeIcon: {
