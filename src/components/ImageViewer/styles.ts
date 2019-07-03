@@ -20,8 +20,8 @@ const styles = ({ spacing }: Theme) =>
     },
     fab: {
       position: 'absolute',
-      bottom: spacing.unit * 2,
-      right: spacing.unit * 2
+      bottom: spacing(2),
+      right: spacing(2)
     }
   });
 
