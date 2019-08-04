@@ -3,6 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles, Theme } from '@material-ui/core/styles';
 
 import Header from '../components/Layout/Header';
+import Footer from '../components/Layout/Footer';
 
 interface Props {
   classes: { root: string };
@@ -23,6 +24,7 @@ class App extends React.Component<Props> {
         <CssBaseline />
         <Header />
         <div className={classes.root}>{children}</div>
+        <Footer />
       </React.Fragment>
     );
   }

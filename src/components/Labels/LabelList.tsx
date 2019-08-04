@@ -26,11 +26,23 @@ const emptyLabel: Label = {
   text: '',
   type: 'normal',
   filename: '',
-  x: 0,
-  y: 0,
-  image: {
+  startCoordinates: {
     x: 0,
     y: 0
+  },
+  endCoordinates: {
+    x: 0,
+    y: 0
+  },
+  image: {
+    startCoordinates: {
+      x: 0,
+      y: 0
+    },
+    endCoordinates: {
+      x: 0,
+      y: 0
+    }
   }
 };
 

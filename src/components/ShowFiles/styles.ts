@@ -24,7 +24,7 @@ export const styles = ({ spacing, palette }: Theme) =>
     dropzone: {
       margin: '0 auto',
       width: '100%',
-      minHeight: 200,
+      minHeight: '80vh',
       outlineWidth: 0
     },
     dropzoneComp: {
