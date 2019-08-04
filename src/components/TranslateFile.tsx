@@ -16,7 +16,7 @@ import SaveIcon from '@material-ui/icons/Save';
 
 // App imports
 import routes from '../constants/routes';
-import ImageViewer from './ImageViewer';
+import ImageViewer, { RectLabel } from './ImageViewer';
 import MiniGallery from './MiniGallery';
 import LabelContainer from '../containers/LabelContainer';
 import { FilesState, LabelState } from '../types/States';
@@ -123,9 +123,15 @@ class TranslateFile extends React.Component<Props, State> {
       const labels = this.props.labels.labels[key];
       const labelsKeys = Object.keys(this.props.labels.labels[key]);
       labelsKeys.forEach(ki => {
-        const y = labels[ki].y.toFixed(3);
-        const x = labels[ki].x.toFixed(3);
-        file += `----------------[${ki}]----------------[${x},${y},1]\n`;
+        const start = {
+          y: labels[ki].startCoordinates.y.toFixed(3),
+          x: labels[ki].startCoordinates.x.toFixed(3)
+        };
+        const size = {
+          height: (labels[ki].endCoordinates.y - labels[ki].startCoordinates.y).toFixed(3),
+          width: (labels[ki].endCoordinates.x - labels[ki].startCoordinates.x).toFixed(3)
+        };
+        file += `----------------[${ki}]----------------[${start.x},${start.y},${size.width},${size.height},1]\n`;
         if (labels[ki].type !== 'normal') {
           file += `${labels[ki].type}: `;
         }
@@ -141,7 +147,7 @@ class TranslateFile extends React.Component<Props, State> {
     this.setState({ isTLNameModalOpen: !this.state.isTLNameModalOpen });
   }
 
-  handleInsertLabel(off: { x: number; y: number }, image: { x: number; y: number }) {
+  handleInsertLabel(off: RectLabel, image: RectLabel) {
     const { labels, files, addLabel, selectLabel } = this.props;
     const newLabel: Label = {
       ...off,

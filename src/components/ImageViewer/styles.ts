@@ -5,7 +5,8 @@ const styles = ({ spacing }: Theme) =>
   createStyles({
     image: {
       maxWidth: '100%',
-      marginTop: 10
+      userDrag: 'none',
+      userSelect: 'none'
     },
     container: {
       width: '100vw',
