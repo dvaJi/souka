@@ -17,14 +17,14 @@ export const styles = ({ spacing }: Theme) =>
   createStyles({
     labelChip: {
       color: '#fff',
-      backgroundColor: '#2196f3',
+      backgroundColor: 'rgba(0, 80, 255, 0.7)',
       outline: 'none',
       border: 0,
       height: 54,
       width: 54,
-      borderRadius: '50%',
+      padding: 0,
       '&:hover': {
-        backgroundColor: '#0c83e4'
+        backgroundColor: 'rgba(0, 80, 255, 0.9)'
       },
       fontSize: 26,
       position: 'absolute',
@@ -33,9 +33,6 @@ export const styles = ({ spacing }: Theme) =>
       cursor: 'pointer'
     },
     closeIcon: {
-      left: 13,
-      bottom: 12,
-      position: 'absolute',
       fontSize: 30
     }
   });
@@ -54,10 +51,25 @@ class Label extends React.Component<Props, { isHover: boolean }> {
     onRemove(label);
   };
 
+  calculatePositionStyle(coordinates: any) {
+    return {
+      top: coordinates.startCoordinates.y,
+      left: coordinates.startCoordinates.x
+    };
+  }
+
+  calculateSizeStyle(coordinates: any) {
+    return {
+      width: coordinates.endCoordinates.x - coordinates.startCoordinates.x,
+      height: coordinates.endCoordinates.y - coordinates.startCoordinates.y
+    };
+  }
+
   render() {
     const { isHover } = this.state;
     const { labelNumber, label, classes } = this.props;
-    const positionStyle = { top: label.image.y, left: label.image.x };
+    const positionStyle = this.calculatePositionStyle(label.image);
+    const sizeStyle = this.calculateSizeStyle(label.image);
     return (
       <button
         onMouseEnter={this.handleOnHover}
@@ -65,13 +77,16 @@ class Label extends React.Component<Props, { isHover: boolean }> {
         onClick={this.handleOnClick}
         type="button"
         className={classes.labelChip}
-        style={positionStyle}
+        style={{ ...positionStyle, ...sizeStyle }}
       >
         <div>
-          <Zoom in={isHover}>
-            <CloseIcon className={classes.closeIcon} />
-          </Zoom>
-          {!isHover && labelNumber}
+          {!isHover ? (
+            labelNumber
+          ) : (
+            <Zoom in={isHover}>
+              <CloseIcon className={classes.closeIcon} />
+            </Zoom>
+          )}
         </div>
       </button>
     );
