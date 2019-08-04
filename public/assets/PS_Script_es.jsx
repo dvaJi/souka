@@ -1,26 +1,4 @@
-﻿//
-//   LabelPlus_Ps_Script.jsx
-//   This is a Input Text Tool for LabelPlus Text File.
-// 
-// Copyright 2015, Noodlefighter
-// Released under GPL License.
 //
-// License: http://noodlefighter.com/label_plus/license
-//
-//@show include  
-//
-//   LabelPlus_Ps_Script.jsx
-//   This is a Input Text Tool for LabelPlus Text File.
-// 
-// Copyright 2015, Noodlefighter
-// Released under GPL License.
-//
-// License: http://noodlefighter.com/label_plus/license
-
-//
-// ??????
-//
-
 //@show include
 //
 // stdlib.js
@@ -45,32 +23,23 @@
 // Some shorthand functions for TypeID conversion
 //
 
-// these revs follow some discussions with SzopeN
-// it turns out that attributes of the Function object will return an 
-/// unexpected and incorrect value. These versions are deprecated as a result.
-//cTID = function(s) { return cTID[s] || cTID[s] = app.charIDToTypeID(s); };
-//sTID = function(s) { return sTID[s] || sTID[s] = app.stringIDToTypeID(s); };
-
-// older revs
-// cTID = function(s) {
-//   if (s.length != 4) {
-//     Error.runtimeError(19, s);  // Bad Argument
-//   }
-//   return app.charIDToTypeID(s);
-// };
-cTID = function(s) { return app.charIDToTypeID(s); };
-sTID = function(s) { return app.stringIDToTypeID(s); };
+cTID = function(s) {
+  return app.charIDToTypeID(s);
+};
+sTID = function(s) {
+  return app.stringIDToTypeID(s);
+};
 
 xTID = function(s) {
   if (s == undefined) {
     if (!isCS() && !isCS2()) {
       try {
-        Stdlib.log("undefined id detected at: " + $.stack);
+        Stdlib.log('undefined id detected at: ' + $.stack);
       } catch (e) {
-        Stdlib.log("undefined id detected");
+        Stdlib.log('undefined id detected');
       }
     } else {
-      Stdlib.log("undefined id detected");
+      Stdlib.log('undefined id detected');
     }
   }
 
@@ -84,16 +53,19 @@ xTID = function(s) {
         s = s.toString();
       }
     }
-  } catch (e) {
-  }
+  } catch (e) {}
 
   if (s.constructor == String) {
     if (s.length > 0) {
       if (s.length != 4) return sTID(s);
-      try { return cTID(s); } catch (e) { return sTID(s); }
+      try {
+        return cTID(s);
+      } catch (e) {
+        return sTID(s);
+      }
     }
   }
-  Error.runtimeError(19, s);  // Bad Argument
+  Error.runtimeError(19, s); // Bad Argument
 
   return undefined;
 };
@@ -109,7 +81,7 @@ xTID = function(s) {
 // and PSEnum.Reds.
 //
 id2char = function(s, map) {
-  if (isNaN(Number(s))){
+  if (isNaN(Number(s))) {
     return '';
   }
   var v;
@@ -119,19 +91,26 @@ id2char = function(s, map) {
   $.level = 0;
   try {
     if (!v) {
-      try { v = PSConstants.reverseNameLookup(s, map); } catch (e) {}
+      try {
+        v = PSConstants.reverseNameLookup(s, map);
+      } catch (e) {}
     }
     if (!v) {
-      try { v = PSConstants.reverseSymLookup(s); } catch (e) {}
+      try {
+        v = PSConstants.reverseSymLookup(s);
+      } catch (e) {}
     }
     if (!v) {
-      try { v = app.typeIDToCharID(s); } catch (e) {}
+      try {
+        v = app.typeIDToCharID(s);
+      } catch (e) {}
     }
     if (!v) {
-      try { v = app.typeIDToStringID(s); } catch (e) {}
+      try {
+        v = app.typeIDToStringID(s);
+      } catch (e) {}
     }
-  } catch (e) {
-  }
+  } catch (e) {}
   $.level = lvl;
   if (!v) {
     v = Stdlib.numberToAscii(s);
@@ -139,7 +118,7 @@ id2char = function(s, map) {
   return v ? v : s;
 };
 id2charId = function(s, map) {
-  if (isNaN(Number(s))){
+  if (isNaN(Number(s))) {
     return '';
   }
   var v;
@@ -149,19 +128,26 @@ id2charId = function(s, map) {
   $.level = 0;
   try {
     if (!v) {
-      try { v = PSConstants.reverseSymLookup(s); } catch (e) {}
+      try {
+        v = PSConstants.reverseSymLookup(s);
+      } catch (e) {}
     }
     if (!v) {
-      try { v = app.typeIDToCharID(s); } catch (e) {}
+      try {
+        v = app.typeIDToCharID(s);
+      } catch (e) {}
     }
     if (!v) {
-      try { v = PSConstants.reverseNameLookup(s, map); } catch (e) {}
+      try {
+        v = PSConstants.reverseNameLookup(s, map);
+      } catch (e) {}
     }
     if (!v) {
-      try { v = app.typeIDToStringID(s); } catch (e) {}
+      try {
+        v = app.typeIDToStringID(s);
+      } catch (e) {}
     }
-  } catch (e) {
-  }
+  } catch (e) {}
   $.level = lvl;
   if (!v) {
     v = Stdlib.numberToAscii(s);
@@ -207,17 +193,15 @@ try {
   if (isPSE()) {
     pseVersion = psVersion;
     var _tmp = psVersion.split(/\./);
-    _tmp[0] = (toNumber(_tmp[0])+2).toString();
-    psVersion = _tmp.join(".");
+    _tmp[0] = (toNumber(_tmp[0]) + 2).toString();
+    psVersion = _tmp.join('.');
     delete _tmp;
   }
-
- } catch (e) {
+} catch (e) {
   psVersion = version;
-
- } finally {
-   $.level = lvl;
-   delete lvl;
+} finally {
+  $.level = lvl;
+  delete lvl;
 }
 
 // see XBridgeTalk for more comprehensive isCSX handling
@@ -233,20 +217,42 @@ CSVersion = function() {
 CSVersion._version = CSVersion();
 
 // not happy about the CS7+ definitions
-isCC2015 = function()  { return CSVersion._version == 9; };
-isCC2014 = function()  { return CSVersion._version == 8; }; 
-isCC     = function()  { return CSVersion._version == 7; }; 
-isCS7    = function()  { return CSVersion._version == 7; };
-isCS6    = function()  { return CSVersion._version == 6; };
-isCS5    = function()  { return CSVersion._version == 5; };
-isCS4    = function()  { return CSVersion._version == 4; };
-isCS3    = function()  { return CSVersion._version == 3; };
-isCS2    = function()  { return CSVersion._version == 2; };
-isCS     = function()  { return CSVersion._version == 1; };
-isPS7    = function()  { return psVersion.match(/^7\./) != null; };
+isCC2015 = function() {
+  return CSVersion._version == 9;
+};
+isCC2014 = function() {
+  return CSVersion._version == 8;
+};
+isCC = function() {
+  return CSVersion._version == 7;
+};
+isCS7 = function() {
+  return CSVersion._version == 7;
+};
+isCS6 = function() {
+  return CSVersion._version == 6;
+};
+isCS5 = function() {
+  return CSVersion._version == 5;
+};
+isCS4 = function() {
+  return CSVersion._version == 4;
+};
+isCS3 = function() {
+  return CSVersion._version == 3;
+};
+isCS2 = function() {
+  return CSVersion._version == 2;
+};
+isCS = function() {
+  return CSVersion._version == 1;
+};
+isPS7 = function() {
+  return psVersion.match(/^7\./) != null;
+};
 
-
-if (isPS7()) {  // this does not work for eval-includes
+if (isPS7()) {
+  // this does not work for eval-includes
   app = this;
 }
 
@@ -267,25 +273,26 @@ isVista64 = function() {
 // ZStrs is a container for (mostly) localized strings used in psx
 // or elsewhere
 //
-if (typeof(ZStrs) == "undefined") {
+if (typeof ZStrs == 'undefined') {
   ZStrs = {};
 }
 
-
 // this makes PS7 compatibility a bit easier
-function getUnitValue(u) { return (u.value != undefined) ? u.value : u; }
+function getUnitValue(u) {
+  return u.value != undefined ? u.value : u;
+}
 
 function newLocalString(scope, name, value, prefix, container) {
   if (!scope || !scope.beginsWith('$$$/')) {
-    Error.runtimeError(19, 'scope');  // Bad Argument
+    Error.runtimeError(19, 'scope'); // Bad Argument
   }
 
   if (!name) {
-    Error.runtimeError(19, 'name');  // Bad Argument
+    Error.runtimeError(19, 'name'); // Bad Argument
   }
 
   if (prefix == undefined) {
-    prefix = "str";
+    prefix = 'str';
   }
 
   if (value == undefined) {
@@ -314,10 +321,9 @@ Stdlib = function Stdlib() {};
 
 Stdlib.PSVersion = Number(app.version.match(/^\d+/)[0]);
 
+Stdlib.VERSION = '2.3'; // update manually
 
-Stdlib.VERSION = "2.3";  // update manually
-
-Stdlib.RcsId = "$Id: stdlib.js,v 1.368 2015/11/18 00:51:32 anonymous Exp $";
+Stdlib.RcsId = '$Id: stdlib.js,v 1.368 2015/11/18 00:51:32 anonymous Exp $';
 
 Stdlib.ERROR_CODE = 9001;
 Stdlib.IO_ERROR_CODE = 9002;
@@ -358,7 +364,9 @@ Stdlib.createObject = function(cls, attrs) {
 //
 Stdlib.clearObject = function(obj) {
   for (var idx in obj) {
-    try { delete obj[idx]; } catch (e) {}
+    try {
+      delete obj[idx];
+    } catch (e) {}
   }
   return obj;
 };
@@ -372,11 +380,13 @@ Stdlib.copyFromTo = function(from, to) {
     if (typeof v == 'function') {
       continue;
     }
-    if (v == 'typename'){
+    if (v == 'typename') {
       continue;
     }
 
-    try { to[idx] = v; } catch (e) {}
+    try {
+      to[idx] = v;
+    } catch (e) {}
   }
 };
 
@@ -399,14 +409,13 @@ Stdlib.popRandomElement = function(ar) {
   return el;
 };
 
-
 //
 // This is one way of getting an environment variable. This is deprecated
 // in CS2.
 //
 Stdlib.getenv = function(key) {
   if (key == undefined) {
-    Error.runtimeError(2, "key");
+    Error.runtimeError(2, 'key');
   }
 
   if (!isCS() && !isPS7()) {
@@ -415,14 +424,14 @@ Stdlib.getenv = function(key) {
 
   key = key.toUpperCase();
   if (Stdlib.env != undefined) {
-    return key ? Stdlib.env[key]: Stdlib.env;
+    return key ? Stdlib.env[key] : Stdlib.env;
   }
   Stdlib.env = new Object();
 
-  var f = new File(Folder.temp + "/getenv.bat");
-  f.open("w");
-  f.writeln("set > env.txt");
-  f.writeln("rename env.txt env.dat");
+  var f = new File(Folder.temp + '/getenv.bat');
+  f.open('w');
+  f.writeln('set > env.txt');
+  f.writeln('rename env.txt env.dat');
   f.close();
   f.execute();
   var o;
@@ -433,7 +442,7 @@ Stdlib.getenv = function(key) {
     // 10000 seems about right on my box...
     // need to loop this and port to CS2
     Stdlib.pause(10000);
-    o = new File("env.dat");
+    o = new File('env.dat');
     if (o.exists) {
       break;
     }
@@ -442,21 +451,21 @@ Stdlib.getenv = function(key) {
   if (!o) {
     Error.runtimeError(33); // internal error
   }
-  o.open("r");
+  o.open('r');
   var s = o.read();
   o.close();
 
   f.remove();
   o.remove();
 
-  var envlist = s.split("\n");
+  var envlist = s.split('\n');
 
-  for (var i =0; i < envlist.length; i++) {
-    var x = envlist[i].split("=");
+  for (var i = 0; i < envlist.length; i++) {
+    var x = envlist[i].split('=');
     Stdlib.env[x[0].toUpperCase()] = x[1];
   }
 
-  return key ? Stdlib.env[key]: Stdlib.env;
+  return key ? Stdlib.env[key] : Stdlib.env;
 };
 
 //
@@ -464,21 +473,19 @@ Stdlib.getenv = function(key) {
 //     load and execute an external script. use the standard
 //     xscripts search path if the name is not absolute
 //
-Stdlib.IncludePathFile = "IncludePath.js";  // deprecated...
+Stdlib.IncludePathFile = 'IncludePath.js'; // deprecated...
 
 Stdlib.runScript = function(name) {
-  Stdlib.runScriptByName(name,
-                         (name.charAt(0) == '/') ?
-                         null : Stdlib.IncludePathFile);
+  Stdlib.runScriptByName(name, name.charAt(0) == '/' ? null : Stdlib.IncludePathFile);
 };
 
 Stdlib.runScriptByName = function(name, path) {
-  var str = "//@include \"" + name + "\";\r";
+  var str = '//@include "' + name + '";\r';
   if (path) {
-    str = "//@include \"" + path + "\";\r" + str;
+    str = '//@include "' + path + '";\r' + str;
   }
   eval(str); // can't do this at top-level so some scoping problems
-             // are inevitable
+  // are inevitable
   return true;
 };
 
@@ -491,7 +498,7 @@ Stdlib.getScriptFolder = function() {
 };
 Stdlib.getScriptFileName = function() {
   var f = Stdlib.getScriptFile();
-  return (f ? f.absoluteURI : '');
+  return f ? f.absoluteURI : '';
 };
 
 Stdlib.getScriptFile = function() {
@@ -521,17 +528,21 @@ Stdlib.getScriptFile = function() {
 
 // thanks to Andrew Hall
 Stdlib.btRunScript = function(script, btapp) {
-  if (!btapp) { btapp = BridgeTalk.appSpecifier; }
+  if (!btapp) {
+    btapp = BridgeTalk.appSpecifier;
+  }
 
   BridgeTalk.bringToFront(btapp);
 
   var bt = new BridgeTalk();
   bt.target = btapp;
-  bt.body = "//@include \"" + script + "\";\r\n";
+  bt.body = '//@include "' + script + '";\r\n';
   bt.send();
 };
 Stdlib.btExec = function(code, btapp) {
-  if (!btapp) { btapp = BridgeTalk.appSpecifier; }
+  if (!btapp) {
+    btapp = BridgeTalk.appSpecifier;
+  }
 
   BridgeTalk.bringToFront(btapp);
 
@@ -546,45 +557,49 @@ Stdlib.restartScript = function() {
 };
 
 try {
-Stdlib.PRESETS_FOLDER =
-  new Folder(app.path + '/' +
-             localize("$$$/ApplicationPresetsFolder/Presets=Presets"));
+  Stdlib.PRESETS_FOLDER = new Folder(
+    app.path + '/' + localize('$$$/ApplicationPresetsFolder/Presets=Presets')
+  );
 
-Stdlib.ADOBE_PRESETS_FOLDER = Stdlib.PRESETS_FOLDER;
+  Stdlib.ADOBE_PRESETS_FOLDER = Stdlib.PRESETS_FOLDER;
 
-Stdlib.USER_PRESETS_FOLDER =
-    new Folder(Folder.userData + '/' +
-               localize("$$$/private/AdobeSystemFolder/Adobe=Adobe") + '/' +
-               localize("$$$/private/FolderNames/AdobePhotoshopProductVersionFolder") + '/' +
-               localize("$$$/private/FolderName/UserPresetsFolder/Presets=Presets"));
+  Stdlib.USER_PRESETS_FOLDER = new Folder(
+    Folder.userData +
+      '/' +
+      localize('$$$/private/AdobeSystemFolder/Adobe=Adobe') +
+      '/' +
+      localize('$$$/private/FolderNames/AdobePhotoshopProductVersionFolder') +
+      '/' +
+      localize('$$$/private/FolderName/UserPresetsFolder/Presets=Presets')
+  );
 
-Stdlib.SCRIPTS_FOLDER =
-  new Folder(app.path + '/' +
-             localize("$$$/ScriptingSupport/InstalledScripts=Presets/Scripts"));
+  Stdlib.SCRIPTS_FOLDER = new Folder(
+    app.path + '/' + localize('$$$/ScriptingSupport/InstalledScripts=Presets/Scripts')
+  );
 
-Stdlib.PLUGINS_FOLDER =
-    new Folder(app.path + '/' +
-               localize("$$$/private/Plugins/DefaultPluginFolder=Plug-Ins"));
+  Stdlib.PLUGINS_FOLDER = new Folder(
+    app.path + '/' + localize('$$$/private/Plugins/DefaultPluginFolder=Plug-Ins')
+  );
 
-Stdlib.FLASH_PANELS_FOLDER =
-    new Folder(Stdlib.PLUGINS_FOLDER + '/' +
-               localize("$$$/private/Plugins/FlashFolder=Panels"));
+  Stdlib.FLASH_PANELS_FOLDER = new Folder(
+    Stdlib.PLUGINS_FOLDER + '/' + localize('$$$/private/Plugins/FlashFolder=Panels')
+  );
 
-Stdlib.PS_SETTINGS_FOLDER =
-    new Folder(app.preferencesFolder + '/' +
-          localize("$$$/private/WorkSpace/WorkSpaceFolder/WorkSpace=WorkSpaces"));
-
-} catch (e) {
-}
+  Stdlib.PS_SETTINGS_FOLDER = new Folder(
+    app.preferencesFolder +
+      '/' +
+      localize('$$$/private/WorkSpace/WorkSpaceFolder/WorkSpace=WorkSpaces')
+  );
+} catch (e) {}
 
 Stdlib._getPreferencesFolder = function() {
   var userData = Folder.userData;
 
   if (!userData || !userData.exists) {
-    userData = Folder("~");
+    userData = Folder('~');
   }
 
-  var folder = new Folder(userData + "/xtools");
+  var folder = new Folder(userData + '/xtools');
 
   if (!folder.exists) {
     folder.create();
@@ -596,47 +611,44 @@ Stdlib._getPreferencesFolder = function() {
 Stdlib.PREFERENCES_FOLDER = Stdlib._getPreferencesFolder();
 
 Stdlib.scriptListenerOn = function() {
-  var desc = new ActionDescriptor;  
-  desc.putBoolean(cTID('Log '), true);  
-  executeAction(sTID("AdobeScriptListener ScriptListener"),
-                desc, DialogModes.NO);  
+  var desc = new ActionDescriptor();
+  desc.putBoolean(cTID('Log '), true);
+  executeAction(sTID('AdobeScriptListener ScriptListener'), desc, DialogModes.NO);
 };
 
 Stdlib.scriptListenerOff = function() {
-  var desc = new ActionDescriptor;  
-  desc.putBoolean(cTID('Log '), false);  
-  executeAction(sTID("AdobeScriptListener ScriptListener"),
-                desc, DialogModes.NO);  
+  var desc = new ActionDescriptor();
+  desc.putBoolean(cTID('Log '), false);
+  executeAction(sTID('AdobeScriptListener ScriptListener'), desc, DialogModes.NO);
 };
 
 Stdlib.selectWorkSpace = function(name) {
   var desc1 = new ActionDescriptor();
   var ref1 = new ActionReference();
-  ref1.putName( sTID('workspace'), name );
-  desc1.putReference( cTID('null'), ref1 );
-  executeAction( cTID('slct'), desc1, DialogModes.NO );
+  ref1.putName(sTID('workspace'), name);
+  desc1.putReference(cTID('null'), ref1);
+  executeAction(cTID('slct'), desc1, DialogModes.NO);
 };
 
 Stdlib.cleanFileName = function(file, sfw) {
-  var fname = file.strf("%f");
-  var dir = file.strf("%d");
-  var ext = file.strf("%e");
+  var fname = file.strf('%f');
+  var dir = file.strf('%d');
+  var ext = file.strf('%e');
   var chr = '_'; // (sfw ? '-' : '_');
 
   // clean out any problematic characters
-  fname = fname.replace(/[:\/\\*\?\"\<\>\|]/g, chr);  // '/\:*?"<>|' -> '_'
+  fname = fname.replace(/[:\/\\*\?\"\<\>\|]/g, chr); // '/\:*?"<>|' -> '_'
   if (sfw) {
     fname = fname.replace(/\s/g, chr);
   }
   if (ext.length > 0) {
     file = File(dir + '/' + fname + '.' + ext);
   } else {
-    file = File(dir + '/' + fname);  
+    file = File(dir + '/' + fname);
   }
 
   return file;
 };
-
 
 //
 // Format a Date object into a proper ISO 8601 date string
@@ -644,23 +656,33 @@ Stdlib.cleanFileName = function(file, sfw) {
 Stdlib.toISODateString = function(date, timeDesignator, dateOnly, precision) {
   if (!date) date = new Date();
   var str = '';
-  if (timeDesignator == undefined) { timeDesignator = 'T'; };
-  function _zeroPad(val) { return (val < 10) ? '0' + val : val; }
+  if (timeDesignator == undefined) {
+    timeDesignator = 'T';
+  }
+  function _zeroPad(val) {
+    return val < 10 ? '0' + val : val;
+  }
   if (date instanceof Date) {
-    str = (date.getFullYear() + '-' +
-           _zeroPad(date.getMonth()+1,2) + '-' +
-           _zeroPad(date.getDate(),2));
+    str =
+      date.getFullYear() +
+      '-' +
+      _zeroPad(date.getMonth() + 1, 2) +
+      '-' +
+      _zeroPad(date.getDate(), 2);
     if (!dateOnly) {
-      str += (timeDesignator +
-              _zeroPad(date.getHours(),2) + ':' +
-              _zeroPad(date.getMinutes(),2) + ':' +
-              _zeroPad(date.getSeconds(),2));
-      if (precision && typeof(precision) == "number") {
+      str +=
+        timeDesignator +
+        _zeroPad(date.getHours(), 2) +
+        ':' +
+        _zeroPad(date.getMinutes(), 2) +
+        ':' +
+        _zeroPad(date.getSeconds(), 2);
+      if (precision && typeof precision == 'number') {
         var ms = date.getMilliseconds();
         if (ms) {
-          var millis = _zeroPad(ms.toString(),precision);
+          var millis = _zeroPad(ms.toString(), precision);
           var s = millis.slice(0, Math.min(precision, millis.length));
-          str += "." + s;
+          str += '.' + s;
         }
       }
     }
@@ -679,26 +701,27 @@ Date.prototype.toISOString = Date.prototype.toISODateString;
 // Add test sets from
 // http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
 Stdlib.testISODate = function() {
-  var strs = ["2006-09-01",
-              "1997-07-16T19:20",
-              "1997-07-16T19:20Z",
-              "1997-07-16T19:20+01:00",
-              "2006-09-01T16:33:26",
-              "2006-09-01 16:33:26",
-              "2006:09:01 16:33:26",
-              "1997-07-16T19:20:30",
-              "1997-07-16T19:20:30Z",
-              "1997-07-16T19:20:30-01:00",
-              "1997-07-16T19:20:30.45",
-              "1997-07-16T19:20:30.45Z",
-              "1997-07-16T19:20:30.45+01:05"];
+  var strs = [
+    '2006-09-01',
+    '1997-07-16T19:20',
+    '1997-07-16T19:20Z',
+    '1997-07-16T19:20+01:00',
+    '2006-09-01T16:33:26',
+    '2006-09-01 16:33:26',
+    '2006:09:01 16:33:26',
+    '1997-07-16T19:20:30',
+    '1997-07-16T19:20:30Z',
+    '1997-07-16T19:20:30-01:00',
+    '1997-07-16T19:20:30.45',
+    '1997-07-16T19:20:30.45Z',
+    '1997-07-16T19:20:30.45+01:05'
+  ];
 
   for (var i = 0; i < strs.length; i++) {
     var s = strs[i];
-    alert(s + " :: " + Stdlib.parseISODateString(s).toISODateString('T', false, 2));
+    alert(s + ' :: ' + Stdlib.parseISODateString(s).toISODateString('T', false, 2));
   }
 };
-
 
 //
 // xmp = new XMPData(doc); Stdlib.parseISODateString(xmp.get('createdate'))
@@ -718,7 +741,6 @@ Stdlib.parseISODateString = function(str) {
   var date = undefined;
   //$.level = 1; debugger;
   if (str.length >= 10 && str.length <= 35) {
-
     // we are assuming that this date is formatted correctly
     var utc = str.endsWith('Z');
 
@@ -728,20 +750,14 @@ Stdlib.parseISODateString = function(str) {
     if (m) {
       var date = new Date();
       if (utc) {
-        date.setUTCFullYear(Number(m[1]),
-                            Number(m[2])-1,
-                            Number(m[3]));
+        date.setUTCFullYear(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
         date.setUTCHours(0, 0, 0);
         date.setUTCMilliseconds(0);
-
       } else {
-        date.setFullYear(Number(m[1]),
-                         Number(m[2])-1,
-                         Number(m[3]));
+        date.setFullYear(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
         date.setHours(0, 0, 0);
         date.setMilliseconds(0);
       }
-
 
       // handle the time portion e.g. 12:15:02
       // or 12:15:02-06:00 or 12:15:02Z or 12:15:02.25Z or 12:15:02.25+10:30
@@ -754,29 +770,27 @@ Stdlib.parseISODateString = function(str) {
 
           var nstr = str.slice(m.index);
 
-          var secs = (m[4] ? Number(m[4]) : 0);
+          var secs = m[4] ? Number(m[4]) : 0;
           var ms = 0;
           if (m[5]) {
-            ms = Number("0" + m[5]) * 1000;
+            ms = Number('0' + m[5]) * 1000;
           }
 
-          var z = (m[6] == 'Z');
+          var z = m[6] == 'Z';
           // assert(z == utc);
 
           if (utc) {
             date.setUTCHours(hours, mins, secs);
             date.setUTCMilliseconds(ms);
-
           } else {
             date.setHours(hours, mins, secs);
             date.setMilliseconds(ms);
           }
 
           if (m[6] || (m[7] && m[8] && m[9])) {
-            var tzd = (z ? 'Z' : m[7] + m[8] + ':' + m[9]);
+            var tzd = z ? 'Z' : m[7] + m[8] + ':' + m[9];
             date.tzd = tzd;
           }
-
         } else {
           date = undefined;
         }
@@ -809,21 +823,21 @@ Stdlib.binToHex = function(s, whitespace) {
         }
       }
     }
-    var ch = s.charCodeAt(i) & 0xFF;  // check for unicode here...
-    str += hexDigit(ch >> 4) + hexDigit(ch & 0xF);
+    var ch = s.charCodeAt(i) & 0xff; // check for unicode here...
+    str += hexDigit(ch >> 4) + hexDigit(ch & 0xf);
   }
   return str;
 };
 Stdlib.hexToBin = function(h) {
   function binMap(n) {
     if (n.match(/[0-9]/)) return parseInt(n);
-    return parseInt((n.charCodeAt(0) - 'A'.charCodeAt(0)) + 10);
+    return parseInt(n.charCodeAt(0) - 'A'.charCodeAt(0) + 10);
   }
 
   h = h.toUpperCase().replace(/\s/g, '');
   var bytes = '';
 
-  for (var i = 0; i < h.length/2; i++) {
+  for (var i = 0; i < h.length / 2; i++) {
     var hi = h.charAt(i * 2);
     var lo = h.charAt(i * 2 + 1);
     var b = (binMap(hi) << 4) + binMap(lo);
@@ -834,52 +848,56 @@ Stdlib.hexToBin = function(h) {
 Stdlib.hexToJS = function(h) {
   var str = '';
   var blockSize = 64;
-  var blockCnt = (h.length/blockSize).toFixed();
+  var blockCnt = (h.length / blockSize).toFixed();
 
   for (var i = 0; i < blockCnt; i++) {
     var ofs = i * blockSize;
-    str += "  \"" + h.slice(ofs, ofs + blockSize) + "\" +\n";
+    str += '  "' + h.slice(ofs, ofs + blockSize) + '" +\n';
   }
 
-  str += "  \"" + h.slice(blockCnt * blockSize) + "\"\n";
+  str += '  "' + h.slice(blockCnt * blockSize) + '"\n';
   return str;
 };
 Stdlib.shortToHex = function(w) {
-  function sfcc(c) { return String.fromCharCode(c); }
-  var bytes = [sfcc((w >> 8) & 0xFF),
-               sfcc(w & 0xFF)];
-  return Stdlib.binToHex(bytes.join(""));
+  function sfcc(c) {
+    return String.fromCharCode(c);
+  }
+  var bytes = [sfcc((w >> 8) & 0xff), sfcc(w & 0xff)];
+  return Stdlib.binToHex(bytes.join(''));
 };
 Stdlib.longToHex = function(w) {
-  function sfcc(c) { return String.fromCharCode(c); }
-  var bytes = [sfcc((w >> 24) & 0xFF),
-               sfcc((w >> 16) & 0xFF),
-               sfcc((w >> 8) & 0xFF),
-               sfcc(w & 0xFF)];
-  return Stdlib.binToHex(bytes.join(""));
+  function sfcc(c) {
+    return String.fromCharCode(c);
+  }
+  var bytes = [
+    sfcc((w >> 24) & 0xff),
+    sfcc((w >> 16) & 0xff),
+    sfcc((w >> 8) & 0xff),
+    sfcc(w & 0xff)
+  ];
+  return Stdlib.binToHex(bytes.join(''));
 };
 Stdlib.hexToLong = function(h) {
-  function cca(s, i) { return s.charCodeAt(i); }
+  function cca(s, i) {
+    return s.charCodeAt(i);
+  }
   var bytes = Stdlib.hexToBin(h);
 
-  return ((cca(bytes, 0) << 24) +
-          (cca(bytes, 1) << 16) +
-          (cca(bytes, 2) << 8) +
-          cca(bytes, 3));
+  return (cca(bytes, 0) << 24) + (cca(bytes, 1) << 16) + (cca(bytes, 2) << 8) + cca(bytes, 3);
 };
 
 Stdlib.hexTest = function() {
-  var f = new File("/c/work/xxx.asl");
+  var f = new File('/c/work/xxx.asl');
   var s = Stdlib.readFromFile(f, 'BINARY');
   var h = Stdlib.binToHex(s);
   var js = Stdlib.hexToJS(h);
 
   //alert(h.slice(0, 132));
   //alert(js.slice(0, 132));
-  eval(" xxx = " + js);
+  eval(' xxx = ' + js);
   alert(xxx == h);
 
-  var f = new File("/c/work/xxx2.asl");
+  var f = new File('/c/work/xxx2.asl');
   Stdlib.writeToFile(f, Stdlib.hexToBin(xxx), 'BINARY');
 };
 
@@ -887,18 +905,23 @@ Stdlib.numberToAscii = function(n) {
   if (isNaN(n)) {
     return n;
   }
-  var str = (String.fromCharCode(n >> 24) +
-             String.fromCharCode((n >> 16) & 0xFF) +
-             String.fromCharCode((n >> 8) & 0xFF) +
-             String.fromCharCode(n & 0xFF));
+  var str =
+    String.fromCharCode(n >> 24) +
+    String.fromCharCode((n >> 16) & 0xff) +
+    String.fromCharCode((n >> 8) & 0xff) +
+    String.fromCharCode(n & 0xff);
 
-  return (Stdlib.isAscii(str[0]) && Stdlib.isAscii(str[1]) &&
-          Stdlib.isAscii(str[2]) && Stdlib.isAscii(str[3])) ? str : n;
+  return Stdlib.isAscii(str[0]) &&
+    Stdlib.isAscii(str[1]) &&
+    Stdlib.isAscii(str[2]) &&
+    Stdlib.isAscii(str[3])
+    ? str
+    : n;
 };
 
 // Need to implement C-style isAscii functions
 
-Stdlib.ASCII_SPECIAL = "\r\n !\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~";
+Stdlib.ASCII_SPECIAL = '\r\n !"#$%&\'()*+,-./:;<=>?@[]^_`{|}~';
 Stdlib.isSpecialChar = function(c) {
   return Stdlib.ASCII_SPECIAL.contains(c[0]);
 };
@@ -910,18 +933,16 @@ Stdlib.isAscii = function(c) {
 //==================================== Strings ===============================
 //
 
-
 String.prototype.contains = function(sub) {
   return this.indexOf(sub) != -1;
 };
 
 String.prototype.containsWord = function(str) {
-  return this.match(new RegExp("\\b" + str + "\\b")) != null;
+  return this.match(new RegExp('\\b' + str + '\\b')) != null;
 };
 
 String.prototype.endsWith = function(sub) {
-  return this.length >= sub.length &&
-    this.slice(this.length - sub.length) == sub;
+  return this.length >= sub.length && this.slice(this.length - sub.length) == sub;
 };
 
 String.prototype.reverse = function() {
@@ -944,12 +965,11 @@ String.prototype.rtrim = function() {
   return this.replace(/[\s]+$/g, '');
 };
 
-
 //
 // Trim leading and trailing whitepace from a string
 //
 Stdlib.trim = function(value) {
-   return value.replace(/^[\s]+|[\s]+$/g, '');
+  return value.replace(/^[\s]+|[\s]+$/g, '');
 };
 
 Array.contains = function(ar, el) {
@@ -983,16 +1003,14 @@ if (!Array.prototype.indexOf) {
 }
 if (!Array.prototype.lastIndexOf) {
   Array.prototype.indexOf = function(el) {
-    for (var i = this.length-1; i >= 0; i--) {
+    for (var i = this.length - 1; i >= 0; i--) {
       if (this[i] == el) {
         return i;
       }
     }
-  return -1;
+    return -1;
   };
 }
-
-
 
 // Array.prototype.iterate = function(ftn) {
 //   for (var i = 0; i < this.length; i++) {
@@ -1023,10 +1041,10 @@ function throwFileError(f, msg) {
     msg = '';
   }
   Error.runtimeError(Stdlib.IO_ERROR_CODE, Stdlib.fileError(f, msg));
-};
+}
 
 Stdlib.fileError = function(f, msg) {
-  return ("IOError: " + (msg || '') + " \"" + f + "\": " +  f.error + '.');
+  return 'IOError: ' + (msg || '') + ' "' + f + '": ' + f.error + '.';
 };
 
 //
@@ -1038,16 +1056,16 @@ Stdlib.fileError = function(f, msg) {
 Stdlib.convertFptr = function(fptr) {
   var f;
 
-  try { if (fptr instanceof XML) fptr = fptr.toString(); } catch (e) {}
+  try {
+    if (fptr instanceof XML) fptr = fptr.toString();
+  } catch (e) {}
 
   if (fptr.constructor == String) {
     f = File(fptr);
-
   } else if (fptr instanceof File || fptr instanceof Folder) {
     f = fptr;
-
   } else {
-    Error.runtimeError(19, "fptr");
+    Error.runtimeError(19, 'fptr');
   }
   return f;
 };
@@ -1064,7 +1082,7 @@ Stdlib.createFileSelect = function(str) {
   var exts = [];
   var rex = /\*\.(\*|[\w]+)(.*)/;
   var m;
-  while (m = rex.exec(str)) {
+  while ((m = rex.exec(str))) {
     exts.push(m[1].toLowerCase());
     str = m[2];
   }
@@ -1090,7 +1108,7 @@ Stdlib.createFileSelect = function(str) {
     if (f instanceof Folder) {
       return true;
     }
-    var fext = f.strf("%e").toLowerCase();
+    var fext = f.strf('%e').toLowerCase();
 
     for (var i = 0; i < _exts.length; i++) {
       var ext = _exts[i];
@@ -1098,7 +1116,7 @@ Stdlib.createFileSelect = function(str) {
         return true;
       }
       if (fext == ext) {
-        return true;        
+        return true;
       }
       // if (name.match(RegExp("\\." + ext + "$", "i")) != null) {
       //   return true;
@@ -1141,11 +1159,10 @@ Stdlib._selectFile = function(prompt, select, start, open) {
     start = Stdlib.convertFptr(start);
   }
 
-  var classFtn = (open ? File.openDialog : File.saveDialog);
+  var classFtn = open ? File.openDialog : File.saveDialog;
 
   if (!start) {
     file = classFtn(prompt, select);
-
   } else {
     if (select.constructor == String) {
       var m = select.match(/.*: (.*)/);
@@ -1153,7 +1170,7 @@ Stdlib._selectFile = function(prompt, select, start, open) {
         if (!m.contains(':') && !m.contains(',')) {
           select = m[1];
         } else {
-          select = "";
+          select = '';
         }
       }
     }
@@ -1184,7 +1201,7 @@ Stdlib._selectFile = function(prompt, select, start, open) {
 
       // This may no longer be required
       if (start instanceof Folder) {
-        start = new File(start + "/file");
+        start = new File(start + '/file');
       }
 
       // openDlg and saveDlg were broke in early CS6 revs
@@ -1194,18 +1211,16 @@ Stdlib._selectFile = function(prompt, select, start, open) {
     }
 
     if (start instanceof File) {
-      var instanceFtn = (open ? "openDlg" : "saveDlg");
+      var instanceFtn = open ? 'openDlg' : 'saveDlg';
 
       if (instanceFtn in start) {
         file = start[instanceFtn](prompt, select);
-
       } else {
         try {
           if (start.exists) {
             Folder.current = start.parent;
           }
-        } catch (e) {
-        }
+        } catch (e) {}
         file = classFtn(prompt, select);
       }
     } else {
@@ -1236,16 +1251,16 @@ Stdlib.selectFolder = function(prompt, start) {
 
   if (!start) {
     folder = Folder.selectDialog(prompt);
-
   } else {
     if (start instanceof File) {
       start = start.parent;
     }
 
-    if (start.selectDlg) {   // for CS2+
+    if (start.selectDlg) {
+      // for CS2+
       folder = start.selectDlg(prompt);
-
-    } else {               // for CS
+    } else {
+      // for CS
       var preset = Folder.current;
       if (start.exists) {
         preset = start;
@@ -1257,34 +1272,34 @@ Stdlib.selectFolder = function(prompt, start) {
 };
 
 Stdlib.ImageFileExtsComplete =
-  "8bps,3ds,ai3,ai4,ai5,ai6,ai7,ai8,ai,arw,bmp,cin,cr2,crw,dae,dc2,dc3,dcr," +
-  "dib,dic,dng,dpx,eps,epsf,epsp,erf,exr,fido,flm,gif,hdr,hrr," +
-  "icb,jpeg?,jpg,kdc,kmz,m4v,mef,mfw,mos,mov,mp4,mpeg,mrw,nef,obj,orf,pam," +
-  "pbm,pcd,pct,pcx,pdd,pdf,pdp,pef,pict?,png,pnm," +
-  "ps(d|b)?,pxr,raf,raw,rgbe,rle,sct,sdpx,sr2,srf,tga,tiff?,u3d,vda,vst," +
-  "wbmp?,x3f,xyze";
+  '8bps,3ds,ai3,ai4,ai5,ai6,ai7,ai8,ai,arw,bmp,cin,cr2,crw,dae,dc2,dc3,dcr,' +
+  'dib,dic,dng,dpx,eps,epsf,epsp,erf,exr,fido,flm,gif,hdr,hrr,' +
+  'icb,jpeg?,jpg,kdc,kmz,m4v,mef,mfw,mos,mov,mp4,mpeg,mrw,nef,obj,orf,pam,' +
+  'pbm,pcd,pct,pcx,pdd,pdf,pdp,pef,pict?,png,pnm,' +
+  'ps(d|b)?,pxr,raf,raw,rgbe,rle,sct,sdpx,sr2,srf,tga,tiff?,u3d,vda,vst,' +
+  'wbmp?,x3f,xyze';
 
-Stdlib.ImageFileExtsCompleteRE =
-  new RegExp("\\.(" +
-             Stdlib.ImageFileExtsComplete.replace(/,/g, '|') + ")$", 'i');
+Stdlib.ImageFileExtsCompleteRE = new RegExp(
+  '\\.(' + Stdlib.ImageFileExtsComplete.replace(/,/g, '|') + ')$',
+  'i'
+);
 
 Stdlib.ImageFileExtsCommon =
-  "psd,pdd,jpeg?,jpg,png,8bps,gif,bmp,rle,dib,tiff?,raw,dng,crw,cr2,nef,raf,orf";
+  'psd,pdd,jpeg?,jpg,png,8bps,gif,bmp,rle,dib,tiff?,raw,dng,crw,cr2,nef,raf,orf';
 
-Stdlib.ImageFileExtsCommonRE =
-  new RegExp("\\.(" +
-             Stdlib.ImageFileExtsCommon.replace(/,/g, '|')
-             + ")$", 'i');
+Stdlib.ImageFileExtsCommonRE = new RegExp(
+  '\\.(' + Stdlib.ImageFileExtsCommon.replace(/,/g, '|') + ')$',
+  'i'
+);
 
 // 3rf,ciff,cs1,k25
 Stdlib.RawImageFileExts =
-  "arw,cr2,crw,dcr,dng,erf,kdc,mos,mef,mrw,nef,orf,pef,raf,raw," +
-  "sr2,sraw,sraw1,srf,x3f";
+  'arw,cr2,crw,dcr,dng,erf,kdc,mos,mef,mrw,nef,orf,pef,raf,raw,' + 'sr2,sraw,sraw1,srf,x3f';
 
-Stdlib.RawImageFileExtsRE =
-  new RegExp("\\.(" +
-             Stdlib.RawImageFileExts.replace(/,/g, '|')
-             + ")$", 'i');
+Stdlib.RawImageFileExtsRE = new RegExp(
+  '\\.(' + Stdlib.RawImageFileExts.replace(/,/g, '|') + ')$',
+  'i'
+);
 
 Stdlib.isImageFile = function(fstr) {
   return fstr.toString().match(Stdlib.ImageFileExtsCommonRE) != null;
@@ -1296,23 +1311,21 @@ Stdlib.isRawImageFile = function(fstr) {
 // deprecated
 Stdlib.isPSFileType = Stdlib.isImageFile;
 
-
 Stdlib.isValidImageFile = function(f) {
   function _winCheck(f) {
     // skip mac system files
-    if (f.name.startsWith("._")) {
+    if (f.name.startsWith('._')) {
       return false;
     }
 
     var ext = f.strf('%e').toUpperCase();
-    return (ext.length > 0) && app.windowsFileTypes.contains(ext);
+    return ext.length > 0 && app.windowsFileTypes.contains(ext);
   }
   function _macCheck(f) {
     return app.macintoshFileTypes.contains(f.type) || _winCheck(f);
   }
 
-  return (((File.fs == "Macintosh") && _macCheck(f)) ||
-          ((File.fs == "Windows") && _winCheck(f)));
+  return (File.fs == 'Macintosh' && _macCheck(f)) || (File.fs == 'Windows' && _winCheck(f));
 };
 
 //
@@ -1359,13 +1372,17 @@ Stdlib.getFiles = function(folder, mask) {
 
   var getF;
   if (Folder.prototype._getFiles) {
-    getF = function(f, m) { return f._getFiles(m); };
+    getF = function(f, m) {
+      return f._getFiles(m);
+    };
   } else {
-    getF = function(f, m) { return f.getFiles(m); };
+    getF = function(f, m) {
+      return f.getFiles(m);
+    };
   }
 
   if (mask == undefined) {
-    mask = "";
+    mask = '';
   }
 
   if (mask instanceof RegExp) {
@@ -1376,7 +1393,7 @@ Stdlib.getFiles = function(folder, mask) {
         files.push(f);
       }
     }
-  } else if (typeof mask == "function") {
+  } else if (typeof mask == 'function') {
     var allFiles = getF(folder);
     for (var i = 0; i < allFiles.length; i = i + 1) {
       var f = allFiles[i];
@@ -1399,7 +1416,7 @@ Stdlib.getFiles = function(folder, mask) {
 //
 Stdlib.getFiles.install = function() {
   if (!Folder.prototype._getFiles) {
-     // save the original getFiles
+    // save the original getFiles
     Folder.prototype._getFiles = Folder.prototype.getFiles;
     // slide in an adaptor for our version
     Folder.prototype.getFiles = function(mask) {
@@ -1423,12 +1440,13 @@ Stdlib.getFolders = function(folder) {
   if (folder.alias) {
     folder = folder.resolve();
   }
-  var folders = Stdlib.getFiles(folder,
-                                function(f) { return f instanceof Folder; });
+  var folders = Stdlib.getFiles(folder, function(f) {
+    return f instanceof Folder;
+  });
   return folders;
 };
 
-Stdlib.getFiles.install();   // install our version of Folder.getFiles
+Stdlib.getFiles.install(); // install our version of Folder.getFiles
 
 Stdlib.findFiles = function(folder, mask) {
   if (folder.alias) {
@@ -1464,8 +1482,7 @@ Stdlib.getImageFiles = function(folder, recursive, complete) {
 
   if (recursive == undefined) recursive = false;
   if (complete == undefined) complete = false;
-  var mask = (complete ?
-              Stdlib.ImageFileExtsCompleteRE : Stdlib.ImageFileExtsCommonRE);
+  var mask = complete ? Stdlib.ImageFileExtsCompleteRE : Stdlib.ImageFileExtsCommonRE;
   if (recursive) {
     return Stdlib.findFiles(folder, mask);
   } else {
@@ -1481,9 +1498,7 @@ Stdlib.grep = function(folder, rex, frex, recursive) {
   if (frex == undefined) {
     frex = /.*/;
   }
-  var files = (!!recursive ?
-               Stdlib.findFiles(folder, frex) :
-               Stdlib.getFiles(folder, frex));
+  var files = !!recursive ? Stdlib.findFiles(folder, frex) : Stdlib.getFiles(folder, frex);
 
   var hits = [];
   for (var i = 0; i < files.length; i++) {
@@ -1507,28 +1522,31 @@ Stdlib.compareFiles = function(f1, f2) {
   if (!(f2 instanceof File)) f2 = new File(f2);
 
   if (!f1.exists || !f2.exists) {
-    return "File(s) do not exist.";
+    return 'File(s) do not exist.';
   }
   if (f1.length != f2.length) {
-    return "Files are different sizes.";
+    return 'Files are different sizes.';
   }
 
   try {
-    f1.open("r") || throwFileError(f1, "Unable to open input file ");
+    f1.open('r') || throwFileError(f1, 'Unable to open input file ');
     f1.encoding = 'BINARY';
-    f2.open("r") || throwFileError(f2, "Unable to open input file ");
+    f2.open('r') || throwFileError(f2, 'Unable to open input file ');
     f2.encoding = 'BINARY';
-
   } finally {
-    try { f1.close(); } catch (e) {}
-    try { f2.close(); } catch (e) {}
+    try {
+      f1.close();
+    } catch (e) {}
+    try {
+      f2.close();
+    } catch (e) {}
   }
 
-  while (!f1.eof && !f2.eof && (f1.read(1) == f2.read(1))) {
+  while (!f1.eof && !f2.eof && f1.read(1) == f2.read(1)) {
     // do nothing
   }
   if (!(f1.eof && f2.eof)) {
-    return "File contents do not match.";
+    return 'File contents do not match.';
   }
   return null;
 };
@@ -1541,10 +1559,12 @@ Stdlib.writeToFile = function(fptr, str, encoding, lineFeed) {
     xfile.encoding = encoding;
   }
 
-  rc = xfile.open("w");
+  rc = xfile.open('w');
   if (!rc) {
-    Error.runtimeError(Stdlib.IO_ERROR_CODE,
-                       Stdlib.fileError(xfile, "Unable to open output file "));
+    Error.runtimeError(
+      Stdlib.IO_ERROR_CODE,
+      Stdlib.fileError(xfile, 'Unable to open output file ')
+    );
   }
 
   if (lineFeed) {
@@ -1554,7 +1574,7 @@ Stdlib.writeToFile = function(fptr, str, encoding, lineFeed) {
   if (isPS7() && encoding == 'BINARY') {
     // This is a little stunt to write binary files on PS7
     // where they are not supported
-    
+
     xfile.lineFeed = 'unix';
 
     var pos = 0;
@@ -1596,10 +1616,9 @@ Stdlib.readFromFile = function(fptr, encoding, lineFeed) {
   var file = Stdlib.convertFptr(fptr);
   var rc;
 
-  rc = file.open("r");
+  rc = file.open('r');
   if (!rc) {
-    Error.runtimeError(Stdlib.IO_ERROR_CODE,
-                       Stdlib.fileError(file, "Unable to open input file "));
+    Error.runtimeError(Stdlib.IO_ERROR_CODE, Stdlib.fileError(file, 'Unable to open input file '));
   }
   if (encoding) {
     file.encoding = encoding;
@@ -1620,7 +1639,6 @@ Stdlib.readFromFile = function(fptr, encoding, lineFeed) {
     if (Stdlib.IOEXCEPTIONS_ENABLED) {
       Error.runtimeError(Stdlib.IO_ERROR_CODE, Stdlib.fileError(file));
     }
-
   }
 
   rc = file.close();
@@ -1631,12 +1649,13 @@ Stdlib.readFromFile = function(fptr, encoding, lineFeed) {
   return str;
 };
 
-Stdlib.INI_ENCODING = "LATIN1";
+Stdlib.INI_ENCODING = 'LATIN1';
 
 Stdlib.toIniString = function(obj) {
   var str = '';
   for (var idx in obj) {
-    if (idx.charAt(0) == '_') {         // private stuff
+    if (idx.charAt(0) == '_') {
+      // private stuff
       continue;
     }
     if (idx == 'typename') {
@@ -1648,11 +1667,13 @@ Stdlib.toIniString = function(obj) {
       val = '';
     }
 
-    if (val.constructor == String ||
-        val.constructor == Number ||
-        val.constructor == Boolean ||
-        typeof(val) == "object") {
-      str += (idx + ": " + val.toString() + "\n");
+    if (
+      val.constructor == String ||
+      val.constructor == Number ||
+      val.constructor == Boolean ||
+      typeof val == 'object'
+    ) {
+      str += idx + ': ' + val.toString() + '\n';
     }
   }
   return str;
@@ -1673,7 +1694,7 @@ Stdlib.fromIniString = function(str, obj) {
     var ar = rexp.exec(line);
     if (!ar) {
       // $.level = 1; debugger;
-      alert("Bad line in config file: \"" + line + "\"");
+      alert('Bad line in config file: "' + line + '"');
       return undefined;
     }
     obj[ar[1].trim()] = ar[2].trim();
@@ -1690,8 +1711,8 @@ Stdlib.readIniFile = function(fptr, obj) {
     return obj;
   }
 
-  if (fptr.open("r", "TEXT", "????")) {
-    fptr.lineFeed = "unix";
+  if (fptr.open('r', 'TEXT', '????')) {
+    fptr.lineFeed = 'unix';
     fptr.encoding = Stdlib.INI_ENCODING;
     var str = fptr.read();
     var rc = fptr.close();
@@ -1700,7 +1721,6 @@ Stdlib.readIniFile = function(fptr, obj) {
     }
 
     return Stdlib.fromIniString(str, obj);
-
   } else if (Stdlib.IOEXCEPTIONS_ENABLED) {
     Error.runtimeError(Stdlib.IO_ERROR_CODE, Stdlib.fileError(fptr));
   }
@@ -1721,18 +1741,18 @@ Stdlib.writeIniValue = function(fptr, nm, val) {
 
 Stdlib.writeIniFile = function(fptr, obj, header) {
   var rc;
-  var str = (header != undefined) ? header : '';
+  var str = header != undefined ? header : '';
 
   str += Stdlib.toIniString(obj);
 
   var file = Stdlib.convertFptr(fptr);
   file.encoding = Stdlib.INI_ENCODING;
-  rc = file.open("w", "TEXT", "????");
+  rc = file.open('w', 'TEXT', '????');
   if (!rc && Stdlib.IOEXCEPTIONS_ENABLED) {
     Error.runtimeError(Stdlib.IO_ERROR_CODE, Stdlib.fileError(file));
   }
 
-  file.lineFeed = "unix";
+  file.lineFeed = 'unix';
 
   rc = file.write(str);
   if (!rc && Stdlib.IOEXCEPTIONS_ENABLED) {
@@ -1756,33 +1776,36 @@ Stdlib.updateIniFile = function(fptr, ini) {
   var str = '';
 
   if (update) {
-    file.open("r", "TEXT", "????");
+    file.open('r', 'TEXT', '????');
     fptr.encoding = Stdlib.INI_ENCODING;
-    file.lineFeed = "unix";
+    file.lineFeed = 'unix';
     str = file.read();
     file.close();
 
     for (var idx in ini) {
-      if (idx.charAt(0) == '_') {         // private stuff
+      if (idx.charAt(0) == '_') {
+        // private stuff
         continue;
       }
-      if (idx == "noUI") {
+      if (idx == 'noUI') {
         continue;
       }
-      if (idx == "typename") {
+      if (idx == 'typename') {
         continue;
       }
 
       var val = ini[idx];
 
-      if (typeof(val) == "undefined") {
+      if (typeof val == 'undefined') {
         val = '';
       }
 
-      if (typeof val == "string" ||
-          typeof val == "number" ||
-          typeof val == "boolean" ||
-          typeof val == "object") {
+      if (
+        typeof val == 'string' ||
+        typeof val == 'number' ||
+        typeof val == 'boolean' ||
+        typeof val == 'object'
+      ) {
         idx += ':';
         var re = RegExp('^' + idx, 'm');
 
@@ -1797,30 +1820,33 @@ Stdlib.updateIniFile = function(fptr, ini) {
   } else {
     // write out a new ini file
     for (var idx in ini) {
-      if (idx.charAt(0) == '_') {         // private stuff
+      if (idx.charAt(0) == '_') {
+        // private stuff
         continue;
       }
-      if (idx == "noUI") {
+      if (idx == 'noUI') {
         continue;
       }
-      if (idx == "typename") {
+      if (idx == 'typename') {
         continue;
       }
       var val = ini[idx];
 
-      if (typeof val == "string" ||
-          typeof val == "number" ||
-          typeof val == "boolean" ||
-          typeof val == "object") {
-        str += (idx + ": " + val.toString() + "\n");
+      if (
+        typeof val == 'string' ||
+        typeof val == 'number' ||
+        typeof val == 'boolean' ||
+        typeof val == 'object'
+      ) {
+        str += idx + ': ' + val.toString() + '\n';
       }
     }
   }
 
   if (str) {
-    file.open("w", "TEXT", "????");
+    file.open('w', 'TEXT', '????');
     fptr.encoding = Stdlib.INI_ENCODING;
-    file.lineFeed = "unix";
+    file.lineFeed = 'unix';
     file.write(str);
     file.close();
   }
@@ -1832,7 +1858,7 @@ Stdlib.xmlFromIni = function(ini, arg) {
   var xml;
 
   if (ini == undefined) {
-    Error.runtimeError(2, "ini"); // isUndefined
+    Error.runtimeError(2, 'ini'); // isUndefined
   }
 
   if (arg) {
@@ -1848,21 +1874,24 @@ Stdlib.xmlFromIni = function(ini, arg) {
   }
 
   for (var idx in ini) {
-    if (idx.charAt(0) == '_') {         // private stuff
+    if (idx.charAt(0) == '_') {
+      // private stuff
       continue;
     }
-    if (idx == "noUI") {
+    if (idx == 'noUI') {
       continue;
     }
-    if (idx == "typename") {
+    if (idx == 'typename') {
       continue;
     }
     var val = ini[idx];
 
-    if (typeof val == "string" ||
-        typeof val == "number" ||
-        typeof val == "boolean" ||
-        typeof val == "object") {
+    if (
+      typeof val == 'string' ||
+      typeof val == 'number' ||
+      typeof val == 'boolean' ||
+      typeof val == 'object'
+    ) {
       xml[idx] = val;
     }
   }
@@ -1872,7 +1901,7 @@ Stdlib.xmlFromIni = function(ini, arg) {
 
 Stdlib.iniFromXML = function(xml, ini) {
   if (!xml) {
-    Error.runtimeError(2, "xml");
+    Error.runtimeError(2, 'xml');
   }
   if (!ini) {
     ini = {};
@@ -1895,10 +1924,10 @@ Stdlib.readXMLFile = function(fptr) {
     Error.runtimeError(48); // File/Folder does not exist
   }
 
-  file.encoding = "UTF8";
-  file.lineFeed = "unix";
+  file.encoding = 'UTF8';
+  file.lineFeed = 'unix';
 
-  rc = file.open("r", "TEXT", "????");
+  rc = file.open('r', 'TEXT', '????');
   if (!rc && Stdlib.IOEXCEPTIONS_ENABLED) {
     Error.runtimeError(Stdlib.IO_ERROR_CODE, Stdlib.fileError(file));
   }
@@ -1929,13 +1958,13 @@ Stdlib.readXMLFile = function(fptr) {
 Stdlib.writeXMLFile = function(fptr, xml) {
   var rc;
   if (!(xml instanceof XML)) {
-    Error.runtimeError(19, "xml"); // "Bad XML parameter";
+    Error.runtimeError(19, 'xml'); // "Bad XML parameter";
   }
 
   var file = Stdlib.convertFptr(fptr);
-  file.encoding = "UTF8";
+  file.encoding = 'UTF8';
 
-  rc = file.open("w", "TEXT", "????");
+  rc = file.open('w', 'TEXT', '????');
   if (!rc && Stdlib.IOEXCEPTIONS_ENABLED) {
     Error.runtimeError(Stdlib.IO_ERROR_CODE, Stdlib.fileError(file));
   }
@@ -1943,7 +1972,7 @@ Stdlib.writeXMLFile = function(fptr, xml) {
   // unicode signature, this is UTF16 but will convert to UTF8 "EF BB BF"
   // optional
   //file.write("\uFEFF");
-  file.lineFeed = "unix";
+  file.lineFeed = 'unix';
 
   file.writeln('<?xml version="1.0" encoding="utf-8"?>');
 
@@ -2062,7 +2091,6 @@ Stdlib.fromCharSVString = function(str, ch, ar, hasHeaders) {
         }
       }
       ar.push(obj);
-
     } else {
       ar.push(row);
     }
@@ -2082,35 +2110,35 @@ Stdlib.readCharSVFile = function(fptr, ch, ar, hasHeaders) {
 };
 
 Stdlib.writeCSVFile = function(fptr, content, headers) {
-
   function arrayAsCSV(ar) {
     var str = '';
     var numRe = /^(\+|\-)?(\d+|\.\d+|\d+\.\d+)$/;
 
     for (var i = 0; i < ar.length; i++) {
       var v = ar[i].toString();
-      
+
       if (v == '-' || v == '+' || !v.match(numRE)) {
-        v = '\"' + v.replace(/"/g, '\"\"') + '\"';
+        v = '"' + v.replace(/"/g, '""') + '"';
         //");// needed for emacs syntax hilighting
       }
       str += v;
-      if (i+1 != ar.length) {
+      if (i + 1 != ar.length) {
         str += ',';
       }
     }
-    
+
     return str;
-  };
+  }
 
   fptr = Stdlib.convertFptr(fptr);
-  
+
   fptr.lineFeed = 'unix';
 
-  if (!fptr.open("w", "TEXT", "????")) {
-    Error.runtimeError(Stdlib.IO_ERROR_CODE,
-                       "IOError: unable to open file \"" + fptr + "\": " +
-                       fptr.error + '.');
+  if (!fptr.open('w', 'TEXT', '????')) {
+    Error.runtimeError(
+      Stdlib.IO_ERROR_CODE,
+      'IOError: unable to open file "' + fptr + '": ' + fptr.error + '.'
+    );
   }
 
   if (headers) {
@@ -2140,13 +2168,12 @@ Stdlib.writeCSVFile = function(fptr, content, headers) {
   fptr.close();
 };
 
-
 //
 // The interactive parameter is not fully implemented
 //
 Stdlib.createFolder = function(fptr, interactive) {
   if (!fptr) {
-    Error.runtimeError(19, "fptr");  // Bad Argument
+    Error.runtimeError(19, 'fptr'); // Bad Argument
   }
 
   if (fptr.constructor == String) {
@@ -2155,8 +2182,8 @@ Stdlib.createFolder = function(fptr, interactive) {
 
   // XXX this needs testing
   if ((!fptr.exists || (fptr.parent && !fptr.parent.exists)) && interactive) {
-    var f = (fptr instanceof File) ? fptr.parent : fptr;
-    if (!confirm(f.toUIString() + " does not exist. Create?")) {
+    var f = fptr instanceof File ? fptr.parent : fptr;
+    if (!confirm(f.toUIString() + ' does not exist. Create?')) {
       return false;
     }
   }
@@ -2191,45 +2218,46 @@ Stdlib.log = function(msg) {
     return;
   }
 
-//   if (Stdlib.log.filename.endsWith(".ini")) {
-//     debugger;
-//     throw "Bad log file name";
-//   }
+  //   if (Stdlib.log.filename.endsWith(".ini")) {
+  //     debugger;
+  //     throw "Bad log file name";
+  //   }
 
   if (!Stdlib.log.fptr) {
     file = new File(Stdlib.log.filename);
     if (Stdlib.log.append && file.exists) {
-      if (!file.open("e", "TEXT", "????"))  {
-        Error.runtimeError(Stdlib.IO_ERROR_CODE,
-                           "Unable to open log file(1) " +
-                           file + ": " + file.error);
+      if (!file.open('e', 'TEXT', '????')) {
+        Error.runtimeError(
+          Stdlib.IO_ERROR_CODE,
+          'Unable to open log file(1) ' + file + ': ' + file.error
+        );
       }
       file.seek(0, 2); // jump to the end of the file
-
     } else {
-      if (!file.open("w", "TEXT", "????")) {
-        if (!file.open("e", "TEXT", "????")) {
-          Error.runtimeError(Stdlib.IO_ERROR_CODE,
-                             "Unable to open log file(2) " +
-                             file + ": " +  file.error);
+      if (!file.open('w', 'TEXT', '????')) {
+        if (!file.open('e', 'TEXT', '????')) {
+          Error.runtimeError(
+            Stdlib.IO_ERROR_CODE,
+            'Unable to open log file(2) ' + file + ': ' + file.error
+          );
         }
         file.seek(0, 0); // jump to the beginning of the file
       }
     }
     Stdlib.log.fptr = file;
-
   } else {
     file = Stdlib.log.fptr;
-    if (!file.open("e", "TEXT", "????"))  {
-      Error.runtimeError(Stdlib.IO_ERROR_CODE,
-                         "Unable to open log file(3) " +
-                         file + ": " + file.error);
+    if (!file.open('e', 'TEXT', '????')) {
+      Error.runtimeError(
+        Stdlib.IO_ERROR_CODE,
+        'Unable to open log file(3) ' + file + ': ' + file.error
+      );
     }
     file.seek(0, 2); // jump to the end of the file
   }
 
   if (isMac()) {
-    file.lineFeed = "Unix";
+    file.lineFeed = 'Unix';
   }
 
   if (Stdlib.log.encoding) {
@@ -2240,22 +2268,23 @@ Stdlib.log = function(msg) {
     msg = msg.toString();
   }
 
-  if (!file.writeln(new Date().toISODateString() + " - " + msg)) {
-    Error.runtimeError(Stdlib.IO_ERROR_CODE,
-                       "Unable to write to log file(4) " +
-                       file + ": " + file.error);
+  if (!file.writeln(new Date().toISODateString() + ' - ' + msg)) {
+    Error.runtimeError(
+      Stdlib.IO_ERROR_CODE,
+      'Unable to write to log file(4) ' + file + ': ' + file.error
+    );
   }
 
   file.close();
 };
-Stdlib.log.filename = Stdlib.PREFERENCES_FOLDER + "/stdout.log";
+Stdlib.log.filename = Stdlib.PREFERENCES_FOLDER + '/stdout.log';
 Stdlib.log.enabled = false;
-Stdlib.log.encoding = "UTF8";
+Stdlib.log.encoding = 'UTF8';
 Stdlib.log.append = false;
 Stdlib.log.setFile = function(filename, encoding) {
   Stdlib.log.filename = filename;
   Stdlib.log.enabled = filename != undefined;
-  Stdlib.log.encoding = encoding || "UTF8";
+  Stdlib.log.encoding = encoding || 'UTF8';
   Stdlib.log.fptr = undefined;
 };
 Stdlib.log.setFilename = Stdlib.log.setFile;
@@ -2266,15 +2295,15 @@ Stdlib.log.setFilename = Stdlib.log.setFile;
 Stdlib._maxMsgLen = 5000;
 Stdlib.exceptionMessage = function(e) {
   var str = '';
-  var fname = (!e.fileName ? '???' : decodeURI(e.fileName));
-  str += "   Message: " + e.message + '\n';
-  str += "   File: " + fname + '\n';
-  str += "   Line: " + (e.line || '???') + '\n';
-  str += "   Error Name: " + e.name + '\n';
-  str += "   Error Number: " + e.number + '\n';
+  var fname = !e.fileName ? '???' : decodeURI(e.fileName);
+  str += '   Message: ' + e.message + '\n';
+  str += '   File: ' + fname + '\n';
+  str += '   Line: ' + (e.line || '???') + '\n';
+  str += '   Error Name: ' + e.name + '\n';
+  str += '   Error Number: ' + e.number + '\n';
 
   if (e.source) {
-    var srcArray = e.source.split("\n");
+    var srcArray = e.source.split('\n');
     var a = e.line - 10;
     var b = e.line + 10;
     var c = e.line - 1;
@@ -2284,11 +2313,11 @@ Stdlib.exceptionMessage = function(e) {
     if (b > srcArray.length) {
       b = srcArray.length;
     }
-    for ( var i = a; i < b; i++ ) {
-      if ( i == c ) {
-        str += "   Line: (" + (i + 1) + ") >> " + srcArray[i] + '\n';
+    for (var i = a; i < b; i++) {
+      if (i == c) {
+        str += '   Line: (' + (i + 1) + ') >> ' + srcArray[i] + '\n';
       } else {
-        str += "   Line: (" + (i + 1) + ")    " + srcArray[i] + '\n';
+        str += '   Line: (' + (i + 1) + ')    ' + srcArray[i] + '\n';
       }
     }
   }
@@ -2297,15 +2326,14 @@ Stdlib.exceptionMessage = function(e) {
     if ($.stack) {
       str += '\n' + $.stack + '\n';
     }
-  } catch (e) {
-  }
+  } catch (e) {}
 
   if (str.length > Stdlib._maxMsgLen) {
     str = str.substring(0, Stdlib._maxMsgLen) + '...';
   }
 
   if (Stdlib.log.fptr) {
-    str += "\nLog File:" + Stdlib.log.fptr.toUIString();
+    str += '\nLog File:' + Stdlib.log.fptr.toUIString();
   }
 
   return str;
@@ -2329,21 +2357,22 @@ Stdlib.logException = function(e, msg, doAlert) {
 
   doAlert = !!doAlert;
 
-  var str = ((msg || '') + "\n" +
-             "==============Exception==============\n" +
-             Stdlib.exceptionMessage(e) +
-             "\n==============End Exception==============\n");
+  var str =
+    (msg || '') +
+    '\n' +
+    '==============Exception==============\n' +
+    Stdlib.exceptionMessage(e) +
+    '\n==============End Exception==============\n';
 
   Stdlib.log(str);
 
   if (doAlert) {
-    str += ("\r\rMore information can be found in the file:\r" +
-            "    " + Stdlib.log.fptr.toUIString());
+    str +=
+      '\r\rMore information can be found in the file:\r' + '    ' + Stdlib.log.fptr.toUIString();
 
     alert(str);
   }
 };
-
 
 //
 //========================= Photoshop - General ==============================
@@ -2361,15 +2390,19 @@ Stdlib.logException = function(e, msg, doAlert) {
 Stdlib.getByName = function(container, name, all) {
   // check for a bad index
   if (!name) {
-    Error.runtimeError(2, "name"); // "'undefined' is an invalid name/index");
+    Error.runtimeError(2, 'name'); // "'undefined' is an invalid name/index");
   }
 
   var matchFtn;
 
   if (name instanceof RegExp) {
-    matchFtn = function(s1, re) { return s1.match(re) != null; };
+    matchFtn = function(s1, re) {
+      return s1.match(re) != null;
+    };
   } else {
-    matchFtn = function(s1, s2) { return s1 == s2;  };
+    matchFtn = function(s1, s2) {
+      return s1 == s2;
+    };
   }
 
   var obj = [];
@@ -2377,9 +2410,9 @@ Stdlib.getByName = function(container, name, all) {
   for (var i = 0; i < container.length; i++) {
     if (matchFtn(container[i].name, name)) {
       if (!all) {
-        return container[i];     // there can be only one!
+        return container[i]; // there can be only one!
       }
-      obj.push(container[i]);    // add it to the list
+      obj.push(container[i]); // add it to the list
     }
   }
 
@@ -2396,19 +2429,23 @@ Stdlib.getAllByName = function(container, name) {
 Stdlib.getByProperty = function(container, prop, value, all) {
   // check for a bad index
   if (prop == undefined) {
-    Error.runtimeError(2, "prop");
+    Error.runtimeError(2, 'prop');
   }
   if (value == undefined) {
-    Error.runtimeError(2, "value");
+    Error.runtimeError(2, 'value');
   }
   var matchFtn;
 
   all = !!all;
 
   if (value instanceof RegExp) {
-    matchFtn = function(s1, re) { return s1.match(re) != null; };
+    matchFtn = function(s1, re) {
+      return s1.match(re) != null;
+    };
   } else {
-    matchFtn = function(s1, s2) { return s1 == s2; };
+    matchFtn = function(s1, s2) {
+      return s1 == s2;
+    };
   }
 
   var obj = [];
@@ -2416,9 +2453,9 @@ Stdlib.getByProperty = function(container, prop, value, all) {
   for (var i = 0; i < container.length; i++) {
     if (matchFtn(container[i][prop], value)) {
       if (!all) {
-        return container[i];     // there can be only one!
+        return container[i]; // there can be only one!
       }
-      obj.push(container[i]);    // add it to the list
+      obj.push(container[i]); // add it to the list
     }
   }
 
@@ -2436,11 +2473,11 @@ Stdlib.getByProperty = function(container, prop, value, all) {
 Stdlib.getByFunction = function(container, matchFtn, all) {
   // check for a match function
   if (!matchFtn) {
-    Error.runtimeError(2, "matchFtn"); //"'undefined' is an invalid function"
+    Error.runtimeError(2, 'matchFtn'); //"'undefined' is an invalid function"
   }
 
-  if (typeof matchFtn != "function") {
-    Error(19, "matchFtn"); // Bad arg "A match function must be specified"
+  if (typeof matchFtn != 'function') {
+    Error(19, 'matchFtn'); // Bad arg "A match function must be specified"
   }
 
   var obj = [];
@@ -2448,9 +2485,9 @@ Stdlib.getByFunction = function(container, matchFtn, all) {
   for (var i = 0; i < container.length; i++) {
     if (matchFtn(container[i])) {
       if (!all) {
-        return container[i];     // there can be only one!
+        return container[i]; // there can be only one!
       }
-      obj.push(container[i]);    // add it to the list
+      obj.push(container[i]); // add it to the list
     }
   }
 
@@ -2460,10 +2497,10 @@ Stdlib.getByFunction = function(container, matchFtn, all) {
 Stdlib.setPropertyValues = function(container, prop, value) {
   // check for a bad index
   if (prop == undefined) {
-    Error.runtimeError(2, "prop");
+    Error.runtimeError(2, 'prop');
   }
   if (value == undefined) {
-    Error.runtimeError(2, "value");
+    Error.runtimeError(2, 'value');
   }
   var matchFtn;
 
@@ -2475,7 +2512,6 @@ Stdlib.setPropertyValues = function(container, prop, value) {
 
   return;
 };
-
 
 Stdlib.sortByName = function(ary) {
   function nameCmp(a, b) {
@@ -2490,7 +2526,6 @@ Stdlib.sortByName = function(ary) {
   return ary.sort(nameCmp);
 };
 
-
 // makeActive
 // Make the object (regardless of class) the 'active' one. Currently, this
 // works for documents and layers. The one that was active before this call
@@ -2503,30 +2538,30 @@ Stdlib.makeActive = function(obj) {
     return undefined;
   }
 
-  if (obj.typename == "Document") {
+  if (obj.typename == 'Document') {
     prev = app.activeDocument;
     if (obj != prev) {
       app.activeDocument = obj;
     }
   } else if (obj.typename.match(/Layer/)) {
     var doc = obj.parent;
-    while (!(doc.typename == "Document") && doc) {
+    while (!(doc.typename == 'Document') && doc) {
       doc = doc.parent;
     }
     if (!doc) {
-      Error.runtimeError(19, "obj"); // "Bad Layer object specified"
+      Error.runtimeError(19, 'obj'); // "Bad Layer object specified"
     }
 
     prev = doc.activeLayer;
-    if (obj != prev) { 
+    if (obj != prev) {
       var d = app.activeDocument;
       app.activeDocument = doc;
 
       try {
         doc.activeLayer = obj;
-
       } catch (e) {
-        $.level = 1; debugger;
+        $.level = 1;
+        debugger;
       }
       app.activeDocument = d;
     }
@@ -2565,7 +2600,6 @@ Stdlib.wrapLC = function(doc, ftn) {
   var res = undefined;
   try {
     res = ftn(doc);
-
   } finally {
     if (Stdlib._restoreDoc) {
       if (ad && app.activeDocument != ad) {
@@ -2595,7 +2629,6 @@ Stdlib.wrapLCLayer = function(doc, layer, ftn) {
 
   if (layer && doc.activeLayer != layer) {
     doc.activeLayer = layer;
-
   } else {
     layer = doc.activeLayer;
   }
@@ -2604,7 +2637,6 @@ Stdlib.wrapLCLayer = function(doc, layer, ftn) {
 
   try {
     res = ftn(doc, layer);
-
   } finally {
     if (Stdlib._restoreLayer) {
       if (doc.activeLayer != al) {
@@ -2614,7 +2646,7 @@ Stdlib.wrapLCLayer = function(doc, layer, ftn) {
           // XXX-CC2015 Mondo bug work-around from Rune L-H
           if (app.displayDialogs == DialogModes.NO) {
             var mode = app.displayDialogs;
-            app.displayDialogs = DialogModes.NO
+            app.displayDialogs = DialogModes.NO;
             doc.activeLayer = al;
             app.displayDialogs = mode;
           }
@@ -2657,7 +2689,7 @@ Stdlib.doEvent = function(doc, eid, interactive, noDesc) {
   if (eid.constructor != Number) {
     if (eid.length < 4) {
       // "Event id must be at least 4 characters long"
-      Error.runtimeError(19, "eventID");
+      Error.runtimeError(19, 'eventID');
     }
 
     if (eid.length == 4) {
@@ -2666,15 +2698,15 @@ Stdlib.doEvent = function(doc, eid, interactive, noDesc) {
       id = sTID(eid);
     }
   } else {
-    id  = eid;
+    id = eid;
   }
 
-  interactive = (interactive == true);
-  noDesc = (noDesc == true);
+  interactive = interactive == true;
+  noDesc = noDesc == true;
 
   function _ftn() {
-    var dmode = (interactive ? DialogModes.ALL : DialogModes.NO);
-    var desc = (noDesc ? undefined : new ActionDescriptor());
+    var dmode = interactive ? DialogModes.ALL : DialogModes.NO;
+    var desc = noDesc ? undefined : new ActionDescriptor();
     return app.executeAction(id, desc, dmode);
   }
 
@@ -2696,19 +2728,20 @@ Stdlib.doMenuItem = function(item, interactive) {
     item = xTID(item);
   }
 
-//  ref.putEnumerated(PSClass.MenuItem, PSType.MenuItem, item);
-  ref.putEnumerated(cTID("Mn  "), cTID("MnIt"), item);
-  desc.putReference(cTID("null"), ref);
+  //  ref.putEnumerated(PSClass.MenuItem, PSType.MenuItem, item);
+  ref.putEnumerated(cTID('Mn  '), cTID('MnIt'), item);
+  desc.putReference(cTID('null'), ref);
 
   var lvl = $.level;
   $.level = 0;
   try {
-    var mode = (interactive != true ? DialogModes.NO : DialogModes.ALL);
-//     executeAction(PSString.select, desc, mode);
-    executeAction(sTID("select"), desc, mode);
+    var mode = interactive != true ? DialogModes.NO : DialogModes.ALL;
+    //     executeAction(PSString.select, desc, mode);
+    executeAction(sTID('select'), desc, mode);
   } catch (e) {
     $.level = lvl;
-    if (e.number != 8007) { // if not "User cancelled"
+    if (e.number != 8007) {
+      // if not "User cancelled"
       throw e;
     } else {
       return false;
@@ -2739,7 +2772,6 @@ Stdlib.print = function(doc) {
     }
 
     Stdlib.wrapLC(doc, _ftn);
-
   } else {
     function _ftn() {
       Stdlib._print();
@@ -2751,9 +2783,8 @@ Stdlib.print = function(doc) {
 
 Stdlib.copyTextToClipboard = function(text) {
   var desc = new ActionDescriptor();
-  desc.putString(sTID("textToClipboard"), text);
+  desc.putString(sTID('textToClipboard'), text);
 };
-
 
 //
 // Select a tool from the tool palette
@@ -2819,7 +2850,6 @@ Stdlib.copyTextToClipboard = function(text) {
 //   PSClass.SaturationTool aka SpongeTool
 //
 Stdlib.selectTool = function(tool) {
-
   if (!Stdlib.selectTool.map) {
     var map = {};
     map[ToolType.ARTHISTORYBRUSH] = cTID('ABTl'); // ArtHistoryBrushTool;
@@ -2850,7 +2880,7 @@ Stdlib.selectTool = function(tool) {
       var ttype = {};
       ttype._name = tool.substring(9);
       ttype.toString = function() {
-        return "ToolType." + this._name.toUpperCase();
+        return 'ToolType.' + this._name.toUpperCase();
       };
       ToolType[ttype._name] = ttype;
 
@@ -2858,13 +2888,10 @@ Stdlib.selectTool = function(tool) {
       tid = Stdlib.selectTool.map[tool];
     }
     toolID = tid;
-
   } else if (isNumber(tool)) {
     toolID = tool;
-
   } else if (tool.constructor == String) {
     toolID = xTID(tool);
-
   } else {
     Error.runtimeError(9001, 'Bad ToolType specified');
   }
@@ -2878,7 +2905,7 @@ Stdlib.selectTool = function(tool) {
 
 Stdlib.getCurrentTool = function() {
   var ref = new ActionReference();
-  ref.putEnumerated(cTID("capp"), cTID("Ordn"), cTID("Trgt") );
+  ref.putEnumerated(cTID('capp'), cTID('Ordn'), cTID('Trgt'));
   var desc = executeActionGet(ref);
   var tid = desc.getEnumerationType(sTID('tool'));
   return typeIDToStringID(tid);
@@ -2886,7 +2913,7 @@ Stdlib.getCurrentTool = function() {
 
 Stdlib.getCurrentToolOptions = function() {
   var ref = new ActionReference();
-  ref.putEnumerated(cTID("capp"), cTID("Ordn"), cTID("Trgt") );
+  ref.putEnumerated(cTID('capp'), cTID('Ordn'), cTID('Trgt'));
   var desc = executeActionGet(ref);
   return desc.hasKey(cTID('CrnT')) ? desc.getObjectValue(cTID('CrnT')) : undefined;
 };
@@ -2898,35 +2925,35 @@ Stdlib.getCurrentToolOptions = function() {
 // };
 
 Stdlib.zoomIn = function() {
-  Stdlib.doMenuItem("ZmIn");
+  Stdlib.doMenuItem('ZmIn');
 };
 Stdlib.zoomOut = function() {
-  Stdlib.doMenuItem("ZmOt");
+  Stdlib.doMenuItem('ZmOt');
 };
 Stdlib.zoomActualPixels = function() {
-  Stdlib.doMenuItem("ActP");
+  Stdlib.doMenuItem('ActP');
 };
 Stdlib.zoomFitOnScreen = function() {
-  Stdlib.doMenuItem("FtOn");
+  Stdlib.doMenuItem('FtOn');
 };
 Stdlib.zoomPrintSize = function() {
-  Stdlib.doMenuItem("PrnS");
+  Stdlib.doMenuItem('PrnS');
 };
 
 // From Mike Hale
-Stdlib.setZoom = function(doc, zoom ) {
+Stdlib.setZoom = function(doc, zoom) {
   var docRes = doc.resolution;
-  doc.resizeImage( undefined, undefined, 72/(zoom/100), ResampleMethod.NONE );
+  doc.resizeImage(undefined, undefined, 72 / (zoom / 100), ResampleMethod.NONE);
 
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID( "Mn  " ), cTID( "MnIt" ), cTID( 'PrnS' ) );
-    desc.putReference( cTID( "null" ), ref );
-    executeAction( cTID( "slct" ), desc, DialogModes.NO );
+    ref.putEnumerated(cTID('Mn  '), cTID('MnIt'), cTID('PrnS'));
+    desc.putReference(cTID('null'), ref);
+    executeAction(cTID('slct'), desc, DialogModes.NO);
   }
 
-  doc.resizeImage( undefined, undefined, docRes, ResampleMethod.NONE );
+  doc.resizeImage(undefined, undefined, docRes, ResampleMethod.NONE);
 
   return Stdlib.wrapLC(doc, _ftn);
 };
@@ -2934,12 +2961,10 @@ Stdlib.setZoom = function(doc, zoom ) {
 Stdlib.resetSwatches = function() {
   var desc26 = new ActionDescriptor();
   var ref16 = new ActionReference();
-  ref16.putProperty( cTID('Clr '), cTID('Clrs') );
-  desc26.putReference( cTID('null'), ref16 );
-  executeAction( cTID('Rset'), desc26, DialogModes.NO );
+  ref16.putProperty(cTID('Clr '), cTID('Clrs'));
+  desc26.putReference(cTID('null'), ref16);
+  executeAction(cTID('Rset'), desc26, DialogModes.NO);
 };
-
-
 
 //
 //================================== Document =================================
@@ -2948,26 +2973,24 @@ Stdlib.resetSwatches = function() {
 //
 // Create a new document with the name, mode, etc..., specified
 //
-Stdlib.newDocument = function(name, mode, width, height, resolution,
-                              depth, colorProfile) {
-
-// Stdlib.newDocument("bbb.psd", "RGBM", 250, 500, 72, 16)
+Stdlib.newDocument = function(name, mode, width, height, resolution, depth, colorProfile) {
+  // Stdlib.newDocument("bbb.psd", "RGBM", 250, 500, 72, 16)
 
   function _ftn(name, mode, width, height, resolution, depth) {
     var desc = new ActionDescriptor();
-    desc.putString(cTID("Nm  "), name);
-    desc.putClass(cTID("Md  "), cTID(mode));
-    desc.putUnitDouble(cTID("Wdth"), cTID("#Rlt"), width);
-    desc.putUnitDouble(cTID("Hght"), cTID("#Rlt"), height);
-    desc.putUnitDouble(cTID("Rslt"), cTID("#Rsl"), resolution);
-    desc.putDouble(sTID("pixelScaleFactor"), 1.000000 );
-    desc.putEnumerated(cTID("Fl  "), cTID("Fl  "), cTID("Wht "));
-    desc.putInteger(cTID("Dpth"), depth );
-    desc.putString(sTID("profile"), colorProfile);
+    desc.putString(cTID('Nm  '), name);
+    desc.putClass(cTID('Md  '), cTID(mode));
+    desc.putUnitDouble(cTID('Wdth'), cTID('#Rlt'), width);
+    desc.putUnitDouble(cTID('Hght'), cTID('#Rlt'), height);
+    desc.putUnitDouble(cTID('Rslt'), cTID('#Rsl'), resolution);
+    desc.putDouble(sTID('pixelScaleFactor'), 1.0);
+    desc.putEnumerated(cTID('Fl  '), cTID('Fl  '), cTID('Wht '));
+    desc.putInteger(cTID('Dpth'), depth);
+    desc.putString(sTID('profile'), colorProfile);
 
     var mkdesc = new ActionDescriptor();
-    mkdesc.putObject(cTID("Nw  "), cTID("Dcmn"), desc);
-    executeAction(cTID("Mk  "), mkdesc, DialogModes.NO );
+    mkdesc.putObject(cTID('Nw  '), cTID('Dcmn'), desc);
+    executeAction(cTID('Mk  '), mkdesc, DialogModes.NO);
   }
 
   if (!colorProfile) {
@@ -2983,32 +3006,36 @@ Stdlib.newDocumentFromClipboard = function(name) {
     var desc2 = new ActionDescriptor();
     var desc3 = new ActionDescriptor();
     if (name) {
-      desc3.putString( cTID('Nm  '), name);
+      desc3.putString(cTID('Nm  '), name);
     }
-    desc3.putString( sTID('preset'), "Clipboard" );
-    desc2.putObject( cTID('Nw  '), cTID('Dcmn'), desc3 );
-    executeAction( cTID('Mk  '), desc2, DialogModes.NO );
-  };
+    desc3.putString(sTID('preset'), 'Clipboard');
+    desc2.putObject(cTID('Nw  '), cTID('Dcmn'), desc3);
+    executeAction(cTID('Mk  '), desc2, DialogModes.NO);
+  }
 
   function _paste() {
-    var desc = new ActionDescriptor();   // AntiAlias
-    desc.putEnumerated(cTID("AntA"), cTID("Annt"), cTID("Anno"));
-    executeAction(cTID("past"), desc, DialogModes.NO);
+    var desc = new ActionDescriptor(); // AntiAlias
+    desc.putEnumerated(cTID('AntA'), cTID('Annt'), cTID('Anno'));
+    executeAction(cTID('past'), desc, DialogModes.NO);
   }
 
   var doc;
   if (isCS2() || isCS3()) {
     if (!name) {
-      name = "Untitled";
+      name = 'Untitled';
     }
-    doc = app.documents.add(UnitValue(100, "px"), UnitValue(100, "px"),
-                            72, name, NewDocumentMode.RGB);
+    doc = app.documents.add(
+      UnitValue(100, 'px'),
+      UnitValue(100, 'px'),
+      72,
+      name,
+      NewDocumentMode.RGB
+    );
     _paste();
     var layer = doc.activeLayer;
     var bnds = Stdlib.getLayerBounds(doc, layer);
-    doc.resizeCanvas(UnitValue(bnds[2], "px"), UnitValue(bnds[3], "px"));
+    doc.resizeCanvas(UnitValue(bnds[2], 'px'), UnitValue(bnds[3], 'px'));
     _paste();
-
   } else {
     _newDoc();
     _paste();
@@ -3038,7 +3065,7 @@ Stdlib.newDocumentFromClipboard = function(name) {
 Stdlib.getObjectProperty = function(obj, prop, typ) {
   var val = Stdlib._getObjProperty(obj, prop, typ);
 
-  return (val ? val.value : undefined);
+  return val ? val.value : undefined;
 };
 
 // Stdlib.getObjectPropertyType
@@ -3050,7 +3077,7 @@ Stdlib.getObjectProperty = function(obj, prop, typ) {
 Stdlib.getObjectPropertyType = function(obj, prop, typ) {
   var val = Stdlib._getObjProperty(obj, prop, typ);
 
-  return (val ? val.type : undefined);
+  return val ? val.type : undefined;
 };
 //
 // Stdlib._getObjProperty
@@ -3064,12 +3091,12 @@ Stdlib._getObjProperty = function(obj, prop, typ) {
 
   function _ftn(obj, propId, otyp) {
     var ref = new ActionReference();
-    ref.putProperty(cTID("Prpr"), propId);
+    ref.putProperty(cTID('Prpr'), propId);
 
-    if (typeof(obj) == "number") {
+    if (typeof obj == 'number') {
       ref.putIndex(cTID(otyp), obj);
     } else {
-      ref.putEnumerated(cTID(otyp), cTID("Ordn"), cTID("Trgt") );
+      ref.putEnumerated(cTID(otyp), cTID('Ordn'), cTID('Trgt'));
     }
 
     var desc;
@@ -3084,31 +3111,40 @@ Stdlib._getObjProperty = function(obj, prop, typ) {
       var typ = desc.getType(propId);
       switch (typ) {
         case DescValueType.ALIASTYPE:
-          val.value = desc.getPath(propId); break;
+          val.value = desc.getPath(propId);
+          break;
         case DescValueType.BOOLEANTYPE:
-          val.value = desc.getBoolean(propId); break;
+          val.value = desc.getBoolean(propId);
+          break;
         case DescValueType.CLASSTYPE:
-          val.value = desc.getClass(propId); break;
+          val.value = desc.getClass(propId);
+          break;
         case DescValueType.DOUBLETYPE:
-          val.value = desc.getDouble(propId); break;
+          val.value = desc.getDouble(propId);
+          break;
         case DescValueType.ENUMERATEDTYPE:
           val.value = desc.getEnumeratedValue(propId);
           val.type = desc.getEnumeratedType(propId);
           break;
         case DescValueType.INTEGERTYPE:
-          val.value = desc.getInteger(propId); break;
+          val.value = desc.getInteger(propId);
+          break;
         case DescValueType.LISTTYPE:
-          val.value = desc.getList(propId); break;
+          val.value = desc.getList(propId);
+          break;
         case DescValueType.OBJECTTYPE:
           val.value = desc.getObjectValue(propId);
           val.type = desc.getObjectType(propId);
           break;
         case DescValueType.RAWTYPE:
-          val.value = desc.getData(propId); break;
+          val.value = desc.getData(propId);
+          break;
         case DescValueType.REFERENCETYPE:
-          val.value = desc.getReference(propId); break;
+          val.value = desc.getReference(propId);
+          break;
         case DescValueType.STRINGTYPE:
-          val.value = desc.getString(propId); break;
+          val.value = desc.getString(propId);
+          break;
         case DescValueType.UNITDOUBLE:
           val.value = desc.getUnitDoubleValue(propId);
           val.type = desc.getUnitDoubleType(propId);
@@ -3118,8 +3154,7 @@ Stdlib._getObjProperty = function(obj, prop, typ) {
             if (typ == DescValueType.LARGEINTEGERTYPE) {
               val.value = desc.getLargeInteger(propId);
             }
-          } catch (e) {
-          }
+          } catch (e) {}
           break;
       }
     }
@@ -3127,10 +3162,10 @@ Stdlib._getObjProperty = function(obj, prop, typ) {
   }
 
   if (obj == undefined) {
-    Error.runtimeError(2, "object");
+    Error.runtimeError(2, 'object');
   }
   if (prop == undefined) {
-    Error.runtimeError(2, "property");
+    Error.runtimeError(2, 'property');
   }
 
   if (prop.constructor == String) {
@@ -3138,7 +3173,7 @@ Stdlib._getObjProperty = function(obj, prop, typ) {
   } else if (prop.constructor == Number) {
     propId = prop;
   } else {
-    Error.runtimeError(19, "property");
+    Error.runtimeError(19, 'property');
   }
 
   var val; // {value: undefind, type: undefined}
@@ -3146,24 +3181,21 @@ Stdlib._getObjProperty = function(obj, prop, typ) {
   //$.level = 1; debugger;
 
   if (app.documents.length > 0) {
-    var o_doc = app.activeDocument;   // active doc before this function
-    var o_layer = o_doc.activeLayer;  // active layer before this function
+    var o_doc = app.activeDocument; // active doc before this function
+    var o_layer = o_doc.activeLayer; // active layer before this function
   }
 
-  if (typeof(obj) == "object") {
-    if (typ == "Dcmn" || obj.typename == "Document") {
-      otyp = "Dcmn";
+  if (typeof obj == 'object') {
+    if (typ == 'Dcmn' || obj.typename == 'Document') {
+      otyp = 'Dcmn';
       if (app.activeDocument != obj) {
         o_doc = app.activeDocument;
         app.activeDocument = obj;
       }
-
-    } else if (typ == "Lyr " || obj.typename == "ArtLayer"
-               || obj.typename == "LayerSet") {
-      otyp = "Lyr ";
+    } else if (typ == 'Lyr ' || obj.typename == 'ArtLayer' || obj.typename == 'LayerSet') {
+      otyp = 'Lyr ';
       var layer = obj;
-      while(layer.parent != undefined &&
-            layer.parent.typename != "Document") {
+      while (layer.parent != undefined && layer.parent.typename != 'Document') {
         layer = layer.parent;
       }
       if (app.activeDocument != layer.parent) {
@@ -3172,24 +3204,21 @@ Stdlib._getObjProperty = function(obj, prop, typ) {
       if (layer.parent.activeLayer != obj) {
         layer.parent.activeLayer = obj;
       }
-
-    } else if (typ == "capp" || obj.typename == "Application") {
-      otyp = "capp";
-
+    } else if (typ == 'capp' || obj.typename == 'Application') {
+      otyp = 'capp';
     } else {
       Error.runtimeError(55, prop);
-//       throw ("Unable to get property from " +
-//              (obj.typename ? obj.typename : "unknown") +
-//              " type of object.");
+      //       throw ("Unable to get property from " +
+      //              (obj.typename ? obj.typename : "unknown") +
+      //              " type of object.");
     }
-  } else if (typeof(obj) == "number") {
+  } else if (typeof obj == 'number') {
     if (!typ) {
       Error.runtimeError(55, prop);
-//       throw ("Unable to get property from unknown type of object");
+      //       throw ("Unable to get property from unknown type of object");
     }
-    if (typ != "Lyr " && typ != "Dcmn") {
-      Error.runtimeError(9001,
-                         "Indexed app operations are not yet supported.");
+    if (typ != 'Lyr ' && typ != 'Dcmn') {
+      Error.runtimeError(9001, 'Indexed app operations are not yet supported.');
     }
     otyp = typ;
   }
@@ -3226,16 +3255,16 @@ Stdlib.duplicateDocument = function(doc, name, merged) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("Dcmn"), cTID("Ordn"), cTID("Trgt"));
-    desc.putReference(cTID("null"), ref );
+    ref.putEnumerated(cTID('Dcmn'), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
 
     if (name) {
-      desc.putString(cTID("Nm  "), name);
+      desc.putString(cTID('Nm  '), name);
     }
     if (merged == true) {
-      desc.putBoolean(cTID("Mrgd"), true);
+      desc.putBoolean(cTID('Mrgd'), true);
     }
-    executeAction(cTID("Dplc"), desc, DialogModes.NO );
+    executeAction(cTID('Dplc'), desc, DialogModes.NO);
     return app.activeDocument;
   }
 
@@ -3245,9 +3274,7 @@ Stdlib.duplicateDocument = function(doc, name, merged) {
 Stdlib.getDocumentDescriptor = function(doc) {
   function _ftn() {
     var ref = new ActionReference();
-    ref.putEnumerated( cTID("Dcmn"),
-                       cTID("Ordn"),
-                       cTID("Trgt") );  //activeDoc
+    ref.putEnumerated(cTID('Dcmn'), cTID('Ordn'), cTID('Trgt')); //activeDoc
     return executeActionGet(ref);
   }
 
@@ -3258,43 +3285,42 @@ Stdlib.getDocumentIndex = function(doc) {
   return Stdlib.getDocumentProperty(doc, cTID('ItmI'));
 };
 
-
-Stdlib.isDocumentNew = function(doc){
+Stdlib.isDocumentNew = function(doc) {
   var desc = Stdlib.getDocumentDescriptor(doc);
   var rc = true;
-  if (desc.hasKey(cTID("FilR"))) {  //FileReference
-    var path = desc.getPath(cTID("FilR"));
+  if (desc.hasKey(cTID('FilR'))) {
+    //FileReference
+    var path = desc.getPath(cTID('FilR'));
     if (path) {
-      rc = (path.absoluteURI.length == 0);
+      rc = path.absoluteURI.length == 0;
     }
   }
   return rc;
 };
 
 Stdlib.hasBackground = function(doc) {
-   return doc.layers[doc.layers.length-1].isBackgroundLayer;
+  return doc.layers[doc.layers.length - 1].isBackgroundLayer;
 
-//   // Mike Hale's version...
-//   function _ftn() {
-//     var ref = new ActionReference();
-//     ref.putProperty(cTID("Prpr"), cTID("Bckg"));
-//     //bottom Layer/background
-//     ref.putEnumerated(cTID("Lyr "),cTID("Ordn"),cTID("Back"));
-//     var desc =  executeActionGet(ref);
-//     var res = desc.getBoolean(cTID("Bckg"));
-//     return res;
-//   };
+  //   // Mike Hale's version...
+  //   function _ftn() {
+  //     var ref = new ActionReference();
+  //     ref.putProperty(cTID("Prpr"), cTID("Bckg"));
+  //     //bottom Layer/background
+  //     ref.putEnumerated(cTID("Lyr "),cTID("Ordn"),cTID("Back"));
+  //     var desc =  executeActionGet(ref);
+  //     var res = desc.getBoolean(cTID("Bckg"));
+  //     return res;
+  //   };
 
-//   return Stdlib.wrapLC(doc, _ftn);
+  //   return Stdlib.wrapLC(doc, _ftn);
 
-
-//   // or
-//   try {
-//     doc.backgroundLayer;
-//     return true;
-//   } catch (e) {
-//     return false;
-//   }
+  //   // or
+  //   try {
+  //     doc.backgroundLayer;
+  //     return true;
+  //   } catch (e) {
+  //     return false;
+  //   }
 };
 Stdlib.hasBackgroundLayer = Stdlib.hasBackground;
 
@@ -3302,7 +3328,7 @@ Stdlib.hasBackgroundLayer = Stdlib.hasBackground;
 // Returns true if the file is an open document
 //
 Stdlib.isDocumentOpen = function(file) {
-  if (file && (app.documents.length > 0)) {
+  if (file && app.documents.length > 0) {
     var doc = Stdlib.getByName(app.documents, file.name);
     if (doc) {
       return file == doc.fullName;
@@ -3329,7 +3355,7 @@ Stdlib.getDocumentFile = function(doc) {
 // Revert the document, or active document if one isn't specified
 //
 Stdlib.revertDocument = function(doc) {
-  Stdlib.doEvent(doc, "Rvrt");
+  Stdlib.doEvent(doc, 'Rvrt');
 };
 
 Stdlib.isLandscapeMode = function(obj) {
@@ -3367,19 +3393,18 @@ Stdlib.validateUnitValue = function(str, bu, ru) {
   if (bu && bu instanceof Document) {
     var doc = bu;
     ru = doc.width.type;
-    bu = UnitValue(1/doc.resolution, ru);
-
+    bu = UnitValue(1 / doc.resolution, ru);
   } else {
     if (!ru) {
       ru = Stdlib.getDefaultRulerUnitsString();
     }
     if (!bu) {
-      UnitValue.baseUnit = UnitValue(1/72, ru);
+      UnitValue.baseUnit = UnitValue(1 / 72, ru);
     }
   }
   str = str.toString().toLowerCase();
 
-  var zero = new UnitValue("0 " + ru);
+  var zero = new UnitValue('0 ' + ru);
   var un = zero;
   if (!str.match(/[a-z%]+/)) {
     str += ' ' + ru.units;
@@ -3404,7 +3429,7 @@ Stdlib.validateUnitValue = function(str, bu, ru) {
 //
 Stdlib.openDialogPS7 = function(folder) {
   return Stdlib.selectImageFile(folder);
-}
+};
 
 //
 // selectImageFile will open a dialog on the folder it chooses,
@@ -3431,16 +3456,15 @@ Stdlib.selectImageFile = function(file) {
     if (files.length > 0) {
       file = files[0];
     } else {
-      file = new File(file + "/untitled.psd");
+      file = new File(file + '/untitled.psd');
     }
   }
 
   try {
     var desc = new ActionDescriptor();
     Folder.current = file.parent;
-    desc.putPath( cTID('null'), file);
-    executeAction(cTID("Opn "), desc, DialogModes.ALL);
-
+    desc.putPath(cTID('null'), file);
+    executeAction(cTID('Opn '), desc, DialogModes.ALL);
   } catch (e) {
     throw e;
   }
@@ -3457,13 +3481,12 @@ Stdlib.selectImageFile = function(file) {
 //
 Stdlib.pasteInto = function(doc) {
   function _ftn() {
-    var desc = new ActionDescriptor();   // AntiAlias
-    desc.putEnumerated(cTID("AntA"), cTID("Annt"), cTID("Anno"));
-    executeAction(cTID("PstI"), desc, DialogModes.NO);
+    var desc = new ActionDescriptor(); // AntiAlias
+    desc.putEnumerated(cTID('AntA'), cTID('Annt'), cTID('Anno'));
+    executeAction(cTID('PstI'), desc, DialogModes.NO);
   }
   Stdlib.wrapLC(doc, _ftn);
 };
-
 
 //
 // Make it a Document object method
@@ -3479,22 +3502,23 @@ Stdlib.pasteInto = function(doc) {
 //
 Stdlib.takeSnapshot = function(doc, sname) {
   function _ftn() {
-    var desc = new ActionDescriptor();  // Make
+    var desc = new ActionDescriptor(); // Make
 
-    var sref = new ActionReference();   // Snapshot
-    sref.putClass(cTID("SnpS"));
-    desc.putReference(cTID("null"), sref);
+    var sref = new ActionReference(); // Snapshot
+    sref.putClass(cTID('SnpS'));
+    desc.putReference(cTID('null'), sref);
 
-    var fref = new ActionReference();    // Current History State
-    fref.putProperty(cTID("HstS"), cTID("CrnH"));
-    desc.putReference(cTID("From"), fref );
+    var fref = new ActionReference(); // Current History State
+    fref.putProperty(cTID('HstS'), cTID('CrnH'));
+    desc.putReference(cTID('From'), fref);
 
-    if (sname) {                         // Named snapshot
-      desc.putString(cTID("Nm  "), sname);
+    if (sname) {
+      // Named snapshot
+      desc.putString(cTID('Nm  '), sname);
     }
 
-    desc.putEnumerated(cTID("Usng"), cTID("HstS"), cTID("FllD"));
-    executeAction(cTID("Mk  "), desc, DialogModes.NO );
+    desc.putEnumerated(cTID('Usng'), cTID('HstS'), cTID('FllD'));
+    executeAction(cTID('Mk  '), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLC(doc, _ftn);
@@ -3539,70 +3563,71 @@ Stdlib.deleteSnapshot = function(doc, name) {
     var ref = new ActionReference();
     ref.putName(cTID('SnpS'), name);
     desc.putReference(cTID('null'), ref);
-    executeAction(cTID('Dlt '), desc, DialogModes.NO );
+    executeAction(cTID('Dlt '), desc, DialogModes.NO);
   }
   return Stdlib.wrapLC(doc, _ftn);
 
-//   function _deleteCurrent() {
-//     var ref = new ActionReference();
-//     ref.putProperty(cTID("HstS"), cTID("CrnH"));
+  //   function _deleteCurrent() {
+  //     var ref = new ActionReference();
+  //     ref.putProperty(cTID("HstS"), cTID("CrnH"));
 
-//     var desc = new ActionDescriptor();
-//     desc.putReference(cTID("null"), ref );
-//     executeAction(cTID("Dlt "), desc, DialogModes.NO );
-//   };
+  //     var desc = new ActionDescriptor();
+  //     desc.putReference(cTID("null"), ref );
+  //     executeAction(cTID("Dlt "), desc, DialogModes.NO );
+  //   };
 
-//   var state = doc.activeHistoryState;
-//   if (!Stdlib.revertToSnapshot(doc, name)) {
-//     return false;
-//   }
-//   try {
-//     _deleteCurrent(doc, name);
-//   } finally {
-//     var level = $.level;
-//     try {
-//       $.level = 0;
-//       doc.activeHistoryState = state;
-//     } catch (e) {
-//     }
-//     $.level = level;
-//   }
-//   return true;
+  //   var state = doc.activeHistoryState;
+  //   if (!Stdlib.revertToSnapshot(doc, name)) {
+  //     return false;
+  //   }
+  //   try {
+  //     _deleteCurrent(doc, name);
+  //   } finally {
+  //     var level = $.level;
+  //     try {
+  //       $.level = 0;
+  //       doc.activeHistoryState = state;
+  //     } catch (e) {
+  //     }
+  //     $.level = level;
+  //   }
+  //   return true;
 };
 
 Stdlib.hist = function(dir) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("HstS"), cTID("Ordn"), cTID(dir));
-    desc.putReference(cTID("null"), ref);
-    executeAction(cTID("slct"), desc, DialogModes.NO);
+    ref.putEnumerated(cTID('HstS'), cTID('Ordn'), cTID(dir));
+    desc.putReference(cTID('null'), ref);
+    executeAction(cTID('slct'), desc, DialogModes.NO);
   }
 
   _ftn();
 };
-Stdlib.undo = function () {
-  Stdlib.hist("Prvs");
+Stdlib.undo = function() {
+  Stdlib.hist('Prvs');
 };
-Stdlib.redo = function () {
-  Stdlib.hist("Nxt ");
+Stdlib.redo = function() {
+  Stdlib.hist('Nxt ');
 };
-Stdlib.Undo = function () {
-  Stdlib.doEvent("undo");
+Stdlib.Undo = function() {
+  Stdlib.doEvent('undo');
 };
-Stdlib.Redo = function () {
+Stdlib.Redo = function() {
   Stdlib.doEvent(sTID('redo'));
 };
 
-
 // Makes separate suspendHistory entries undoable (^Z)
-Stdlib.suspendHistory = function (doc, name, ftn ) {
-   doc.suspendHistory(name, ftn);
-   app.activeDocument = app.activeDocument; // NOP
+Stdlib.suspendHistory = function(doc, name, ftn) {
+  doc.suspendHistory(name, ftn);
+  app.activeDocument = app.activeDocument; // NOP
 };
 
 Stdlib.NOP = function() {
-  try { app.activeDocument = app.activeDocument; } catch (e) { }
+  try {
+    app.activeDocument = app.activeDocument;
+  } catch (e) {}
 };
 
 //
@@ -3611,18 +3636,18 @@ Stdlib.NOP = function() {
 Stdlib.convertTextLayerToShape = function(doc, layer) {
   function _ftn() {
     if (layer.kind != LayerKind.TEXT) {
-      Error.runtimeError(8177);  // Layer is not a text layer
-//       throw "Cannot convert non-text layers to shapes.";
+      Error.runtimeError(8177); // Layer is not a text layer
+      //       throw "Cannot convert non-text layers to shapes.";
     }
 
     var desc = new ActionDescriptor();
     var cref = new ActionReference();
-    cref.putClass( sTID('contentLayer') );
-    desc.putReference( cTID('null'), cref );
+    cref.putClass(sTID('contentLayer'));
+    desc.putReference(cTID('null'), cref);
     var lref = new ActionReference();
-    lref.putEnumerated( cTID('TxLr'), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('Usng'), lref );
-    executeAction( cTID('Mk  '), desc, DialogModes.NO );
+    lref.putEnumerated(cTID('TxLr'), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('Usng'), lref);
+    executeAction(cTID('Mk  '), desc, DialogModes.NO);
   }
   Stdlib.makeActive(doc);
   Stdlib.makeActive(layer);
@@ -3639,9 +3664,9 @@ Stdlib.copyLayerToDocument = function(doc, layer, otherDoc) {
     tref.putIndex(cTID('Dcmn'), Stdlib.getDocumentIndex(otherDoc));
     // tref.putName(cTID('Dcmn'), otherDoc.name);
     desc.putReference(cTID('T   '), tref);
-    desc.putInteger(cTID('Vrsn'), 2 );
+    desc.putInteger(cTID('Vrsn'), 2);
     executeAction(cTID('Dplc'), desc, DialogModes.NO);
-  };
+  }
 
   if (layer) {
     Stdlib.wrapLCLayer(doc, layer, _ftn);
@@ -3658,17 +3683,17 @@ Stdlib.convertToSmartLayer = function(doc, layer) {
 };
 
 Stdlib.getSmartObjectType = function(doc, layer) {
-
   function _ftn() {
     var type = undefined;
     var ref = new ActionReference();
-    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), sTID('Trgt') );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), sTID('Trgt'));
     var desc = executeActionGet(ref);
-    if (desc.hasKey(sTID('smartObject'))) {// is smart object?
+    if (desc.hasKey(sTID('smartObject'))) {
+      // is smart object?
       var desc = executeActionGet(ref);
       var smObj = desc.getObjectValue(sTID('smartObject'));
       var place = smObj.getEnumerationValue(sTID('placed'));
-      type = id2char(place, "Enum");
+      type = id2char(place, 'Enum');
     }
 
     return type;
@@ -3680,13 +3705,13 @@ Stdlib.getSmartObjectType = function(doc, layer) {
 };
 
 Stdlib.getSmartObjectFile = function(doc, layer) {
-
   function _ftn() {
     var file = undefined;
     var ref = new ActionReference();
-    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), sTID('Trgt') );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), sTID('Trgt'));
     var desc = executeActionGet(ref);
-    if (desc.hasKey(sTID('smartObject'))) {// is smart object?
+    if (desc.hasKey(sTID('smartObject'))) {
+      // is smart object?
       var smObj = desc.getObjectValue(sTID('smartObject'));
       file = smObj.getString(sTID('FilR'));
     }
@@ -3698,12 +3723,11 @@ Stdlib.getSmartObjectFile = function(doc, layer) {
   return file;
 };
 
-
 Stdlib.editSmartObject = function(doc, layer) {
   function _ftn() {
-    var id21 = sTID( "placedLayerEditContents" );
+    var id21 = sTID('placedLayerEditContents');
     var desc7 = new ActionDescriptor();
-    executeAction( id21, desc7, DialogModes.NO );
+    executeAction(id21, desc7, DialogModes.NO);
   }
   Stdlib.makeActive(doc);
   Stdlib.makeActive(layer);
@@ -3714,7 +3738,7 @@ Stdlib.editSmartObject = function(doc, layer) {
 Stdlib.updateSmartLayer = function(doc, layer) {
   function _ftn() {
     executeAction(sTID('updatePlacedLayer'), undefined, DialogModes.NO);
-  };
+  }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
@@ -3725,13 +3749,12 @@ Stdlib.replaceSmartLayerContents = function(doc, layer, file) {
     var desc = new ActionDescriptor();
     desc.putPath(cTID('null'), fptr);
     executeAction(sTID('placedLayerReplaceContents'), desc, DialogModes.NO);
-  };
+  }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
 
 Stdlib.exportSmartLayer = function(doc, layer, file) {
-
   file = Stdlib.convertFptr(file);
   file.remove();
 
@@ -3740,8 +3763,8 @@ Stdlib.exportSmartLayer = function(doc, layer, file) {
     app.displayDialogs = DialogModes.NO;
     try {
       var desc22 = new ActionDescriptor();
-      desc22.putPath( cTID('null'), file);
-      executeAction( sTID('placedLayerExportContents'), desc22, DialogModes.NO );
+      desc22.putPath(cTID('null'), file);
+      executeAction(sTID('placedLayerExportContents'), desc22, DialogModes.NO);
     } finally {
       app.displayDialogs = dialogMode;
     }
@@ -3750,22 +3773,19 @@ Stdlib.exportSmartLayer = function(doc, layer, file) {
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
 
-
-
 //
 // Traverse the all layers, including nested layers, executing
 // the specified function. Traversal can happen in both directions.
 //
 Stdlib.traverseLayers = function(doc, ftn, reverse, layerSets) {
-
   function _traverse(doc, layers, ftn, reverse, layerSets) {
     var ok = true;
     var len = layers.length;
     for (var i = 1; i <= len && ok != false; i++) {
-      var index = (reverse == true) ? len-i : i - 1;
+      var index = reverse == true ? len - i : i - 1;
       var layer = layers[index];
 
-      if (layer.typename == "LayerSet") {
+      if (layer.typename == 'LayerSet') {
         if (layerSets) {
           ok = ftn(doc, layer);
         }
@@ -3778,12 +3798,11 @@ Stdlib.traverseLayers = function(doc, ftn, reverse, layerSets) {
           if (app.activeDocument != doc) {
             app.activeDocument = doc;
           }
-        } catch (e) {
-        }
+        } catch (e) {}
       }
     }
     return ok;
-  };
+  }
 
   return _traverse(doc, doc.layers, ftn, reverse, layerSets);
 };
@@ -3792,7 +3811,7 @@ Stdlib.getLayersList = function(doc, reverse, layerSets) {
   function _ftn(doc, layer) {
     _ftn.list.push(layer);
     return true;
-  };
+  }
 
   _ftn.list = [];
   Stdlib.traverseLayers(doc, _ftn, reverse, layerSets);
@@ -3804,7 +3823,7 @@ Stdlib.getLayersList = function(doc, reverse, layerSets) {
 
 Stdlib.getVisibleLayers = function(doc) {
   var layers = Stdlib.getLayersList(doc);
-  return Stdlib.getByProperty(layers, "visible", true, true);
+  return Stdlib.getByProperty(layers, 'visible', true, true);
 };
 
 Stdlib._setSelLayerVis = function(doc, state) {
@@ -3813,9 +3832,9 @@ Stdlib._setSelLayerVis = function(doc, state) {
     var list = new ActionList();
     var ref = new ActionReference();
 
-    ref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
     list.putReference(ref);
-    desc.putList(cTID('null'),  list);
+    desc.putList(cTID('null'), list);
 
     executeAction(cTID(state), desc, DialogModes.NO);
   }
@@ -3834,17 +3853,19 @@ Stdlib._setOtherLayerVis = function(doc, layer, state) {
     var ref = new ActionReference();
     ref.putIndex(cTID('Lyr '), index);
     desc.putReference(cTID('null'), ref);
-    desc.putEnumerated(sTID('selectionModifier'),
-                       sTID('selectionModifierType'),
-                       sTID('addToSelectionContinuous'));
+    desc.putEnumerated(
+      sTID('selectionModifier'),
+      sTID('selectionModifierType'),
+      sTID('addToSelectionContinuous')
+    );
     desc.putBoolean(cTID('MkVs'), false);
     executeAction(cTID('slct'), desc, DialogModes.NO);
-  };
+  }
 
   var top = doc.layers[0];
   var lvis = layer.visible;
   var lidx = Stdlib.getLayerIndex(doc, layer);
-  var bottom = doc.layers[doc.layers.length-1];
+  var bottom = doc.layers[doc.layers.length - 1];
 
   doc.activeLayer = top;
   var bidx = Stdlib.getLayerIndex(doc, bottom);
@@ -3862,7 +3883,6 @@ Stdlib.hideOtherLayers = function(doc, layer) {
   Stdlib._setOtherLayerVis(doc, layer, 'Hd  ');
 };
 
-
 Stdlib.findLayer = function(doc, layerName) {
   function _findLayer(doc, layer) {
     if (_findLayer.matchFtn(layer.name, _findLayer.layerName)) {
@@ -3875,9 +3895,13 @@ Stdlib.findLayer = function(doc, layerName) {
   var matchFtn;
 
   if (layerName instanceof RegExp) {
-    matchFtn = function(s1, re) { return s1.match(re) != null; };
+    matchFtn = function(s1, re) {
+      return s1.match(re) != null;
+    };
   } else {
-    matchFtn = function(s1, s2) { return s1 == s2;  };
+    matchFtn = function(s1, s2) {
+      return s1 == s2;
+    };
   }
 
   _findLayer.matchFtn = matchFtn;
@@ -3886,17 +3910,13 @@ Stdlib.findLayer = function(doc, layerName) {
   return _findLayer.layer;
 };
 
-
 // Ex: layers = Stdlib.findLayerByProperty(doc, "visible", true, true);
 Stdlib.findLayerByProperty = function(doc, prop, val, all) {
-
   function _findLayer(doc, layer) {
     if (_findLayer.matchFtn(layer[_findLayer.property], _findLayer.value)) {
-
       if (_findLayer.all) {
         _findLayer.result.push(layer);
         return true;
-
       } else {
         _findLayer.result = layer;
         return false;
@@ -3908,9 +3928,13 @@ Stdlib.findLayerByProperty = function(doc, prop, val, all) {
   var _matchFtn;
 
   if (val instanceof RegExp) {
-    _matchFtn = function(s1, re) { return s1.match(re) != null; };
+    _matchFtn = function(s1, re) {
+      return s1.match(re) != null;
+    };
   } else {
-    _matchFtn = function(s1, s2) { return s1 == s2;  };
+    _matchFtn = function(s1, s2) {
+      return s1 == s2;
+    };
   }
 
   _findLayer.matchFtn = _matchFtn;
@@ -3925,7 +3949,6 @@ Stdlib.findLayerByProperty = function(doc, prop, val, all) {
   return _findLayer.result;
 };
 
-
 Stdlib.isLayerEmpty = function(doc, layer) {
   if (!doc) {
     doc = app.activeDocument;
@@ -3934,28 +3957,28 @@ Stdlib.isLayerEmpty = function(doc, layer) {
     layer = doc.activeLayer;
   }
 
-  return layer.bounds.toString().replace(/\D|0/g,"") == '';
+  return layer.bounds.toString().replace(/\D|0/g, '') == '';
 };
 
 Stdlib.mergeVisible = function(doc) {
-  Stdlib.doEvent(doc, "MrgV");  // "MergeVisible"
+  Stdlib.doEvent(doc, 'MrgV'); // "MergeVisible"
 };
 
 Stdlib.mergeLayers = function(doc, layers) {
   if (layers) {
     Stdlib.selectLayers(doc, layers);
   }
-  Stdlib.doEvent(doc, "Mrg2");  // "MergeLayers"
-}
+  Stdlib.doEvent(doc, 'Mrg2'); // "MergeLayers"
+};
 
 Stdlib.previousLayer = function(doc) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Bckw') );
-    desc.putReference( cTID('null'), ref );
-    desc.putBoolean( cTID('MkVs'), false );
-    executeAction( cTID('slct'), desc, DialogModes.NO );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Bckw'));
+    desc.putReference(cTID('null'), ref);
+    desc.putBoolean(cTID('MkVs'), false);
+    executeAction(cTID('slct'), desc, DialogModes.NO);
   }
   var layer = doc.activeLayer;
   try {
@@ -3971,12 +3994,10 @@ Stdlib.previousLayer = function(doc) {
       doc.activeLayer = layer;
       layer = undefined;
     }
-
   } catch (e) {
-
   } finally {
-   $.level = lvl;
-   delete lvl;
+    $.level = lvl;
+    delete lvl;
   }
   return layer;
 };
@@ -3985,10 +4006,10 @@ Stdlib.nextLayer = function(doc) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Frwr') );
-    desc.putReference( cTID('null'), ref );
-    desc.putBoolean( cTID('MkVs'), false );
-    executeAction( cTID('slct'), desc, DialogModes.NO );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Frwr'));
+    desc.putReference(cTID('null'), ref);
+    desc.putBoolean(cTID('MkVs'), false);
+    executeAction(cTID('slct'), desc, DialogModes.NO);
   }
   var layer = doc.activeLayer;
   try {
@@ -4004,17 +4025,14 @@ Stdlib.nextLayer = function(doc) {
       doc.activeLayer = layer;
       layer = undefined;
     }
-
   } catch (e) {
     //$.level = 1; debugger;
-
   } finally {
-   $.level = lvl;
-   delete lvl;
+    $.level = lvl;
+    delete lvl;
   }
   return layer;
 };
-
 
 //
 // Copy the styles from the current layer into the styles clipboard
@@ -4025,18 +4043,18 @@ Stdlib.copyStyles = function(doc, ignoreError) {
     $.level = 0;
     var rc = false;
     try {
-      Stdlib.doEvent(doc, "CpFX"); // "CopyEffects";
+      Stdlib.doEvent(doc, 'CpFX'); // "CopyEffects";
       rc = true;
     } catch (e) {}
 
     $.level = lvl;
     return rc;
-
-  } else if (typeof ignoreError == "object") { // it's probably a layer
+  } else if (typeof ignoreError == 'object') {
+    // it's probably a layer
     Stdlib.copyEffects(doc, ignoreError);
     return true;
   } else {
-    Stdlib.doEvent(doc, "CpFX"); // "CopyEffects";
+    Stdlib.doEvent(doc, 'CpFX'); // "CopyEffects";
     return true;
   }
 };
@@ -4052,17 +4070,15 @@ Stdlib.pasteStyles = function(doc, layer, ignoreError) {
     try {
       Stdlib.pasteStyles(doc, layer, false);
       rc = true;
-    }
-    catch (e) {}
+    } catch (e) {}
     $.level = lvl;
     return rc;
-
   } else {
     var prev;
     if (layer) {
       prev = Stdlib.makeActive(layer);
     }
-    Stdlib.doEvent(doc, "PaFX"); // "PasteEffects";
+    Stdlib.doEvent(doc, 'PaFX'); // "PasteEffects";
     if (prev) {
       Stdlib.makeActive(prev);
     }
@@ -4088,9 +4104,9 @@ Stdlib.clearEffects = function(doc, layer) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('null'), ref );
-    executeAction( sTID('disableLayerStyle'), desc, DialogModes.NO );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
+    executeAction(sTID('disableLayerStyle'), desc, DialogModes.NO);
   }
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
@@ -4101,7 +4117,7 @@ Stdlib.copyEffects = function(doc, layer) {
   if (layer) {
     prev = Stdlib.makeActive(layer);
   }
-  Stdlib.doEvent(doc, "CpFX"); // "CopyEffects";
+  Stdlib.doEvent(doc, 'CpFX'); // "CopyEffects";
   if (prev) {
     Stdlib.makeActive(prev);
   }
@@ -4111,7 +4127,7 @@ Stdlib.pasteEffects = function(doc, layer) {
   if (layer) {
     prev = Stdlib.makeActive(layer);
   }
-  Stdlib.doEvent(doc, "PaFX"); // "PasteEffects";
+  Stdlib.doEvent(doc, 'PaFX'); // "PasteEffects";
   if (prev) {
     Stdlib.makeActive(prev);
   }
@@ -4122,7 +4138,7 @@ Stdlib._setEffectsViz = function(doc, layer, id) {
     var list = new ActionList();
     var ref = new ActionReference();
     ref.putClass(cTID('Lefx'));
-    ref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
     list.putReference(ref);
     desc.putList(cTID('null'), list);
     executeAction(cTID(id), desc, DialogModes.NO);
@@ -4165,8 +4181,8 @@ Stdlib.applyLayerStyle = function(doc, layer, ldesc, interactive) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putProperty(cTID('Prpr'), cTID('Lefx') );
-    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
+    ref.putProperty(cTID('Prpr'), cTID('Lefx'));
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
     desc.putReference(cTID('null'), ref);
 
     if (!ldesc) {
@@ -4175,11 +4191,12 @@ Stdlib.applyLayerStyle = function(doc, layer, ldesc, interactive) {
     desc.putObject(cTID('T   '), cTID('Lefx'), ldesc);
 
     var xdesc = undefined;
-    var mode = (interactive ? DialogModes.ALL : DialogModes.NO);
+    var mode = interactive ? DialogModes.ALL : DialogModes.NO;
     try {
       xdesc = executeAction(cTID('setd'), desc, mode);
     } catch (e) {
-      if (e.number != 8007) { // if not "User cancelled"
+      if (e.number != 8007) {
+        // if not "User cancelled"
         throw e;
       }
     }
@@ -4189,26 +4206,24 @@ Stdlib.applyLayerStyle = function(doc, layer, ldesc, interactive) {
   return Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
 
-
-
 //
 // Create a new document from the specified layer with the given name
 //
 Stdlib.makeDocFromLayer = function(doc, layer, docName) {
   function _ftn() {
-    var desc = new ActionDescriptor();     // Make
+    var desc = new ActionDescriptor(); // Make
 
-    var dref = new ActionReference();      // Document
-    dref.putClass(cTID("Dcmn"));
-    desc.putReference(cTID("null"), dref);
+    var dref = new ActionReference(); // Document
+    dref.putClass(cTID('Dcmn'));
+    desc.putReference(cTID('null'), dref);
 
-    desc.putString(cTID("Nm  "), docName);  // Name
+    desc.putString(cTID('Nm  '), docName); // Name
 
-    var lref = new ActionReference();       // Layer
-    lref.putName( cTID("Lyr "), layer.name);
-    desc.putReference(cTID("Usng"), lref);
+    var lref = new ActionReference(); // Layer
+    lref.putName(cTID('Lyr '), layer.name);
+    desc.putReference(cTID('Usng'), lref);
 
-    executeAction(cTID("Mk  "), desc, DialogModes.NO);
+    executeAction(cTID('Mk  '), desc, DialogModes.NO);
   }
 
   // wrapLC is not used because we want to return the new
@@ -4228,7 +4243,7 @@ Stdlib.makeDocFromLayer = function(doc, layer, docName) {
 };
 
 Stdlib.getDocumentFromLayer = function(layer) {
-  while(layer.parent != undefined && layer.parent.typename != "Document") {
+  while (layer.parent != undefined && layer.parent.typename != 'Document') {
     layer = layer.parent;
   }
   return layer.parent;
@@ -4238,45 +4253,44 @@ Stdlib.getDocumentFromLayer = function(layer) {
 Stdlib.hasLayerMask = function(doc, layer) {
   function _ftn() {
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
     var desc = executeActionGet(ref);
-    return desc.hasKey(cTID("UsrM"));
+    return desc.hasKey(cTID('UsrM'));
   }
   return Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
-
 
 //
 // Remove the mask from the layer. Apply the mask if 'apply' is true
 //
 Stdlib.removeLayerMask = function(doc, layer, apply) {
   function _ftn() {
-    var desc = new ActionDescriptor();     // Delete
+    var desc = new ActionDescriptor(); // Delete
 
-    var ref = new ActionReference();       // Mask Channel
-    ref.putEnumerated(cTID("Chnl"), cTID("Chnl"), cTID("Msk "));
-    desc.putReference(cTID("null"), ref);
+    var ref = new ActionReference(); // Mask Channel
+    ref.putEnumerated(cTID('Chnl'), cTID('Chnl'), cTID('Msk '));
+    desc.putReference(cTID('null'), ref);
 
-    apply = (apply == true);
-    desc.putBoolean(cTID("Aply"), apply);  // Apply Mask
+    apply = apply == true;
+    desc.putBoolean(cTID('Aply'), apply); // Apply Mask
 
-    executeAction(cTID("Dlt "), desc, DialogModes.NO);
+    executeAction(cTID('Dlt '), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
-Stdlib.removeMask = Stdlib.removeLayerMask;  // backwards compatibility
+Stdlib.removeMask = Stdlib.removeLayerMask; // backwards compatibility
 
 Stdlib.applyLayerMask = function(doc, layer) {
   function _ftn() {
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Chnl'), cTID('Ordn'), cTID('Trgt') );
+    ref.putEnumerated(cTID('Chnl'), cTID('Ordn'), cTID('Trgt'));
 
     var desc = new ActionDescriptor();
-    desc.putReference( cTID('null'), ref );
-    desc.putBoolean( cTID('Aply'), true );
+    desc.putReference(cTID('null'), ref);
+    desc.putBoolean(cTID('Aply'), true);
 
-    executeAction( cTID('Dlt '), desc, DialogModes.NO );
+    executeAction(cTID('Dlt '), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
@@ -4287,10 +4301,10 @@ Stdlib.selectLayerMask = function(doc, layer) {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
 
-    ref.putEnumerated(cTID("Chnl"), cTID("Chnl"), cTID("Msk "));
-    desc.putReference(cTID("null"), ref);
-    desc.putBoolean(cTID("MkVs"), false );
-    executeAction(cTID("slct"), desc, DialogModes.NO );
+    ref.putEnumerated(cTID('Chnl'), cTID('Chnl'), cTID('Msk '));
+    desc.putReference(cTID('null'), ref);
+    desc.putBoolean(cTID('MkVs'), false);
+    executeAction(cTID('slct'), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
@@ -4298,12 +4312,12 @@ Stdlib.selectLayerMask = function(doc, layer) {
 Stdlib.selectLayerMaskEdit = function(doc, layer) {
   function _ftn() {
     var desc11 = new ActionDescriptor();
-        var ref8 = new ActionReference();
-        ref8.putEnumerated( cTID('Chnl'), cTID('Ordn'), cTID('Trgt') );
-    desc11.putReference( cTID('null'), ref8 );
-    desc11.putBoolean( cTID('MkVs'), true );
-    executeAction( cTID('slct'), desc11, DialogModes.NO );
-  };
+    var ref8 = new ActionReference();
+    ref8.putEnumerated(cTID('Chnl'), cTID('Ordn'), cTID('Trgt'));
+    desc11.putReference(cTID('null'), ref8);
+    desc11.putBoolean(cTID('MkVs'), true);
+    executeAction(cTID('slct'), desc11, DialogModes.NO);
+  }
   Stdlib.selectLayerMask(doc, layer);
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
@@ -4311,40 +4325,39 @@ Stdlib.selectLayerMaskEdit = function(doc, layer) {
 Stdlib.selectFilterMask = function(doc, layer) {
   function _ftn() {
     var desc273 = new ActionDescriptor();
-        var ref215 = new ActionReference();
-        ref215.putEnumerated( cTID('Chnl'), cTID('Chnl'), sTID('filterMask') );
-    desc273.putReference( cTID('null'), ref215 );
-    desc273.putBoolean( cTID('MkVs'), false );
-    executeAction( cTID('slct'), desc273, DialogModes.NO );
+    var ref215 = new ActionReference();
+    ref215.putEnumerated(cTID('Chnl'), cTID('Chnl'), sTID('filterMask'));
+    desc273.putReference(cTID('null'), ref215);
+    desc273.putBoolean(cTID('MkVs'), false);
+    executeAction(cTID('slct'), desc273, DialogModes.NO);
   }
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
 Stdlib.selectFilterMaskEdit = function(doc, layer) {
   function _ftn() {
     var desc273 = new ActionDescriptor();
-        var ref215 = new ActionReference();
-        ref215.putEnumerated( cTID('Chnl'), cTID('Chnl'), sTID('filterMask') );
-    desc273.putReference( cTID('null'), ref215 );
-    desc273.putBoolean( cTID('MkVs'), true );
-    executeAction( cTID('slct'), desc273, DialogModes.NO );
+    var ref215 = new ActionReference();
+    ref215.putEnumerated(cTID('Chnl'), cTID('Chnl'), sTID('filterMask'));
+    desc273.putReference(cTID('null'), ref215);
+    desc273.putBoolean(cTID('MkVs'), true);
+    executeAction(cTID('slct'), desc273, DialogModes.NO);
   }
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
 
-
 Stdlib.createLayerMask = function(doc, layer, fromSelection) {
   function _ftn() {
     var desc = new ActionDescriptor();
-    desc.putClass(cTID("Nw  "), cTID("Chnl"));
+    desc.putClass(cTID('Nw  '), cTID('Chnl'));
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("Chnl"), cTID("Chnl"), cTID("Msk "));
-    desc.putReference(cTID("At  "), ref);
+    ref.putEnumerated(cTID('Chnl'), cTID('Chnl'), cTID('Msk '));
+    desc.putReference(cTID('At  '), ref);
     if (fromSelection == true) {
-      desc.putEnumerated(cTID("Usng"), cTID("UsrM"), cTID("RvlS"));
+      desc.putEnumerated(cTID('Usng'), cTID('UsrM'), cTID('RvlS'));
     } else {
-      desc.putEnumerated(cTID("Usng"), cTID("UsrM"), cTID("RvlA"));
+      desc.putEnumerated(cTID('Usng'), cTID('UsrM'), cTID('RvlA'));
     }
-    executeAction(cTID("Mk  "), desc, DialogModes.NO);
+    executeAction(cTID('Mk  '), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
@@ -4352,7 +4365,7 @@ Stdlib.createLayerMask = function(doc, layer, fromSelection) {
 
 Stdlib.isLayerMaskEnabled = function(doc, layer) {
   var desc = Stdlib.getLayerDescriptor(doc, layer);
-  return (desc.hasKey(cTID("UsrM")) && desc.getBoolean(cTID("UsrM")));
+  return desc.hasKey(cTID('UsrM')) && desc.getBoolean(cTID('UsrM'));
 };
 
 Stdlib.disableLayerMask = function(doc, layer) {
@@ -4367,13 +4380,13 @@ Stdlib.setLayerMaskEnabledState = function(doc, layer, state) {
 
     var ref = new ActionReference();
     ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
-    desc.putReference(cTID('null'), ref );
+    desc.putReference(cTID('null'), ref);
 
     var tdesc = new ActionDescriptor();
     tdesc.putBoolean(cTID('UsrM'), state);
     desc.putObject(cTID('T   '), cTID('Lyr '), tdesc);
 
-    executeAction(cTID('setd'), desc, DialogModes.NO );
+    executeAction(cTID('setd'), desc, DialogModes.NO);
   }
   if (state == undefined) {
     state = false;
@@ -4382,27 +4395,24 @@ Stdlib.setLayerMaskEnabledState = function(doc, layer, state) {
 };
 
 Stdlib.createClippingMask = function(doc, layer) {
-
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('null'), ref );
-    executeAction( cTID('GrpL'), desc, DialogModes.NO );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
+    executeAction(cTID('GrpL'), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
 
-
 Stdlib.releaseClippingMask = function(doc, layer) {
-
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('null'), ref );
-    executeAction( cTID('Ungr'), desc, DialogModes.NO );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
+    executeAction(cTID('Ungr'), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
@@ -4416,11 +4426,10 @@ Stdlib.isClippingMask = function(doc, layer) {
   var rc = false;
   try {
     var idx = Stdlib.getLayerIndex(doc, layer);
-    Stdlib.selectLayerByIndex(doc, idx+1);
+    Stdlib.selectLayerByIndex(doc, idx + 1);
     var rc = Stdlib.getLayerProperty(doc.activeLayer, 'Grup');
     doc.activeLayer = layer;
-  } catch (e) {
-  }
+  } catch (e) {}
 
   return rc;
 };
@@ -4429,10 +4438,10 @@ Stdlib.rotateLayer = function(doc, layer, angle) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
-    desc.putReference(cTID("null"), ref);
-    desc.putUnitDouble(cTID("Angl"), cTID("#Ang"), angle);
-    executeAction(cTID("Rtte"), desc, DialogModes.NO );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
+    desc.putUnitDouble(cTID('Angl'), cTID('#Ang'), angle);
+    executeAction(cTID('Rtte'), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
@@ -4441,33 +4450,32 @@ Stdlib.rotateLayer = function(doc, layer, angle) {
 Stdlib.rotateLayerAround = function(doc, layer, angle, x, y) {
   angle = Number(angle);
   if (isNaN(angle)) {
-    Error.runtimeError(19, "angle");  // BadArgument
+    Error.runtimeError(19, 'angle'); // BadArgument
   }
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('null'), ref );
-    desc.putEnumerated( cTID('FTcs'), cTID('QCSt'), cTID('Qcsi') );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
+    desc.putEnumerated(cTID('FTcs'), cTID('QCSt'), cTID('Qcsi'));
     var ldesc = new ActionDescriptor();
-    ldesc.putUnitDouble( cTID('Hrzn'), cTID('#Pxl'), x );
-    ldesc.putUnitDouble( cTID('Vrtc'), cTID('#Pxl'), y );
-    desc.putObject( cTID('Pstn'), cTID('Pnt '), ldesc );
-    desc.putUnitDouble( cTID('Angl'), cTID('#Ang'), angle );
-    executeAction( cTID('Trnf'), desc, DialogModes.NO );
-  };
+    ldesc.putUnitDouble(cTID('Hrzn'), cTID('#Pxl'), x);
+    ldesc.putUnitDouble(cTID('Vrtc'), cTID('#Pxl'), y);
+    desc.putObject(cTID('Pstn'), cTID('Pnt '), ldesc);
+    desc.putUnitDouble(cTID('Angl'), cTID('#Ang'), angle);
+    executeAction(cTID('Trnf'), desc, DialogModes.NO);
+  }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
-
 
 // Stdlib.moveLayerContent(doc, doc.activeLayer, -25, -25);
 Stdlib.moveLayerContent = function(doc, layer, dx, dy) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var lref = new ActionReference();
-    lref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
-    desc.putReference(cTID("null"), lref);
+    lref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), lref);
 
     var pdesc = new ActionDescriptor();
     pdesc.putUnitDouble(cTID('Hrzn'), cTID('#Pxl'), dx);
@@ -4491,7 +4499,7 @@ Stdlib.moveLayerContentByIndex = function(doc, idx, dx, dy) {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
     ref.putIndex(cTID('Lyr '), idx);
-    desc.putReference(cTID('null'), ref );
+    desc.putReference(cTID('null'), ref);
     var pdesc = new ActionDescriptor();
     pdesc.putUnitDouble(cTID('Hrzn'), cTID('#Pxl'), dx);
     pdesc.putUnitDouble(cTID('Vrtc'), cTID('#Pxl'), dy);
@@ -4503,8 +4511,8 @@ Stdlib.moveLayerContentByIndex = function(doc, idx, dx, dy) {
 };
 
 Stdlib.freeTransform = function(doc, layer) {
-//   Stdlib.doMenuItem(PSEnum.FreeTransform, true);
-  Stdlib.doMenuItem(cTID("FrTr"), true);
+  //   Stdlib.doMenuItem(PSEnum.FreeTransform, true);
+  Stdlib.doMenuItem(cTID('FrTr'), true);
 };
 
 Stdlib.transformScale = function(doc, layer, linked) {
@@ -4513,20 +4521,21 @@ Stdlib.transformScale = function(doc, layer, linked) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var lref = new ActionReference();
-    lref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
-    desc.putReference(cTID("null"), lref);
-    desc.putEnumerated(cTID("FTcs"), cTID("QCSt"), cTID("Qcsa"));
+    lref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), lref);
+    desc.putEnumerated(cTID('FTcs'), cTID('QCSt'), cTID('Qcsa'));
     if (linked == true) {
-      desc.putBoolean(cTID("Lnkd"), true );
+      desc.putBoolean(cTID('Lnkd'), true);
     }
 
     var lvl = $.level;
     $.level = 0;
     try {
-      executeAction(cTID("Trnf"), desc, DialogModes.ALL);
+      executeAction(cTID('Trnf'), desc, DialogModes.ALL);
     } catch (e) {
       $.level = lvl;
-      if (e.number != 8007) { // if not "User cancelled"
+      if (e.number != 8007) {
+        // if not "User cancelled"
         throw e;
       }
     }
@@ -4542,31 +4551,31 @@ Stdlib.transformScaleEx = function(doc, layer, linked) {
     function _moveDesc(dx, dy) {
       var desc = new ActionDescriptor();
       var lref = new ActionReference();
-      lref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
+      lref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
 
-      desc.putReference(cTID("null"), lref);
-      desc.putEnumerated(cTID("FTcs"), cTID("QCSt"), cTID("Qcsa"));
+      desc.putReference(cTID('null'), lref);
+      desc.putEnumerated(cTID('FTcs'), cTID('QCSt'), cTID('Qcsa'));
       var desc75 = new ActionDescriptor();
-        desc75.putUnitDouble( cTID('Hrzn'), cTID('#Pxl'), dx );
-        desc75.putUnitDouble( cTID('Vrtc'), cTID('#Pxl'), dy );
-      desc.putObject( cTID('Ofst'), cTID('Ofst'), desc75 );
+      desc75.putUnitDouble(cTID('Hrzn'), cTID('#Pxl'), dx);
+      desc75.putUnitDouble(cTID('Vrtc'), cTID('#Pxl'), dy);
+      desc.putObject(cTID('Ofst'), cTID('Ofst'), desc75);
       return desc;
     }
 
-    executeAction(cTID("Trnf"), _moveDesc(1, 1), DialogModes.NO);
+    executeAction(cTID('Trnf'), _moveDesc(1, 1), DialogModes.NO);
 
     var desc = _moveDesc(-1, -1);
     var lvl = $.level;
     $.level = 0;
     try {
-      executeAction(cTID("Trnf"), desc, DialogModes.ALL);
-
+      executeAction(cTID('Trnf'), desc, DialogModes.ALL);
     } catch (e) {
       state = false;
-      if (e.number != 8007) { // if not "User cancelled"
+      if (e.number != 8007) {
+        // if not "User cancelled"
         throw e;
       }
-      executeAction(cTID("Trnf"), desc, DialogModes.NO);
+      executeAction(cTID('Trnf'), desc, DialogModes.NO);
     } finally {
       $.level = lvl;
     }
@@ -4576,7 +4585,6 @@ Stdlib.transformScaleEx = function(doc, layer, linked) {
   // true = OK, false = Cancel
   return Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
-
 
 // Stdlib.transformLayer(doc, doc.activeLayer, Stdlib.getMaskBounds(doc, doc.activeLayer))
 
@@ -4588,8 +4596,7 @@ Stdlib.getLayerBounds = function(doc, layer) {
 
     var reenable = false;
     var st;
-    if (Stdlib.hasLayerMask(doc, layer) &&
-        Stdlib.isLayerMaskEnabled(doc, layer)) {
+    if (Stdlib.hasLayerMask(doc, layer) && Stdlib.isLayerMaskEnabled(doc, layer)) {
       st = doc.activeHistoryState;
       Stdlib.disableLayerMask(doc, layer);
       reenable = true;
@@ -4604,7 +4611,6 @@ Stdlib.getLayerBounds = function(doc, layer) {
     for (var i = 0; i < 4; i++) {
       lbnds[i] = lbnds[i].value;
     }
-
   } finally {
     app.preferences.rulerUnits = ru;
   }
@@ -4615,7 +4621,6 @@ Stdlib.getLayerBounds = function(doc, layer) {
 // Stdlib.getLayerBoundsNoEffects = function(doc, layer) {
 //   return Stdlib.getLayerProperty(layer, sTID('boundsNoEffects'));
 // };
-
 
 // function ftn1() {
 //   function cTID(s) { return app.charIDToTypeID(s); };
@@ -4635,13 +4640,13 @@ Stdlib.getLayerBounds = function(doc, layer) {
 Stdlib.transformLayer = function(doc, layer, bnds, orient) {
   var lbnds = Stdlib.getLayerBounds(doc, layer);
 
-  var newW = bnds[2]-bnds[0];
-  var newH = bnds[3]-bnds[1];
-  var oldW = lbnds[2]-lbnds[0];
-  var oldH = lbnds[3]-lbnds[1];
+  var newW = bnds[2] - bnds[0];
+  var newH = bnds[3] - bnds[1];
+  var oldW = lbnds[2] - lbnds[0];
+  var oldH = lbnds[3] - lbnds[1];
 
-  var hrzn = bnds[0] - (lbnds[0] - (newW-oldW)/2);
-  var vrtc = bnds[1] - (lbnds[1] - (newH-oldH)/2);
+  var hrzn = bnds[0] - (lbnds[0] - (newW - oldW) / 2);
+  var vrtc = bnds[1] - (lbnds[1] - (newH - oldH) / 2);
 
   var prc;
   var hprc;
@@ -4652,29 +4657,29 @@ Stdlib.transformLayer = function(doc, layer, bnds, orient) {
   }
 
   if (orient.toLowerCase() == 'horz') {
-    vprc = hprc = (newW/oldW) * 100;
+    vprc = hprc = (newW / oldW) * 100;
   } else if (orient == 'both') {
-    hprc = (newW/oldW) * 100;
-    vprc = (newH/oldH) * 100;
+    hprc = (newW / oldW) * 100;
+    vprc = (newH / oldH) * 100;
   } else {
-    vprc = hprc = (newH/oldH) * 100;
+    vprc = hprc = (newH / oldH) * 100;
   }
 
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('null'), ref );
-    desc.putEnumerated( cTID('FTcs'), cTID('QCSt'), cTID('Qcsa') );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
+    desc.putEnumerated(cTID('FTcs'), cTID('QCSt'), cTID('Qcsa'));
     var ldesc = new ActionDescriptor();
-    ldesc.putUnitDouble( cTID('Hrzn'), cTID('#Pxl'), hrzn );
-    ldesc.putUnitDouble( cTID('Vrtc'), cTID('#Pxl'), vrtc );
-    desc.putObject( cTID('Ofst'), cTID('Ofst'), ldesc );
-    desc.putUnitDouble( cTID('Wdth'), cTID('#Prc'), hprc );
-    desc.putUnitDouble( cTID('Hght'), cTID('#Prc'), vprc );
-//     desc.putUnitDouble( cTID('Angl'), cTID('#Ang'), angle );
-    executeAction( cTID('Trnf'), desc, DialogModes.NO );
-  };
+    ldesc.putUnitDouble(cTID('Hrzn'), cTID('#Pxl'), hrzn);
+    ldesc.putUnitDouble(cTID('Vrtc'), cTID('#Pxl'), vrtc);
+    desc.putObject(cTID('Ofst'), cTID('Ofst'), ldesc);
+    desc.putUnitDouble(cTID('Wdth'), cTID('#Prc'), hprc);
+    desc.putUnitDouble(cTID('Hght'), cTID('#Prc'), vprc);
+    //     desc.putUnitDouble( cTID('Angl'), cTID('#Ang'), angle );
+    executeAction(cTID('Trnf'), desc, DialogModes.NO);
+  }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
@@ -4683,10 +4688,10 @@ Stdlib.rasterizeLayer = function(doc, layer) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('null'), ref );
-    executeAction( sTID('rasterizeLayer'), desc, DialogModes.NO );
-  };
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
+    executeAction(sTID('rasterizeLayer'), desc, DialogModes.NO);
+  }
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
 
@@ -4712,7 +4717,6 @@ Stdlib.rasterizeLayer = function(doc, layer) {
 //   Stdlib.wrapLCLayer(doc, layer, _ftn);
 // };
 
-
 Stdlib.convertToLayer = function(doc, layer) {
   // layer.rasterize(RasterizeType.ENTIRELAYER);
   function _ftn() {
@@ -4722,7 +4726,7 @@ Stdlib.convertToLayer = function(doc, layer) {
     desc.putReference(cTID('null'), ref);
     desc.putEnumerated(cTID('What'), sTID('rasterizeItem'), sTID('placed'));
     executeAction(sTID('rasterizeLayer'), desc, DialogModes.NO);
-  };
+  }
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
 
@@ -4732,21 +4736,19 @@ Stdlib.placeImage = function(doc, layer, file) {
 
   function _ftn() {
     var desc = new ActionDescriptor();
-    desc.putPath( cTID('null'), file);
-    desc.putEnumerated( cTID('FTcs'), cTID('QCSt'), cTID('Qcsa') );
-        var ldesc = new ActionDescriptor();
-        ldesc.putUnitDouble( cTID('Hrzn'), cTID('#Pxl'), 0.000000 );
-        ldesc.putUnitDouble( cTID('Vrtc'), cTID('#Pxl'), 0.000000 );
-    desc.putObject( cTID('Ofst'), cTID('Ofst'), ldesc );
-    executeAction( cTID('Plc '), desc, DialogModes.NO );
+    desc.putPath(cTID('null'), file);
+    desc.putEnumerated(cTID('FTcs'), cTID('QCSt'), cTID('Qcsa'));
+    var ldesc = new ActionDescriptor();
+    ldesc.putUnitDouble(cTID('Hrzn'), cTID('#Pxl'), 0.0);
+    ldesc.putUnitDouble(cTID('Vrtc'), cTID('#Pxl'), 0.0);
+    desc.putObject(cTID('Ofst'), cTID('Ofst'), ldesc);
+    executeAction(cTID('Plc '), desc, DialogModes.NO);
   }
 
   _ftn();
 
   return doc.activeLayer;
 };
-
-
 
 // Stdlib.transformInteractive = function() {
 //   var desc = new ActionDescriptor();
@@ -4758,14 +4760,13 @@ Stdlib.placeImage = function(doc, layer, file) {
 //   executeAction( cTID('Trnf'), desc, DialogModes.ALL );
 // };
 
-
 Stdlib.deleteAllHiddenLayers = function(doc) {
   function _ftn() {
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("Lyr "), cTID("Ordn"), sTID("hidden"));
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), sTID('hidden'));
     var dltDesc = new ActionDescriptor();
-    dltDesc.putReference(cTID("null"), ref);
-    executeAction(cTID("Dlt "), dltDesc, DialogModes.NO);
+    dltDesc.putReference(cTID('null'), ref);
+    executeAction(cTID('Dlt '), dltDesc, DialogModes.NO);
   }
   Stdlib.wrapLC(doc, _ftn);
 };
@@ -4783,16 +4784,15 @@ Stdlib.showAllLayers = function(doc) {
   }
 };
 
-
 Stdlib.hideSelectedLayers = function(doc) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var list = new ActionList();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    list.putReference( ref );
-    desc.putList( cTID('null'), list );
-    executeAction( cTID('Hd  '), desc, DialogModes.NO );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    list.putReference(ref);
+    desc.putList(cTID('null'), list);
+    executeAction(cTID('Hd  '), desc, DialogModes.NO);
   }
   Stdlib.wrapLC(doc, _ftn);
 };
@@ -4801,10 +4801,10 @@ Stdlib.showSelectedLayers = function(doc) {
     var desc = new ActionDescriptor();
     var list = new ActionList();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    list.putReference( ref );
-    desc.putList( cTID('null'), list );
-    executeAction( cTID('Shw '), desc, DialogModes.NO );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    list.putReference(ref);
+    desc.putList(cTID('null'), list);
+    executeAction(cTID('Shw '), desc, DialogModes.NO);
   }
   Stdlib.wrapLC(doc, _ftn);
 };
@@ -4813,48 +4813,45 @@ Stdlib.newGroupFromLayers = function(doc) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putClass( sTID('layerSection') );
-    desc.putReference( cTID('null'), ref );
+    ref.putClass(sTID('layerSection'));
+    desc.putReference(cTID('null'), ref);
     var lref = new ActionReference();
-    lref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('From'), lref);
-    executeAction( cTID('Mk  '), desc, DialogModes.NO );
-  };
+    lref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('From'), lref);
+    executeAction(cTID('Mk  '), desc, DialogModes.NO);
+  }
   Stdlib.wrapLC(doc, _ftn);
   return doc.activeLayer;
 };
-
 
 Stdlib.ungroupLayers = function(doc, grp) {
   function _ftn() {
     var desc229 = new ActionDescriptor();
     var ref226 = new ActionReference();
-    ref226.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc229.putReference( cTID('null'), ref226 );
-    executeAction( sTID('ungroupLayersEvent'), desc229, DialogModes.NO );
+    ref226.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc229.putReference(cTID('null'), ref226);
+    executeAction(sTID('ungroupLayersEvent'), desc229, DialogModes.NO);
   }
   Stdlib.wrapLCLayer(doc, grp, _ftn);
 };
-
 
 Stdlib.deleteGroup = function(doc, grp, contents) {
   function _ftn() {
     var desc48 = new ActionDescriptor();
     var ref55 = new ActionReference();
-    ref55.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc48.putReference( cTID('null'), ref55 );
-    desc48.putBoolean( sTID('deleteContained'), !!contents );
-    executeAction( cTID('Dlt '), desc48, DialogModes.NO );
-  };
+    ref55.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc48.putReference(cTID('null'), ref55);
+    desc48.putBoolean(sTID('deleteContained'), !!contents);
+    executeAction(cTID('Dlt '), desc48, DialogModes.NO);
+  }
   Stdlib.wrapLCLayer(doc, grp, _ftn);
 };
 
-
 Stdlib.getLayerNameByIndex = function(doc, idx) {
   var ref = new ActionReference();
-  ref.putProperty(cTID("Prpr"), cTID( "Nm  " ));
-  ref.putIndex(cTID( "Lyr " ), idx);
-  return executeActionGet(ref).getString(cTID( "Nm  " ));
+  ref.putProperty(cTID('Prpr'), cTID('Nm  '));
+  ref.putIndex(cTID('Lyr '), idx);
+  return executeActionGet(ref).getString(cTID('Nm  '));
 };
 Stdlib.setLayerName = function(doc, idx, nm) {
   if (idx == 0) {
@@ -4872,10 +4869,9 @@ Stdlib.setLayerName = function(doc, idx, nm) {
   desc.putObject(cTID('T   '), cTID('Lyr '), nmdesc);
 
   if (isCS6()) {
-    Stdlib.wrapLC(doc,
-                  function() {
-                    executeAction(cTID('setd'), desc, DialogModes.NO);
-                  });
+    Stdlib.wrapLC(doc, function() {
+      executeAction(cTID('setd'), desc, DialogModes.NO);
+    });
   } else {
     executeAction(cTID('setd'), desc, DialogModes.NO);
   }
@@ -4895,15 +4891,13 @@ Stdlib.getActiveLayerDescriptor = function(doc) {
 
 Stdlib.getLayerIndex = function(doc, layer, dontWrap) {
   var idx = Stdlib.getLayerProperty(layer, 'ItmI');
-  return Stdlib.hasBackground(doc) ? idx-1 : idx;
+  return Stdlib.hasBackground(doc) ? idx - 1 : idx;
 };
-
 
 Stdlib.getLayerID = function(doc, layer) {
   var d = Stdlib.getLayerDescriptor(doc, layer);
   return d.getInteger(cTID('LyrI'));
 };
-
 
 //
 // returns one of:
@@ -4917,8 +4911,8 @@ Stdlib.getLayerType = function(doc, layer) {
 };
 Stdlib.getLayerTypeByIndex = function(doc, idx) {
   var ref = new ActionReference();
-  ref.putProperty(cTID("Prpr") , sTID("layerSection"));
-  ref.putIndex(cTID( "Lyr " ), idx);
+  ref.putProperty(cTID('Prpr'), sTID('layerSection'));
+  ref.putIndex(cTID('Lyr '), idx);
   return executeActionGet(ref).getEnumerationValue(sTID('layerSection'));
 };
 
@@ -4931,40 +4925,39 @@ Stdlib.deleteSelectedLayers = function(doc) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('null'), ref );
-    executeAction( cTID('Dlt '), desc, DialogModes.NO );
-  };
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
+    executeAction(cTID('Dlt '), desc, DialogModes.NO);
+  }
 
   Stdlib.wrapLC(doc, _ftn);
 };
 
 // based on code by  pfaffenbichler, mike hale, via paul riggott
 Stdlib.selectLayerByID = function(doc, id, append) {
-  if (append = undefined) {
+  if ((append = undefined)) {
     append = false;
   }
   var ref = new ActionReference();
-  ref.putIdentifier(charIDToTypeID("Lyr "), id);
+  ref.putIdentifier(charIDToTypeID('Lyr '), id);
   var desc = new ActionDescriptor();
-  desc.putReference(charIDToTypeID("null"), ref );
+  desc.putReference(charIDToTypeID('null'), ref);
   if (append) {
-    desc.putEnumerated(sTID("selectionModifier"),
-                       sTID("selectionModifierType"),
-                       sTID("addToSelection"));
+    desc.putEnumerated(
+      sTID('selectionModifier'),
+      sTID('selectionModifierType'),
+      sTID('addToSelection')
+    );
   }
-  desc.putBoolean(cTID("MkVs"), false);
-  executeAction(charIDToTypeID("slct"), desc, DialogModes.NO);
+  desc.putBoolean(cTID('MkVs'), false);
+  executeAction(charIDToTypeID('slct'), desc, DialogModes.NO);
 };
 
 Stdlib.selectLayer = function(doc, layer, append) {
   if (isCS()) {
     doc.activeLayer = layer;
-
   } else {
-    Stdlib.selectLayerByIndex(doc,
-                              Stdlib.getLayerIndex(doc, layer, true),
-                              append);
+    Stdlib.selectLayerByIndex(doc, Stdlib.getLayerIndex(doc, layer, true), append);
   }
 };
 Stdlib.selectLayers = function(doc, layers, append) {
@@ -4987,32 +4980,32 @@ Stdlib.selectLayers = function(doc, layers, append) {
 Stdlib.selectLayerByName = function(doc, name) {
   var desc14 = new ActionDescriptor();
   var ref4 = new ActionReference();
-  ref4.putName( cTID('Lyr '), name );
-  desc14.putReference( cTID('null'), ref4 );
-  desc14.putBoolean( cTID('MkVs'), false );
-  executeAction( cTID('slct'), desc14, DialogModes.NO );
+  ref4.putName(cTID('Lyr '), name);
+  desc14.putReference(cTID('null'), ref4);
+  desc14.putBoolean(cTID('MkVs'), false);
+  executeAction(cTID('slct'), desc14, DialogModes.NO);
 };
-
 
 // 1-based indexing
 Stdlib.selectLayerByIndex = function(doc, index, append) {
   if (append) {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putIndex( cTID('Lyr '), index );
-    desc.putReference( cTID('null'), ref );
-    desc.putEnumerated( sTID('selectionModifier'),
-                        sTID('selectionModifierType'),
-                        sTID('addToSelection') );
-    desc.putBoolean( cTID('MkVs'), false );
-    executeAction( cTID('slct'), desc, DialogModes.NO );
-
+    ref.putIndex(cTID('Lyr '), index);
+    desc.putReference(cTID('null'), ref);
+    desc.putEnumerated(
+      sTID('selectionModifier'),
+      sTID('selectionModifierType'),
+      sTID('addToSelection')
+    );
+    desc.putBoolean(cTID('MkVs'), false);
+    executeAction(cTID('slct'), desc, DialogModes.NO);
   } else {
     var ref = new ActionReference();
-    ref.putIndex(cTID("Lyr "), index);
+    ref.putIndex(cTID('Lyr '), index);
     var desc = new ActionDescriptor();
-    desc.putReference(cTID("null"), ref );
-    executeAction(cTID("slct"), desc, DialogModes.NO );
+    desc.putReference(cTID('null'), ref);
+    executeAction(cTID('slct'), desc, DialogModes.NO);
   }
 };
 Stdlib.selectLayersByIndex = function(doc, idxs, append) {
@@ -5053,14 +5046,13 @@ Stdlib.selectAllLayers = function(doc) {
   function _ftn() {
     var desc18 = new ActionDescriptor();
     var ref11 = new ActionReference();
-    ref11.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc18.putReference( cTID('null'), ref11 );
-    executeAction( sTID('selectAllLayers'), desc18, DialogModes.NO );
+    ref11.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc18.putReference(cTID('null'), ref11);
+    executeAction(sTID('selectAllLayers'), desc18, DialogModes.NO);
   }
 
   Stdlib.wrapLC(doc, _ftn);
 };
-
 
 Stdlib.deselectLayers = function(doc, layers) {
   if (isCS()) {
@@ -5086,9 +5078,11 @@ Stdlib.deselectLayerByIndex = function(doc, index) {
   var ref = new ActionReference();
   ref.putIndex(cTID('Lyr '), index);
   desc.putReference(cTID('null'), ref);
-  desc.putEnumerated(sTID('selectionModifier'),
-                     sTID('selectionModifierType'),
-                     sTID('removeFromSelection'));
+  desc.putEnumerated(
+    sTID('selectionModifier'),
+    sTID('selectionModifierType'),
+    sTID('removeFromSelection')
+  );
   desc.putBoolean(cTID('MkVs'), false);
   executeAction(cTID('slct'), desc, DialogModes.NO);
 };
@@ -5109,15 +5103,16 @@ Stdlib.deselectLayersByIndex = function(doc, idxs) {
 Stdlib.deselectLayerByName = function(doc, name) {
   var desc151 = new ActionDescriptor();
   var ref122 = new ActionReference();
-  ref122.putName( cTID('Lyr '), name );
-  desc151.putReference( cTID('null'), ref122 );
-  desc151.putEnumerated( sTID('selectionModifier'),
-                         sTID('selectionModifierType'),
-                         sTID('removeFromSelection') );
-  desc151.putBoolean( cTID('MkVs'), false );
-  executeAction( cTID('slct'), desc151, DialogModes.NO );
+  ref122.putName(cTID('Lyr '), name);
+  desc151.putReference(cTID('null'), ref122);
+  desc151.putEnumerated(
+    sTID('selectionModifier'),
+    sTID('selectionModifierType'),
+    sTID('removeFromSelection')
+  );
+  desc151.putBoolean(cTID('MkVs'), false);
+  executeAction(cTID('slct'), desc151, DialogModes.NO);
 };
-
 
 Stdlib.getLayerBoundsByIndex = function(doc, idx) {
   var desc = Stdlib.getLayerDescriptorByIndex(doc, idx);
@@ -5136,45 +5131,44 @@ Stdlib.getLayerOpacityByIndex = function(doc, idx) {
   return desc.getInteger(cTID('Opct'));
 };
 
-
 Stdlib.selectLayerByIdentifier = function(doc, id) {
   var ref = new ActionReference();
-  ref.putIdentifier(cTID("Lyr "), id);
+  ref.putIdentifier(cTID('Lyr '), id);
   var desc = new ActionDescriptor();
-  desc.putReference(cTID("null"), ref );
-  executeAction(cTID("slct"), desc, DialogModes.NO );
+  desc.putReference(cTID('null'), ref);
+  executeAction(cTID('slct'), desc, DialogModes.NO);
 };
 
 Stdlib.hasBG = function(doc) {
   try {
     var bgref = new ActionReference();
-    bgref.putIndex(cTID("Lyr "), 0);
+    bgref.putIndex(cTID('Lyr '), 0);
     executeActionGet(bgref);
     return true;
   } catch (e) {
     return false;
   }
-}
+};
 
 // 1-based indexing...
 Stdlib.getLayerDescriptorByIndex = function(doc, index) {
   var ref = new ActionReference();
   // assume that the index has already been adjusted
-//   var hasBG = Stdlib.hasBackground(doc); // need something better here
-//   if (hasBG) {
-//     index--;
-//   }
+  //   var hasBG = Stdlib.hasBackground(doc); // need something better here
+  //   if (hasBG) {
+  //     index--;
+  //   }
 
-  ref.putIndex(cTID( "Lyr " ), index);
+  ref.putIndex(cTID('Lyr '), index);
   return executeActionGet(ref);
 };
 
 Stdlib.getLayerDescriptor = function(doc, layer, dontWrap) {
   function _ftn() {
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
     return executeActionGet(ref);
-  };
+  }
 
   if (dontWrap) {
     Stdlib.makeActive(doc);
@@ -5190,14 +5184,13 @@ Stdlib.getVectorMaskDescriptor = function(doc, layer) {
   function _ftn() {
     var ref = new ActionReference();
 
-    ref.putEnumerated( cTID('Path'), cTID('Ordn'), sTID('vectorMask'));
+    ref.putEnumerated(cTID('Path'), cTID('Ordn'), sTID('vectorMask'));
     try {
       return app.executeActionGet(ref);
-
     } catch (e) {
       return undefined;
     }
-  };
+  }
 
   return Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
@@ -5208,17 +5201,16 @@ Stdlib.getPathDescriptor = function(doc, layer, name) {
 
   var pdesc;
 
-  if (name == "WorkPath") {
+  if (name == 'WorkPath') {
     var ref = new ActionReference();
-    ref.putProperty(cTID("Path"), cTID("WrPt"));
+    ref.putProperty(cTID('Path'), cTID('WrPt'));
     pdesc = app.executeActionGet(ref);
-
   } else {
     for (var i = 1; i <= totalPaths; i++) {
       // try normal paths
       try {
         var ref = new ActionReference();
-        ref.putIndex(cTID("Path"), i);
+        ref.putIndex(cTID('Path'), i);
         var desc = app.executeActionGet(ref);
 
         var pname = desc.getString(cTID('PthN'));
@@ -5226,7 +5218,6 @@ Stdlib.getPathDescriptor = function(doc, layer, name) {
           pdesc = desc;
           break;
         }
-
       } catch (e) {
         break;
       }
@@ -5239,7 +5230,7 @@ Stdlib.getPathDescriptor = function(doc, layer, name) {
 Stdlib.getLayerStyleDescriptor = function(doc, layer) {
   function _ftn() {
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
     var ldesc = executeActionGet(ref);
     return ldesc.getObjectValue(sTID('layerEffects'));
   }
@@ -5253,37 +5244,37 @@ Stdlib.getLayerStyleDescriptor = function(doc, layer) {
 //
 Stdlib.loadSelection = function(doc, layer, kind, invert) {
   function _ftn() {
-    var desc = new ActionDescriptor();   // Set
+    var desc = new ActionDescriptor(); // Set
 
-    var cref = new ActionReference();    // Channel Selection
-    cref.putProperty(cTID("Chnl"), cTID("fsel"));
-    desc.putReference(cTID("null"), cref);
+    var cref = new ActionReference(); // Channel Selection
+    cref.putProperty(cTID('Chnl'), cTID('fsel'));
+    desc.putReference(cTID('null'), cref);
 
     var tref = new ActionReference(); // Channel Kind ("Trsp" or "Msk ")
-    tref.putEnumerated(cTID("Chnl"), cTID("Chnl"), cTID(kind));
-    desc.putReference(cTID("T   "), tref);
+    tref.putEnumerated(cTID('Chnl'), cTID('Chnl'), cTID(kind));
+    desc.putReference(cTID('T   '), tref);
     if (invert == true) {
-      desc.putBoolean(cTID("Invr"), true);
+      desc.putBoolean(cTID('Invr'), true);
     }
-    executeAction(cTID("setd"), desc, DialogModes.NO);
+    executeAction(cTID('setd'), desc, DialogModes.NO);
   }
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
 Stdlib.selectTransparencyChannel = function(doc, layer, invert) {
-  Stdlib.loadSelection(doc, layer, "Trsp", invert);
+  Stdlib.loadSelection(doc, layer, 'Trsp', invert);
 };
 Stdlib.selectMaskChannel = function(doc, layer, invert) {
-  Stdlib.loadSelection(doc, layer, "Msk ", invert);
+  Stdlib.loadSelection(doc, layer, 'Msk ', invert);
 };
 
 Stdlib.saveNamedSelection = function(doc, layer, name) {
   function _ftn() {
     var desc47 = new ActionDescriptor();
     var ref33 = new ActionReference();
-    ref33.putProperty( cTID('Chnl'), cTID('fsel') );
-    desc47.putReference( cTID('null'), ref33 );
-    desc47.putString( cTID('Nm  '), name);
-    executeAction( cTID('Dplc'), desc47, DialogModes.NO );
+    ref33.putProperty(cTID('Chnl'), cTID('fsel'));
+    desc47.putReference(cTID('null'), ref33);
+    desc47.putString(cTID('Nm  '), name);
+    executeAction(cTID('Dplc'), desc47, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
@@ -5293,9 +5284,9 @@ Stdlib.selectNamedSelection = function(doc, layer, name) {
   function _ftn() {
     var desc49 = new ActionDescriptor();
     var ref35 = new ActionReference();
-    ref35.putName( cTID('Chnl'), name );
-    desc49.putReference( cTID('null'), ref35 );
-    executeAction( cTID('slct'), desc49, DialogModes.NO );
+    ref35.putName(cTID('Chnl'), name);
+    desc49.putReference(cTID('null'), ref35);
+    executeAction(cTID('slct'), desc49, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
@@ -5303,19 +5294,19 @@ Stdlib.selectNamedSelection = function(doc, layer, name) {
 
 Stdlib.loadNamedSelection = function(doc, layer, name, invert) {
   function _ftn() {
-    var desc = new ActionDescriptor();   // Set
+    var desc = new ActionDescriptor(); // Set
 
-    var cref = new ActionReference();    // Channel Selection
-    cref.putProperty(cTID("Chnl"), cTID("fsel"));
-    desc.putReference(cTID("null"), cref);
+    var cref = new ActionReference(); // Channel Selection
+    cref.putProperty(cTID('Chnl'), cTID('fsel'));
+    desc.putReference(cTID('null'), cref);
 
     var tref = new ActionReference();
-    tref.putName(cTID("Chnl"), name);
-    desc.putReference(cTID("T   "), tref);
+    tref.putName(cTID('Chnl'), name);
+    desc.putReference(cTID('T   '), tref);
     if (invert == true) {
-      desc.putBoolean(cTID("Invr"), true);
+      desc.putBoolean(cTID('Invr'), true);
     }
-    executeAction(cTID("setd"), desc, DialogModes.NO);
+    executeAction(cTID('setd'), desc, DialogModes.NO);
   }
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
@@ -5325,13 +5316,12 @@ Stdlib.deleteNamedSelection = function(doc, layer, name) {
     Stdlib.selectNamedSelection(doc, layer, name);
     var desc43 = new ActionDescriptor();
     var ref29 = new ActionReference();
-    ref29.putEnumerated( cTID('Chnl'), cTID('Ordn'), cTID('Trgt') );
-    desc43.putReference( cTID('null'), ref29 );
-    executeAction( cTID('Dlt '), desc43, DialogModes.NO );
+    ref29.putEnumerated(cTID('Chnl'), cTID('Ordn'), cTID('Trgt'));
+    desc43.putReference(cTID('null'), ref29);
+    executeAction(cTID('Dlt '), desc43, DialogModes.NO);
   }
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
-
 
 //
 // From Mike Hale:
@@ -5355,8 +5345,8 @@ Stdlib.getMaskBounds = function(doc, layer) {
     return bnds;
   }
 
-//   Stdlib.undo(doc);
-//   //executeAction(cTID("undo"), new ActionDescriptor(), DialogModes.NO);
+  //   Stdlib.undo(doc);
+  //   //executeAction(cTID("undo"), new ActionDescriptor(), DialogModes.NO);
 
   var bnds = Stdlib.wrapLCLayer(doc, layer, _ftn);
 
@@ -5367,12 +5357,12 @@ Stdlib.appendMaskToSelection = function(doc, layer) {
   function _ftn() {
     var desc93 = new ActionDescriptor();
     var ref68 = new ActionReference();
-    ref68.putEnumerated( cTID('Chnl'), cTID('Chnl'), cTID('Msk ') );
-    desc93.putReference( cTID('null'), ref68 );
+    ref68.putEnumerated(cTID('Chnl'), cTID('Chnl'), cTID('Msk '));
+    desc93.putReference(cTID('null'), ref68);
     var ref69 = new ActionReference();
-    ref69.putProperty( cTID('Chnl'), cTID('fsel') );
-    desc93.putReference( cTID('T   '), ref69 );
-    executeAction( cTID('Add '), desc93, DialogModes.NO );
+    ref69.putProperty(cTID('Chnl'), cTID('fsel'));
+    desc93.putReference(cTID('T   '), ref69);
+    executeAction(cTID('Add '), desc93, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
@@ -5382,12 +5372,12 @@ Stdlib.appendTransparencyToSelection = function(doc, layer) {
   function _ftn() {
     var desc90 = new ActionDescriptor();
     var ref64 = new ActionReference();
-    ref64.putEnumerated( cTID('Chnl'), cTID('Chnl'), cTID('Trsp') );
-    desc90.putReference( cTID('null'), ref64 );
+    ref64.putEnumerated(cTID('Chnl'), cTID('Chnl'), cTID('Trsp'));
+    desc90.putReference(cTID('null'), ref64);
     var ref65 = new ActionReference();
-    ref65.putProperty( cTID('Chnl'), cTID('fsel') );
-    desc90.putReference( cTID('T   '), ref65 );
-    executeAction( cTID('Add '), desc90, DialogModes.NO );
+    ref65.putProperty(cTID('Chnl'), cTID('fsel'));
+    desc90.putReference(cTID('T   '), ref65);
+    executeAction(cTID('Add '), desc90, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
@@ -5398,7 +5388,7 @@ Stdlib.appendTransparencyToSelection = function(doc, layer) {
 //
 Stdlib.isLayerMaskLinked = function(doc, layer) {
   var desc = Stdlib.getLayerDescriptor(doc, layer);
-  return (desc.hasKey(cTID("Usrs")) && desc.getBoolean(cTID("Usrs")));
+  return desc.hasKey(cTID('Usrs')) && desc.getBoolean(cTID('Usrs'));
 };
 
 Stdlib._linkMask = function(doc, layer, linkOn) {
@@ -5406,14 +5396,14 @@ Stdlib._linkMask = function(doc, layer, linkOn) {
     var desc = new ActionDescriptor();
 
     var lref = new ActionReference();
-    lref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
-    desc.putReference(cTID("null"), lref);
+    lref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), lref);
 
     var ldesc = new ActionDescriptor();
-    ldesc.putBoolean(cTID("Usrs"), linkOn);
+    ldesc.putBoolean(cTID('Usrs'), linkOn);
 
-    desc.putObject(cTID("T   "), cTID("Lyr "), ldesc);
-    executeAction(cTID("setd"), desc, DialogModes.NO);
+    desc.putObject(cTID('T   '), cTID('Lyr '), ldesc);
+    executeAction(cTID('setd'), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
@@ -5432,9 +5422,9 @@ Stdlib.unlinkSelectedLayers = function(doc) {
   // Stdlib.doMenuItem(sTID("unlinkSelectedLayers"));
   var desc = new ActionDescriptor();
   var ref = new ActionReference();
-  ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-  desc.putReference( cTID('null'), ref );
-  executeAction( sTID('unlinkSelectedLayers'), desc, DialogModes.NO );
+  ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+  desc.putReference(cTID('null'), ref);
+  executeAction(sTID('unlinkSelectedLayers'), desc, DialogModes.NO);
 };
 Stdlib.unlinkLayers = function(doc, layers) {
   var len = layers.length;
@@ -5450,9 +5440,9 @@ Stdlib.linkSelectedLayers = function(doc) {
 
   var desc = new ActionDescriptor();
   var ref = new ActionReference();
-  ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-  desc.putReference( cTID('null'), ref );
-  executeAction( sTID('linkSelectedLayers'), desc, DialogModes.NO );
+  ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+  desc.putReference(cTID('null'), ref);
+  executeAction(sTID('linkSelectedLayers'), desc, DialogModes.NO);
 };
 Stdlib.linkLayers = function(doc, layers) {
   var base = layers[0];
@@ -5470,9 +5460,9 @@ Stdlib.linkLayers = function(doc, layers) {
 Stdlib.selectLinkedLayers = function(doc) {
   function _ftn() {
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
     var desc = new ActionDescriptor();
-    executeAction(sTID("selectLinkedLayers"), desc, DialogModes.NO);
+    executeAction(sTID('selectLinkedLayers'), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLC(doc, _ftn);
@@ -5493,7 +5483,6 @@ Stdlib.getLinkedLayers = function(doc, layer) {
       }
     }
     selLayers = layers;
-
   } else {
     selLayers = [layer];
   }
@@ -5508,11 +5497,11 @@ Stdlib.getSelectedLayers = function(doc, layerSets) {
   var len = doc.layers.length;
 
   if (CSVersion() < 2) {
-    return [ doc.activeLayer ];
+    return [doc.activeLayer];
   }
 
   if (len == 1 && Stdlib.hasBackgroundLayer(doc)) {
-    return [ doc.backgroundLayer ];
+    return [doc.backgroundLayer];
   }
 
   // this split takes care of layer sets
@@ -5532,7 +5521,7 @@ Stdlib.getSelectedLayers = function(doc, layerSets) {
     }
     l.visible = visible[i];
   }
-  
+
   return selLayers;
 
   /*
@@ -5546,7 +5535,8 @@ Stdlib.getSelectedLayers = function(doc, layerSets) {
   }
 
   Stdlib.Undo();
-  */  
+  */
+
   return selLayers;
 };
 
@@ -5554,7 +5544,7 @@ Stdlib.getSelectedLayers = function(doc, layerSets) {
 
 Stdlib.insertImageIntoMask = function(doc, layer, im, fit) {
   if (!Stdlib.hasLayerMask(doc, layer)) {
-    Error.runtimeError(9001, "A Layer mask is required for this operation.");
+    Error.runtimeError(9001, 'A Layer mask is required for this operation.');
   }
 
   Stdlib.selectMaskChannel(doc, layer);
@@ -5586,13 +5576,12 @@ Stdlib.insertImageIntoSelection = function(doc, layer, im, fit) {
       return undefined;
     }
     imageDoc = app.open(imageFile);
-
   } else {
     app.activeDocument = imageDoc;
     imageDoc = imageDoc.duplicate();
   }
 
-//   imageDoc.flatten();
+  //   imageDoc.flatten();
 
   app.activeDocument = doc;
 
@@ -5613,17 +5602,15 @@ Stdlib.insertImageIntoSelection = function(doc, layer, im, fit) {
     if (fit) {
       // change the res
       app.activeDocument = imageDoc;
-      imageDoc.resizeImage(undefined, undefined, doc.resolution,
-                           ResampleMethod.NONE);
+      imageDoc.resizeImage(undefined, undefined, doc.resolution, ResampleMethod.NONE);
       Stdlib.fitImage(imageDoc, width, height);
-
     } else {
       // fit to the shortest side (image will crop)
       var dwidth = imageDoc.width.value;
       var dheight = imageDoc.height.value;
 
-      var ratio = height/width;
-      var dratio = dheight/dwidth;
+      var ratio = height / width;
+      var dratio = dheight / dwidth;
 
       if (dratio > ratio) {
         height = undefined;
@@ -5631,8 +5618,7 @@ Stdlib.insertImageIntoSelection = function(doc, layer, im, fit) {
         width = undefined;
       }
       app.activeDocument = imageDoc;
-      imageDoc.resizeImage(width, height, doc.resolution,
-                           ResampleMethod.BICUBIC);
+      imageDoc.resizeImage(width, height, doc.resolution, ResampleMethod.BICUBIC);
     }
 
     imageDoc.selection.selectAll();
@@ -5661,14 +5647,14 @@ Stdlib.insertImageIntoSelection = function(doc, layer, im, fit) {
     if (hasStyles) {
       Stdlib.pasteStyles(doc);
     }
-
   } catch (e) {
     layer = undefined;
     alert(Stdlib.exceptionMessage(e));
-
   } finally {
     app.preferences.rulerUnits = ru;
-    try { imageDoc.close(SaveOptions.DONOTSAVECHANGES); } catch (e) {}
+    try {
+      imageDoc.close(SaveOptions.DONOTSAVECHANGES);
+    } catch (e) {}
   }
 
   return doc.activeLayer;
@@ -5676,12 +5662,11 @@ Stdlib.insertImageIntoSelection = function(doc, layer, im, fit) {
 
 //
 // Added this because of a bug in CS5+ with layer.resize
-// See JJMacks thread: https://forums.adobe.com/thread/1637626 
+// See JJMacks thread: https://forums.adobe.com/thread/1637626
 //
 Stdlib.resizeLayer = function(doc, layer, horizontal, vertical, anchor) {
   if (!Stdlib.hasSelection(doc)) {
     layer.resize(horizontal, vertical, anchor);
-
   } else {
     var channel = doc.channels.add();
     var sel = doc.selection;
@@ -5739,15 +5724,14 @@ Stdlib.insertImageIntoSelectionAsSmartObject = function(doc, layer, im, fit) {
     var lw = lbnds[2] - lbnds[0];
     var lh = lbnds[3] - lbnds[1];
 
-    var ratio = height/width;
-    var lratio = lh/lw;
+    var ratio = height / width;
+    var lratio = lh / lw;
 
     var orient;
     if (fit && (fit == true || fit.toString().toLowerCase() == 'fit')) {
-      orient =  (lratio > ratio) ? 'vert' : 'horz';
-
+      orient = lratio > ratio ? 'vert' : 'horz';
     } else {
-      orient =  (lratio > ratio) ? 'horz' : 'vert';
+      orient = lratio > ratio ? 'horz' : 'vert';
     }
 
     Stdlib.transformLayer(doc, imageLayer, bnds, orient);
@@ -5760,10 +5744,8 @@ Stdlib.insertImageIntoSelectionAsSmartObject = function(doc, layer, im, fit) {
       Stdlib.pasteStyles(doc);
     }
     // layer.remove();
-
   } catch (e) {
     alert(Stdlib.exceptionMessage(e));
-
   } finally {
     app.preferences.rulerUnits = ru;
     if (rez != 72) {
@@ -5780,21 +5762,23 @@ Stdlib.resizeCanvas = function(doc, w, h, color, relative) {
   if (toBoolean(relative)) {
     desc168.putBoolean(cTID('Rltv'), toBoolean(relative));
   }
-  desc168.putUnitDouble( cTID('Wdth'), cTID('#Pxl'), w);
-  desc168.putUnitDouble( cTID('Hght'), cTID('#Pxl'), h);
-  desc168.putEnumerated( cTID('Hrzn'), cTID('HrzL'), cTID('Cntr') );
-  desc168.putEnumerated( cTID('Vrtc'), cTID('VrtL'), cTID('Cntr') );
+  desc168.putUnitDouble(cTID('Wdth'), cTID('#Pxl'), w);
+  desc168.putUnitDouble(cTID('Hght'), cTID('#Pxl'), h);
+  desc168.putEnumerated(cTID('Hrzn'), cTID('HrzL'), cTID('Cntr'));
+  desc168.putEnumerated(cTID('Vrtc'), cTID('VrtL'), cTID('Cntr'));
   if (color) {
-    desc168.putEnumerated( sTID('canvasExtensionColorType'),
-                           sTID('canvasExtensionColorType'),
-                           cTID('Clr ') );
+    desc168.putEnumerated(
+      sTID('canvasExtensionColorType'),
+      sTID('canvasExtensionColorType'),
+      cTID('Clr ')
+    );
     var desc169 = new ActionDescriptor();
-    desc169.putUnitDouble( cTID('H   '), cTID('#Ang'), hsb.hue );
-    desc169.putDouble( cTID('Strt'), hsb.saturation );
-    desc169.putDouble( cTID('Brgh'), hsb.brightness );
-    desc168.putObject( sTID('canvasExtensionColor'), cTID('HSBC'), desc169 );
+    desc169.putUnitDouble(cTID('H   '), cTID('#Ang'), hsb.hue);
+    desc169.putDouble(cTID('Strt'), hsb.saturation);
+    desc169.putDouble(cTID('Brgh'), hsb.brightness);
+    desc168.putObject(sTID('canvasExtensionColor'), cTID('HSBC'), desc169);
   }
-  executeAction( cTID('CnvS'), desc168, DialogModes.NO );
+  executeAction(cTID('CnvS'), desc168, DialogModes.NO);
 };
 
 _ResizeOptions = function() {
@@ -5809,32 +5793,30 @@ _ResizeOptions = function() {
 };
 
 Stdlib._resizeImage = function(doc, opts) {
-
   //
   function _ftn() {
     // resample, constrain
     var desc71 = new ActionDescriptor();
-    desc71.putUnitDouble( cTID('Wdth'), cTID('#Pxl'), opts.width);
-    desc71.putBoolean( sTID('scaleStyles'), opts.scaleStyles );
-    desc71.putBoolean( cTID('CnsP'), true );
-    desc71.putEnumerated( cTID('Intr'), cTID('Intp'), cTID('Bcbc') );
-    executeAction( cTID('ImgS'), desc71, DialogModes.NO );
+    desc71.putUnitDouble(cTID('Wdth'), cTID('#Pxl'), opts.width);
+    desc71.putBoolean(sTID('scaleStyles'), opts.scaleStyles);
+    desc71.putBoolean(cTID('CnsP'), true);
+    desc71.putEnumerated(cTID('Intr'), cTID('Intp'), cTID('Bcbc'));
+    executeAction(cTID('ImgS'), desc71, DialogModes.NO);
 
     // no resample
-    var id307 = charIDToTypeID( "ImgS" );
+    var id307 = charIDToTypeID('ImgS');
     var desc77 = new ActionDescriptor();
-    var id308 = charIDToTypeID( "Wdth" );
-    var id309 = charIDToTypeID( "#Rlt" );
-    desc77.putUnitDouble( id308, id309, 477.217685 );
-    executeAction( id307, desc77, DialogModes.NO );
+    var id308 = charIDToTypeID('Wdth');
+    var id309 = charIDToTypeID('#Rlt');
+    desc77.putUnitDouble(id308, id309, 477.217685);
+    executeAction(id307, desc77, DialogModes.NO);
 
     // resample, no constrain, no scale
     var desc84 = new ActionDescriptor();
-    desc84.putUnitDouble( cTID('Wdth'), cTID('#Pxl'), 1024.000000 );
-    desc84.putUnitDouble( cTID('Hght'), cTID('#Rlt'), 468.936026 );
-    desc84.putEnumerated( cTID('Intr'), cTID('Intp'), cTID('Bcbc') );
-    executeAction( cTID('ImgS'), desc84, DialogModes.NO );
-
+    desc84.putUnitDouble(cTID('Wdth'), cTID('#Pxl'), 1024.0);
+    desc84.putUnitDouble(cTID('Hght'), cTID('#Rlt'), 468.936026);
+    desc84.putEnumerated(cTID('Intr'), cTID('Intp'), cTID('Bcbc'));
+    executeAction(cTID('ImgS'), desc84, DialogModes.NO);
   }
 
   Stdlib.wrapLC(doc, _ftn);
@@ -5842,11 +5824,11 @@ Stdlib._resizeImage = function(doc, opts) {
 
 Stdlib.PSfitImage = function(width, height) {
   var desc = new ActionDescriptor();
-  desc.putUnitDouble( cTID('Wdth'), cTID('#Pxl'), width );
-  desc.putUnitDouble( cTID('Hght'), cTID('#Pxl'), height );
+  desc.putUnitDouble(cTID('Wdth'), cTID('#Pxl'), width);
+  desc.putUnitDouble(cTID('Hght'), cTID('#Pxl'), height);
 
   var fitId = sTID('3caa3434-cb67-11d1-bc43-0060b0a13dc4');
-  return executeAction(fitId , desc, DialogModes.NO );
+  return executeAction(fitId, desc, DialogModes.NO);
 };
 Stdlib.fitImage = function(doc, width, height, resample) {
   Stdlib.resizeImage(doc, width, height, true, resample);
@@ -5872,8 +5854,8 @@ Stdlib.resizeImage = function(doc, width, height, constrained, resample) {
     doc.resizeImage(undefined, undefined, 72, ResampleMethod.NONE);
 
     if (constrained) {
-      var dratio = h/w;
-      var ratio = height/width;
+      var dratio = h / w;
+      var ratio = height / width;
 
       if (dratio > ratio) {
         width = undefined;
@@ -5885,7 +5867,7 @@ Stdlib.resizeImage = function(doc, width, height, constrained, resample) {
     doc.resizeImage(width, height, 72, resample);
 
     doc.resizeImage(undefined, undefined, rez, ResampleMethod.NONE);
-  };
+  }
 
   var ru = app.preferences.rulerUnits;
   app.preferences.rulerUnits = Units.PIXELS;
@@ -5895,7 +5877,6 @@ Stdlib.resizeImage = function(doc, width, height, constrained, resample) {
   app.preferences.rulerUnits = ru;
 };
 
-
 //
 //================================ Selections ===============================
 //
@@ -5904,9 +5885,8 @@ Stdlib.resizeImage = function(doc, width, height, constrained, resample) {
 // Crop on the current selection
 //
 Stdlib.crop = function(doc) {
-  Stdlib.doEvent(doc, "Crop"); // "Crop";
+  Stdlib.doEvent(doc, 'Crop'); // "Crop";
 };
-
 
 Stdlib.cropBounds = function(doc, bnds) {
   Stdlib.selectBounds(doc, bnds);
@@ -5921,20 +5901,21 @@ Stdlib.cropBounds = function(doc, bnds) {
 Stdlib.interactiveCrop = function(doc, bnds) {
   var cropDesc = new ActionDescriptor();
   var toDesc = new ActionDescriptor();
-  toDesc.putUnitDouble( cTID('Top '), cTID('#Pxl'), bnds[0] );
-  toDesc.putUnitDouble( cTID('Left'), cTID('#Pxl'), bnds[1] );
-  toDesc.putUnitDouble( cTID('Btom'), cTID('#Pxl'), bnds[2] );
-  toDesc.putUnitDouble( cTID('Rght'), cTID('#Pxl'), bnds[3] );
-  cropDesc.putObject( cTID('T   '), cTID('Rctn'), toDesc );
-  cropDesc.putUnitDouble( cTID('Angl'), cTID('Ang '), 0.000000 );
-  cropDesc.putUnitDouble( cTID('Wdth'), cTID('#Pxl'), 0.000000 );
-  cropDesc.putUnitDouble( cTID('Hght'), cTID('#Pxl'), 0.000000 );
-  cropDesc.putUnitDouble( cTID('Rslt'), cTID('#Rsl'), 0.000000 );
+  toDesc.putUnitDouble(cTID('Top '), cTID('#Pxl'), bnds[0]);
+  toDesc.putUnitDouble(cTID('Left'), cTID('#Pxl'), bnds[1]);
+  toDesc.putUnitDouble(cTID('Btom'), cTID('#Pxl'), bnds[2]);
+  toDesc.putUnitDouble(cTID('Rght'), cTID('#Pxl'), bnds[3]);
+  cropDesc.putObject(cTID('T   '), cTID('Rctn'), toDesc);
+  cropDesc.putUnitDouble(cTID('Angl'), cTID('Ang '), 0.0);
+  cropDesc.putUnitDouble(cTID('Wdth'), cTID('#Pxl'), 0.0);
+  cropDesc.putUnitDouble(cTID('Hght'), cTID('#Pxl'), 0.0);
+  cropDesc.putUnitDouble(cTID('Rslt'), cTID('#Rsl'), 0.0);
 
   try {
-    executeAction( cTID('Crop'), cropDesc, DialogModes.ALL );
+    executeAction(cTID('Crop'), cropDesc, DialogModes.ALL);
   } catch (e) {
-    if (e.number != 8007) { // if not "User cancelled"
+    if (e.number != 8007) {
+      // if not "User cancelled"
       throw e;
     }
     return false;
@@ -5948,9 +5929,9 @@ Stdlib.interactiveCrop = function(doc, bnds) {
 Stdlib.transformSelection = function(doc) {
   var desc = new ActionDescriptor();
   var ref = new ActionReference();
-  ref.putProperty(cTID("Chnl"), cTID("fsel"));
-  desc.putReference(cTID("null"), ref);
-  executeAction(cTID("Trnf"), desc, DialogModes.ALL);
+  ref.putProperty(cTID('Chnl'), cTID('fsel'));
+  desc.putReference(cTID('null'), ref);
+  executeAction(cTID('Trnf'), desc, DialogModes.ALL);
 };
 
 // ????
@@ -5958,16 +5939,15 @@ Stdlib.freeTransformSelection = function(doc, layer) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("Mn  "), cTID("MnIt"), cTID("FrTr"));
-    desc.putReference(cTID("null"), ref);
-    app.executeAction(cTID("slct"), desc, DialogModes.NO );
-//     app.executeAction(cTID("FrTr"),
-//                              new ActionDescriptor(),
-//                              DialogModes.NO);
+    ref.putEnumerated(cTID('Mn  '), cTID('MnIt'), cTID('FrTr'));
+    desc.putReference(cTID('null'), ref);
+    app.executeAction(cTID('slct'), desc, DialogModes.NO);
+    //     app.executeAction(cTID("FrTr"),
+    //                              new ActionDescriptor(),
+    //                              DialogModes.NO);
   }
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
-
 
 Stdlib.magicWand = function(doc, x, y, tol, aa, cntg) {
   function _ftn() {
@@ -5975,27 +5955,27 @@ Stdlib.magicWand = function(doc, x, y, tol, aa, cntg) {
 
     // Selection
     var ref = new ActionReference();
-    ref.putProperty(cTID("Chnl"), cTID("fsel"));
-    desc.putReference(cTID("null"), ref);
+    ref.putProperty(cTID('Chnl'), cTID('fsel'));
+    desc.putReference(cTID('null'), ref);
 
     // Point
     var pdesc = new ActionDescriptor();
-    pdesc.putUnitDouble(cTID("Hrzn"), cTID("#Pxl"), x);
-    pdesc.putUnitDouble(cTID("Vrtc"), cTID("#Pxl"), y);
-    desc.putObject(cTID("T   "), cTID("Pnt "), pdesc);
+    pdesc.putUnitDouble(cTID('Hrzn'), cTID('#Pxl'), x);
+    pdesc.putUnitDouble(cTID('Vrtc'), cTID('#Pxl'), y);
+    desc.putObject(cTID('T   '), cTID('Pnt '), pdesc);
 
     // Tolerance
     if (tol != undefined) {
-      desc.putInteger(cTID("Tlrn"), tol);
+      desc.putInteger(cTID('Tlrn'), tol);
     }
 
     // Anti-alias
-    desc.putBoolean(cTID("AntA"), !!aa);
+    desc.putBoolean(cTID('AntA'), !!aa);
 
     // Contiguous
-    desc.putBoolean(cTID("Cntg"), !!cntg);
+    desc.putBoolean(cTID('Cntg'), !!cntg);
 
-    executeAction(cTID("setd"), desc, DialogModes.NO);
+    executeAction(cTID('setd'), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLC(doc, _ftn);
@@ -6007,30 +5987,31 @@ Stdlib.selectSimilar = function(doc, tol, aa) {
 
     // Selection
     var ref = new ActionReference();
-    ref.putProperty(cTID("Chnl"), cTID("fsel"));
-    desc.putReference(cTID("null"), ref);
+    ref.putProperty(cTID('Chnl'), cTID('fsel'));
+    desc.putReference(cTID('null'), ref);
 
     // Tolerance
     if (tol != undefined) {
-      desc.putInteger(cTID("Tlrn"), tol);
+      desc.putInteger(cTID('Tlrn'), tol);
     }
 
     // Anti-alias - defaults to true
-    desc.putBoolean(cTID("AntA"), aa != false);
+    desc.putBoolean(cTID('AntA'), aa != false);
 
-    executeAction(cTID("Smlr"), desc, DialogModes.NO);
+    executeAction(cTID('Smlr'), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLC(doc, _ftn);
 };
 
 Stdlib.selectBounds = function(doc, b, type, feather, antialias) {
-  function _ftn () {
-    doc.selection.select([[ b[0], b[1] ],
-                          [ b[2], b[1] ],
-                          [ b[2], b[3] ],
-                          [ b[0], b[3] ]],
-                         type, feather, antialias);
+  function _ftn() {
+    doc.selection.select(
+      [[b[0], b[1]], [b[2], b[1]], [b[2], b[3]], [b[0], b[3]]],
+      type,
+      feather,
+      antialias
+    );
   }
   if (feather == undefined) {
     feather = 0;
@@ -6051,7 +6032,7 @@ Stdlib.computeSelectionBoundsLS = function(doc) {
     var layerSetRef = doc.layerSets.add();
     var layerRef = layerSetRef.artLayers.add();
     doc.activeLayer = layerRef;
-    doc.selection.fill( app.foregroundColor);
+    doc.selection.fill(app.foregroundColor);
     bnds = layerSetRef.bounds;
     layerSetRef.remove();
   } finally {
@@ -6119,13 +6100,15 @@ Stdlib.computeSelectionBoundsPS7 = function(doc) {
     var pis = Stdlib.getPathItems(doc);
 
     for (var i = 0; i < pis.count; i++) {
-      var spis = pis.getObjectValue(i).getList(sTID("subpathListKey"));
+      var spis = pis.getObjectValue(i).getList(sTID('subpathListKey'));
       var pps = spis.getObjectValue(0).getList(sTID('points'));
 
       for (var j = 0; j < pps.count; j++) {
-        var anchorObj = pps.getObjectValue(j).getObjectValue(sTID("anchor"));
-        var anchor = [anchorObj.getUnitDoubleValue(sTID('horizontal')),
-                      anchorObj.getUnitDoubleValue(sTID('vertical'))];
+        var anchorObj = pps.getObjectValue(j).getObjectValue(sTID('anchor'));
+        var anchor = [
+          anchorObj.getUnitDoubleValue(sTID('horizontal')),
+          anchorObj.getUnitDoubleValue(sTID('vertical'))
+        ];
         if (bnds.length == 0) {
           bnds[0] = bnds[2] = anchor[0];
           bnds[1] = bnds[3] = anchor[1];
@@ -6152,7 +6135,6 @@ Stdlib.computeSelectionBoundsPS7 = function(doc) {
 
 Stdlib.getSelectionBounds = function(doc) {
   function _ftn() {
-
     if (CSVersion() > 2) {
       var bnds = doc.selection.bounds;
       for (var i = 0; i < bnds.length; i++) {
@@ -6168,10 +6150,10 @@ Stdlib.getSelectionBounds = function(doc) {
     var bnds = l.bounds;
     var hs = doc.historyStates;
 
-    if (hs[hs.length-2].name == "Layer Order") {
-      doc.activeHistoryState = hs[hs.length-4];
+    if (hs[hs.length - 2].name == 'Layer Order') {
+      doc.activeHistoryState = hs[hs.length - 4];
     } else {
-      doc.activeHistoryState = hs[hs.length-3];
+      doc.activeHistoryState = hs[hs.length - 3];
     }
 
     for (var i = 0; i < bnds.length; i++) {
@@ -6192,7 +6174,6 @@ Stdlib.selectBackground = function(doc, layer) {
   doc.selection.invert();
 };
 
-
 Stdlib.hasSelection = function(doc) {
   var res = false;
 
@@ -6205,10 +6186,8 @@ Stdlib.hasSelection = function(doc) {
     try {
       doc.selection.bounds; // throws if there's no selection
       res = true;
-    } catch(e) {
-    }
+    } catch (e) {}
     $.level = debugLevel;
-
   } else {
     var as = doc.activeHistoryState;
     doc.selection.deselect();
@@ -6237,7 +6216,7 @@ Stdlib.computeSelectionRegion = function(doc) {
   $.level = dbgLevel;
 
   try {
-    var path = doc.pathItems["Work Path"];
+    var path = doc.pathItems['Work Path'];
     var subPathItems = path.subPathItems;
 
     for (var i = 0; i < subPathItems.length; i++) {
@@ -6265,15 +6244,14 @@ Stdlib.centerCanvasOnSelection = function(doc) {
     app.preferences.rulerUnits = Units.PIXELS;
 
     var bnds = Stdlib.getSelectionBounds(doc);
-    var selX = (bnds[0]+bnds[2])/2;
-    var selY = (bnds[1]+bnds[3])/2;
+    var selX = (bnds[0] + bnds[2]) / 2;
+    var selY = (bnds[1] + bnds[3]) / 2;
 
-    var docX = doc.width.value/2;
-    var docY = doc.height.value/2;
+    var docX = doc.width.value / 2;
+    var docY = doc.height.value / 2;
 
-    doc.activeLayer.translate(docX-selX, docY-selY);
-    doc.selection.translateBoundary(docX-selX, docY-selY);
-
+    doc.activeLayer.translate(docX - selX, docY - selY);
+    doc.selection.translateBoundary(docX - selX, docY - selY);
   } finally {
     app.preferences.rulerUnits = ru;
   }
@@ -6284,22 +6262,20 @@ Stdlib.centerLayer = function(doc, layer) {
   app.preferences.rulerUnits = Units.PIXELS;
   try {
     var bnds = Stdlib.getLayerBounds(doc, layer);
-    var layerW = bnds[2]-bnds[0];
-    var layerH = bnds[3]-bnds[1];
+    var layerW = bnds[2] - bnds[0];
+    var layerH = bnds[3] - bnds[1];
     var docW = doc.width.value;
     var docH = doc.height.value;
-    var x = (docW/2) - (layerW/2);
-    var y = (docH/2) - (layerH/2);
+    var x = docW / 2 - layerW / 2;
+    var y = docH / 2 - layerH / 2;
     var deltaX = x - bnds[0];
     var deltaY = y - bnds[1];
 
     layer.translate(deltaX, deltaY);
-
   } finally {
     app.preferences.rulerUnits = ru;
   }
 };
-
 
 //============================== Vector Mask ==========================
 
@@ -6307,46 +6283,42 @@ Stdlib._doVectorMask = function(doc, layer, prop, state) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('null'), ref );
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
     var desc54 = new ActionDescriptor();
-    desc54.putBoolean( xTID(prop), state );
-    desc.putObject( cTID('T   '), cTID('Lyr '), desc54 );
-    executeAction( cTID('setd'), desc, DialogModes.NO );
-  };
+    desc54.putBoolean(xTID(prop), state);
+    desc.putObject(cTID('T   '), cTID('Lyr '), desc54);
+    executeAction(cTID('setd'), desc, DialogModes.NO);
+  }
 
   return Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
 
 Stdlib.disableVectorMask = function(doc, layer) {
-  Stdlib._doVectorMask(doc, layer, 'vectorMaskEnabled', false );
+  Stdlib._doVectorMask(doc, layer, 'vectorMaskEnabled', false);
 };
 Stdlib.enableVectorMask = function(doc, layer) {
   Stdlib._doVectorMask(doc, layer, 'vectorMaskEnabled', true);
 };
 Stdlib.unlinkVectorMask = function(doc, layer) {
-  Stdlib._doVectorMask(doc, layer, 'vectorMaskLinked', false );
+  Stdlib._doVectorMask(doc, layer, 'vectorMaskLinked', false);
 };
 Stdlib.linkVectorMask = function(doc, layer) {
-  Stdlib._doVectorMask(doc, layer, 'vectorMaskLinked', true );
+  Stdlib._doVectorMask(doc, layer, 'vectorMaskLinked', true);
 };
-
 
 Stdlib.removeVectorMask = function(doc, layer) {
   function _ftn() {
     var desc317 = new ActionDescriptor();
     var ref302 = new ActionReference();
-    ref302.putEnumerated( cTID('Path'), cTID('Path'), sTID('vectorMask') );
-    ref302.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc317.putReference( cTID('null'), ref302 );
-    executeAction( cTID('Dlt '), desc317, DialogModes.NO );
-  };
+    ref302.putEnumerated(cTID('Path'), cTID('Path'), sTID('vectorMask'));
+    ref302.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc317.putReference(cTID('null'), ref302);
+    executeAction(cTID('Dlt '), desc317, DialogModes.NO);
+  }
 
   return Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
-
-
-
 
 Stdlib.hasVectorMask = function(doc, layer) {
   // or check the layer 'hasVectorMask' property
@@ -6365,8 +6337,7 @@ Stdlib.isVectorMaskEnabled = function(doc, layer) {
       } else {
         doc.activeHistoryState = st;
       }
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   return rc;
@@ -6376,13 +6347,11 @@ Stdlib.rasterizeVectorMask = function(doc, layer) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('null'), ref );
-    desc.putEnumerated( cTID('What'),
-                        sTID('rasterizeItem'),
-                        sTID('vectorMask') );
-    executeAction( sTID('rasterizeLayer'), desc, DialogModes.NO );
-  };
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
+    desc.putEnumerated(cTID('What'), sTID('rasterizeItem'), sTID('vectorMask'));
+    executeAction(sTID('rasterizeLayer'), desc, DialogModes.NO);
+  }
 
   return Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
@@ -6405,33 +6374,32 @@ Stdlib.loadVectorMaskSelection = function(doc, layer) {
   function _ftn() {
     var desc8 = new ActionDescriptor();
     var ref4 = new ActionReference();
-    ref4.putProperty( cTID('Chnl'), cTID('fsel') );
-    desc8.putReference( cTID('null'), ref4 );
+    ref4.putProperty(cTID('Chnl'), cTID('fsel'));
+    desc8.putReference(cTID('null'), ref4);
     var ref5 = new ActionReference();
-    ref5.putEnumerated( cTID('Path'), cTID('Path'), sTID('vectorMask') );
-    ref5.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc8.putReference( cTID('T   '), ref5 );
-    desc8.putBoolean( cTID('AntA'), true );
-    desc8.putUnitDouble( cTID('Fthr'), cTID('#Pxl'), 0.000000 );
-    executeAction( cTID('setd'), desc8, DialogModes.NO );
+    ref5.putEnumerated(cTID('Path'), cTID('Path'), sTID('vectorMask'));
+    ref5.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc8.putReference(cTID('T   '), ref5);
+    desc8.putBoolean(cTID('AntA'), true);
+    desc8.putUnitDouble(cTID('Fthr'), cTID('#Pxl'), 0.0);
+    executeAction(cTID('setd'), desc8, DialogModes.NO);
   }
   return Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
 
-
 Stdlib.rotateVectorMask = function(doc, layer, angle) {
   function _ftn() {
     var desc89 = new ActionDescriptor();
-        var ref67 = new ActionReference();
-        ref67.putEnumerated( cTID('Path'), cTID('Ordn'), cTID('Trgt') );
-    desc89.putReference( cTID('null'), ref67 );
-    desc89.putEnumerated( cTID('FTcs'), cTID('QCSt'), cTID('Qcsa') );
-        var desc90 = new ActionDescriptor();
-        desc90.putUnitDouble( cTID('Hrzn'), cTID('#Pxl'), -0.000000 );
-        desc90.putUnitDouble( cTID('Vrtc'), cTID('#Pxl'), 0.000000 );
-    desc89.putObject( cTID('Ofst'), cTID('Ofst'), desc90 );
-    desc89.putUnitDouble( cTID('Angl'), cTID('#Ang'), angle );
-    executeAction( cTID('Trnf'), desc89, DialogModes.NO );
+    var ref67 = new ActionReference();
+    ref67.putEnumerated(cTID('Path'), cTID('Ordn'), cTID('Trgt'));
+    desc89.putReference(cTID('null'), ref67);
+    desc89.putEnumerated(cTID('FTcs'), cTID('QCSt'), cTID('Qcsa'));
+    var desc90 = new ActionDescriptor();
+    desc90.putUnitDouble(cTID('Hrzn'), cTID('#Pxl'), -0.0);
+    desc90.putUnitDouble(cTID('Vrtc'), cTID('#Pxl'), 0.0);
+    desc89.putObject(cTID('Ofst'), cTID('Ofst'), desc90);
+    desc89.putUnitDouble(cTID('Angl'), cTID('#Ang'), angle);
+    executeAction(cTID('Trnf'), desc89, DialogModes.NO);
   }
   return Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
@@ -6460,16 +6428,16 @@ Stdlib.selectionFromVectorMask = function(doc, layer, aa, feather) {
 Stdlib.appendVectorMaskToSelection = function(doc, layer) {
   function _ftn() {
     var desc31 = new ActionDescriptor();
-        var ref25 = new ActionReference();
-        ref25.putProperty( cTID('Chnl'), cTID('fsel') );
-    desc31.putReference( cTID('null'), ref25 );
-        var ref26 = new ActionReference();
-        ref26.putEnumerated( cTID('Path'), cTID('Path'), sTID('vectorMask') );
-        ref26.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc31.putReference( cTID('T   '), ref26 );
-    desc31.putBoolean( cTID('AntA'), true );
-    desc31.putUnitDouble( cTID('Fthr'), cTID('#Pxl'), 0.000000 );
-    executeAction( cTID('AddT'), desc31, DialogModes.NO );
+    var ref25 = new ActionReference();
+    ref25.putProperty(cTID('Chnl'), cTID('fsel'));
+    desc31.putReference(cTID('null'), ref25);
+    var ref26 = new ActionReference();
+    ref26.putEnumerated(cTID('Path'), cTID('Path'), sTID('vectorMask'));
+    ref26.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc31.putReference(cTID('T   '), ref26);
+    desc31.putBoolean(cTID('AntA'), true);
+    desc31.putUnitDouble(cTID('Fthr'), cTID('#Pxl'), 0.0);
+    executeAction(cTID('AddT'), desc31, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
@@ -6484,8 +6452,8 @@ Stdlib.getVectorMaskBounds = function(doc, layer) {
     return bnds;
   }
 
-//   Stdlib.undo(doc);
-//   //executeAction(cTID("undo"), new ActionDescriptor(), DialogModes.NO);
+  //   Stdlib.undo(doc);
+  //   //executeAction(cTID("undo"), new ActionDescriptor(), DialogModes.NO);
 
   var bnds = Stdlib.wrapLCLayer(doc, layer, _ftn);
 
@@ -6503,20 +6471,23 @@ Stdlib.getVectorMaskBounds_cornerPointsOnly = function(round, doc, layer) {
   function _ftn() {
     var res = undefined;
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Path'), cTID('Path'), sTID('vectorMask') );
-    ref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
+    ref.putEnumerated(cTID('Path'), cTID('Path'), sTID('vectorMask'));
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
     var vMaskDescr = executeActionGet(ref);
     var pathContents = vMaskDescr.getObjectValue(sTID('pathContents'));
     var pathList = pathContents.getList(sTID('pathComponents'));
 
     // for each path in current layer
-    var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    var minX = Infinity,
+      maxX = -Infinity,
+      minY = Infinity,
+      maxY = -Infinity;
     // using separate variables gives speed gain
-    var subpathListKey = sTID("subpathListKey"),
-        points_key = sTID("points"),
-        anchor_key = sTID("anchor"),
-        horizontal_key = sTID('horizontal'),
-        vertical_key = sTID('vertical');
+    var subpathListKey = sTID('subpathListKey'),
+      points_key = sTID('points'),
+      anchor_key = sTID('anchor'),
+      horizontal_key = sTID('horizontal'),
+      vertical_key = sTID('vertical');
 
     for (var cPath = 0; cPath < pathList.count; ++cPath) {
       var curPath = pathList.getObjectValue(cPath).getList(subpathListKey);
@@ -6527,15 +6498,15 @@ Stdlib.getVectorMaskBounds_cornerPointsOnly = function(round, doc, layer) {
         var x = point.getUnitDoubleValue(horizontal_key);
         var y = point.getUnitDoubleValue(_id5);
         // it is faster than if/else block (benchmarked on PSCS4)
-        if ( x < minX ) minX = x;
-        if ( x > maxX ) maxX = x;
-        if ( y < minY ) minY = y;
-        if ( y > maxY ) maxY = y;
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
       }
     }
-    res = [minX, minY, maxX, maxY, maxX-minX, maxY-minY];
+    res = [minX, minY, maxX, maxY, maxX - minX, maxY - minY];
     if (round) {
-      for (var i = 0; i < res.length; ++i)  {
+      for (var i = 0; i < res.length; ++i) {
         res[i] = Math.round(res[i]);
       }
     }
@@ -6550,42 +6521,40 @@ Stdlib.getVectorMaskAngle_cornerPointsOnly = function(round, doc, layer) {
   round = !!round;
   function _ftn() {
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Path'), cTID('Path'), sTID('vectorMask') );
-    ref.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
+    ref.putEnumerated(cTID('Path'), cTID('Path'), sTID('vectorMask'));
+    ref.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
     var vMaskDescr = executeActionGet(ref);
     var pathContents = vMaskDescr.getObjectValue(sTID('pathContents'));
     var pathList = pathContents.getList(sTID('pathComponents'));
 
     // using separate variables gives speed gain
-    var _id3 = sTID("anchor"),
-        _id4 = sTID('horizontal'),
-        _id5 = sTID('vertical');
+    var _id3 = sTID('anchor'),
+      _id4 = sTID('horizontal'),
+      _id5 = sTID('vertical');
 
-    var cPath=0;
-    var curPath = pathList.getObjectValue(cPath).getList(sTID("subpathListKey"));
-    var points = curPath.getObjectValue(0).getList(sTID("points"));
+    var cPath = 0;
+    var curPath = pathList.getObjectValue(cPath).getList(sTID('subpathListKey'));
+    var points = curPath.getObjectValue(0).getList(sTID('points'));
 
-    var p1  = points.getObjectValue(0).getObjectValue(_id3),
-         p1x = p1.getUnitDoubleValue(_id4),
-         p1y = p1.getUnitDoubleValue(_id5),
-         p2  = points.getObjectValue(1).getObjectValue(_id3),
-         p2x = p2.getUnitDoubleValue(_id4),
-         p2y = p2.getUnitDoubleValue(_id5);
+    var p1 = points.getObjectValue(0).getObjectValue(_id3),
+      p1x = p1.getUnitDoubleValue(_id4),
+      p1y = p1.getUnitDoubleValue(_id5),
+      p2 = points.getObjectValue(1).getObjectValue(_id3),
+      p2x = p2.getUnitDoubleValue(_id4),
+      p2y = p2.getUnitDoubleValue(_id5);
 
-     var v = [p2x-p1x, p2y-p1y];
-     var v_len = Math.sqrt(v[0]*v[0]+v[1]*v[1]);
-     var an = Math.acos(v[1]/v_len);
-    var res = 90.0-an*180.0/Math.PI;
-    if (p1x>p2x) res=-res;
-    if (!round)
-    {
-        res = Math.round(res*100)/100;
+    var v = [p2x - p1x, p2y - p1y];
+    var v_len = Math.sqrt(v[0] * v[0] + v[1] * v[1]);
+    var an = Math.acos(v[1] / v_len);
+    var res = 90.0 - (an * 180.0) / Math.PI;
+    if (p1x > p2x) res = -res;
+    if (!round) {
+      res = Math.round(res * 100) / 100;
     }
     return res;
   }
   return Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
-
 
 Stdlib.createSolidFillLayer = function(doc, color) {
   if (!color) {
@@ -6615,42 +6584,44 @@ Stdlib.createVectorMaskFromCurrentPath = function(doc, layer) {
   function _ftn(doc) {
     var desc = new ActionDescriptor();
     var ref135 = new ActionReference();
-    ref135.putClass( cTID('Path') );
-    desc.putReference( cTID('null'), ref135 );
+    ref135.putClass(cTID('Path'));
+    desc.putReference(cTID('null'), ref135);
     var ref136 = new ActionReference();
-    ref136.putEnumerated( cTID('Path'), cTID('Path'), sTID('vectorMask') );
-    desc.putReference( cTID('At  '), ref136 );
+    ref136.putEnumerated(cTID('Path'), cTID('Path'), sTID('vectorMask'));
+    desc.putReference(cTID('At  '), ref136);
     var ref137 = new ActionReference();
-    ref137.putEnumerated( cTID('Path'), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('Usng'), ref137 );
-    executeAction( cTID('Mk  '), desc, DialogModes.NO );
-  };
+    ref137.putEnumerated(cTID('Path'), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('Usng'), ref137);
+    executeAction(cTID('Mk  '), desc, DialogModes.NO);
+  }
 
   Stdlib.wrapLC(doc, _ftn);
 };
 
 Stdlib.saveVectorMaskAsPath = function(doc, layer, name) {
   function _ftn() {
-    function cTID(s) { return app.charIDToTypeID(s); };
-    function sTID(s) { return app.stringIDToTypeID(s); };
+    function cTID(s) {
+      return app.charIDToTypeID(s);
+    }
+    function sTID(s) {
+      return app.stringIDToTypeID(s);
+    }
 
     var desc107 = new ActionDescriptor();
     var ref65 = new ActionReference();
-    ref65.putClass( cTID('Path') );
-    desc107.putReference( cTID('null'), ref65 );
+    ref65.putClass(cTID('Path'));
+    desc107.putReference(cTID('null'), ref65);
     var ref66 = new ActionReference();
-    ref66.putEnumerated( cTID('Path'), cTID('Path'), sTID('vectorMask') );
-    ref66.putEnumerated( cTID('Lyr '), cTID('Ordn'), cTID('Trgt') );
-    desc107.putReference( cTID('From'), ref66 );
-    desc107.putString( cTID('Nm  '), name);
-    executeAction( cTID('Mk  '), desc107, DialogModes.NO );
-  };
+    ref66.putEnumerated(cTID('Path'), cTID('Path'), sTID('vectorMask'));
+    ref66.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc107.putReference(cTID('From'), ref66);
+    desc107.putString(cTID('Nm  '), name);
+    executeAction(cTID('Mk  '), desc107, DialogModes.NO);
+  }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
   return doc.pathItems.getByName(name);
 };
-
-
 
 //
 //================================ Paths ===============================
@@ -6662,19 +6633,19 @@ Stdlib.makeWorkPath = function(doc, tolerance) {
     var desc = new ActionDescriptor();
 
     var pref = new ActionReference();
-    pref.putClass(cTID("Path"));
-    desc.putReference(cTID("null"), pref );
+    pref.putClass(cTID('Path'));
+    desc.putReference(cTID('null'), pref);
 
     var sref = new ActionReference();
-    sref.putProperty( cTID("csel"), cTID("fsel"));
-    desc.putReference(cTID("From"), sref );
+    sref.putProperty(cTID('csel'), cTID('fsel'));
+    desc.putReference(cTID('From'), sref);
 
-    desc.putUnitDouble(cTID("Tlrn"), cTID("#Pxl"), Stdlib.makeWorkPath.tolerance);
+    desc.putUnitDouble(cTID('Tlrn'), cTID('#Pxl'), Stdlib.makeWorkPath.tolerance);
 
-    executeAction(cTID("Mk  "), desc, DialogModes.NO);
+    executeAction(cTID('Mk  '), desc, DialogModes.NO);
   }
 
-  Stdlib.makeWorkPath.tolerance = (tolerance != undefined) ? tolerance : 2.0;
+  Stdlib.makeWorkPath.tolerance = tolerance != undefined ? tolerance : 2.0;
 
   Stdlib.wrapLC(doc, _ftn);
 };
@@ -6683,10 +6654,10 @@ Stdlib.makePathActive = function(doc, pathName) {
   function _ftn() {
     var desc91 = new ActionDescriptor();
     var ref82 = new ActionReference();
-    ref82.putName( cTID('Path'), pathName );
-    desc91.putReference( cTID('null'), ref82 );
-    executeAction( cTID('slct'), desc91, DialogModes.NO );
-  };
+    ref82.putName(cTID('Path'), pathName);
+    desc91.putReference(cTID('null'), ref82);
+    executeAction(cTID('slct'), desc91, DialogModes.NO);
+  }
 
   Stdlib.wrapLC(doc, _ftn);
 };
@@ -6695,20 +6666,19 @@ Stdlib.makeSelectionFromPath = function(doc, pathName) {
   function _ftn() {
     var desc89 = new ActionDescriptor();
     var ref79 = new ActionReference();
-    ref79.putProperty( cTID('Chnl'), cTID('fsel') );
-    desc89.putReference( cTID('null'), ref79 );
+    ref79.putProperty(cTID('Chnl'), cTID('fsel'));
+    desc89.putReference(cTID('null'), ref79);
     var ref80 = new ActionReference();
-    ref80.putEnumerated( cTID('Path'), cTID('Ordn'), cTID('Trgt') );
-    desc89.putReference( cTID('T   '), ref80 );
-    desc89.putBoolean( cTID('AntA'), true );
-    desc89.putUnitDouble( cTID('Fthr'), cTID('#Pxl'), 0.000000 );
-    executeAction( cTID('setd'), desc89, DialogModes.NO );
-  };
+    ref80.putEnumerated(cTID('Path'), cTID('Ordn'), cTID('Trgt'));
+    desc89.putReference(cTID('T   '), ref80);
+    desc89.putBoolean(cTID('AntA'), true);
+    desc89.putUnitDouble(cTID('Fthr'), cTID('#Pxl'), 0.0);
+    executeAction(cTID('setd'), desc89, DialogModes.NO);
+  }
 
   Stdlib.makePathActive(doc, pathName);
   Stdlib.wrapLC(doc, _ftn);
 };
-
 
 // if (!Selection.prototype.makeWorkPath) {
 // Selection.prototype.makeWorkPath = function(tol) {
@@ -6733,142 +6703,140 @@ Stdlib.getPathItems = function(doc) {
 Stdlib.deselectActivePath = function(doc) {
   function _ftn() {
     var ref = new ActionReference();
-    ref.putClass(cTID("Path"));
+    ref.putClass(cTID('Path'));
 
     var desc = new ActionDescriptor();
-    desc.putReference(cTID("null"), ref);
-    executeAction( cTID( "Dslc" ), desc, DialogModes.NO );
-  };
+    desc.putReference(cTID('null'), ref);
+    executeAction(cTID('Dslc'), desc, DialogModes.NO);
+  }
   Stdlib.wrapLC(doc, _ftn);
 };
 
 // by SzopeN
-Stdlib.decodePathMode = function( mode ) {
-    var pathMode = null;
-    switch ( mode ) {
-        case ShapeOperation.SHAPEADD:
-            pathMode = cTID("AddT");
-            break;
-        case ShapeOperation.SHAPEINTERSECT:
-            pathMode = cTID();
-            break;
-        case ShapeOperation.SHAPESUBTRACT:
-            pathMode = cTID("SbtF");
-            break;
-        case ShapeOperation.SHAPEXOR:
-            pathMode = cTID();
-            break;
-        default:
-            Error.runtimeError(1, "Shape mode not supported");
-    }
-    return pathMode;
-}
+Stdlib.decodePathMode = function(mode) {
+  var pathMode = null;
+  switch (mode) {
+    case ShapeOperation.SHAPEADD:
+      pathMode = cTID('AddT');
+      break;
+    case ShapeOperation.SHAPEINTERSECT:
+      pathMode = cTID();
+      break;
+    case ShapeOperation.SHAPESUBTRACT:
+      pathMode = cTID('SbtF');
+      break;
+    case ShapeOperation.SHAPEXOR:
+      pathMode = cTID();
+      break;
+    default:
+      Error.runtimeError(1, 'Shape mode not supported');
+  }
+  return pathMode;
+};
 
 // by SzopeN
-Stdlib.decodePathUnit = function( unit ) {
-    var pathUnit = null;
-    switch ( unit ) {
-        case Units.PERCENT:
-            pathUnit = cTID("#Prc");
-            break;
-        case Units.PIXELS:
-            pathUnit = cTID("#Pxl");
-            break;
-        case Units.CM:
-        case Units.INCHES:
-        case Units.MM:
-        case Units.PICAS:
-        case Units.POINTS:
-        default:
-            Error.runtimeError(1, "Unit not supported");
-    }
-    return pathUnit;
-}
-
-
-// by SzopeN
-Stdlib.rectPath = function( mode, unit, top, left, bottom, right )
-{
-    var pathMode = Stdlib.decodePathMode(mode);
-    var pathUnit = Stdlib.decodePathUnit(unit);
-
-    var desc = new ActionDescriptor();
-
-    var arStyle = new ActionReference();
-        arStyle.putEnumerated( cTID( "Path" ), cTID( "Ordn" ), cTID( "Trgt" ) );
-
-    var adBounds = new ActionDescriptor();
-        adBounds.putUnitDouble( cTID( "Top " ), pathUnit, top );
-        adBounds.putUnitDouble( cTID( "Left" ), pathUnit, left );
-        adBounds.putUnitDouble( cTID( "Btom" ), pathUnit, bottom );
-        adBounds.putUnitDouble( cTID( "Rght" ), pathUnit, right );
-
-    desc.putReference( cTID( "null" ), arStyle );
-    desc.putObject( cTID( "T   " ), cTID( "Rctn" ), adBounds );
-
-    executeAction( pathMode, desc, DialogModes.NO );
-}
+Stdlib.decodePathUnit = function(unit) {
+  var pathUnit = null;
+  switch (unit) {
+    case Units.PERCENT:
+      pathUnit = cTID('#Prc');
+      break;
+    case Units.PIXELS:
+      pathUnit = cTID('#Pxl');
+      break;
+    case Units.CM:
+    case Units.INCHES:
+    case Units.MM:
+    case Units.PICAS:
+    case Units.POINTS:
+    default:
+      Error.runtimeError(1, 'Unit not supported');
+  }
+  return pathUnit;
+};
 
 // by SzopeN
-Stdlib.linePath = function( mode, unit, width, x1, y1, x2, y2 ) {
-    var pathMode = Stdlib.decodePathMode(mode);
-    var pathUnit = Stdlib.decodePathUnit(unit);
+Stdlib.rectPath = function(mode, unit, top, left, bottom, right) {
+  var pathMode = Stdlib.decodePathMode(mode);
+  var pathUnit = Stdlib.decodePathUnit(unit);
 
-    var idAddT = pathMode;
-        var desc90 = new ActionDescriptor();
-        var idnull = cTID( "null" );
-            var ref47 = new ActionReference();
-            var idPath = cTID( "Path" );
-            var idOrdn = cTID( "Ordn" );
-            var idTrgt = cTID( "Trgt" );
-            ref47.putEnumerated( idPath, idOrdn, idTrgt );
-        desc90.putReference( idnull, ref47 );
-        var idT = cTID( "T   " );
-            var desc91 = new ActionDescriptor();
-            var idStrt = cTID( "Strt" );
-                var desc92 = new ActionDescriptor();
-                var idHrzn = cTID( "Hrzn" );
-                var idPxl = pathUnit;
-                desc92.putUnitDouble( idHrzn, idPxl, x1 );
-                var idVrtc = cTID( "Vrtc" );
-                var idPxl = pathUnit;
-                desc92.putUnitDouble( idVrtc, idPxl, y1 );
-            var idPnt = cTID( "Pnt " );
-            desc91.putObject( idStrt, idPnt, desc92 );
-            var idEnd = cTID( "End " );
-                var desc93 = new ActionDescriptor();
-                var idHrzn = cTID( "Hrzn" );
-                var idPxl = pathUnit;
-                desc93.putUnitDouble( idHrzn, idPxl, x2 );
-                var idVrtc = cTID( "Vrtc" );
-                var idPxl = pathUnit;
-                desc93.putUnitDouble( idVrtc, idPxl, y2 );
-            var idPnt = cTID( "Pnt " );
-            desc91.putObject( idEnd, idPnt, desc93 );
-            var idWdth = cTID( "Wdth" );
-            var idPxl = pathUnit;
-            desc91.putUnitDouble( idWdth, idPxl, width );
-        var idLn = cTID( "Ln  " );
-        desc90.putObject( idT, idLn, desc91 );
-    executeAction( idAddT, desc90, DialogModes.NO );
+  var desc = new ActionDescriptor();
+
+  var arStyle = new ActionReference();
+  arStyle.putEnumerated(cTID('Path'), cTID('Ordn'), cTID('Trgt'));
+
+  var adBounds = new ActionDescriptor();
+  adBounds.putUnitDouble(cTID('Top '), pathUnit, top);
+  adBounds.putUnitDouble(cTID('Left'), pathUnit, left);
+  adBounds.putUnitDouble(cTID('Btom'), pathUnit, bottom);
+  adBounds.putUnitDouble(cTID('Rght'), pathUnit, right);
+
+  desc.putReference(cTID('null'), arStyle);
+  desc.putObject(cTID('T   '), cTID('Rctn'), adBounds);
+
+  executeAction(pathMode, desc, DialogModes.NO);
+};
+
+// by SzopeN
+Stdlib.linePath = function(mode, unit, width, x1, y1, x2, y2) {
+  var pathMode = Stdlib.decodePathMode(mode);
+  var pathUnit = Stdlib.decodePathUnit(unit);
+
+  var idAddT = pathMode;
+  var desc90 = new ActionDescriptor();
+  var idnull = cTID('null');
+  var ref47 = new ActionReference();
+  var idPath = cTID('Path');
+  var idOrdn = cTID('Ordn');
+  var idTrgt = cTID('Trgt');
+  ref47.putEnumerated(idPath, idOrdn, idTrgt);
+  desc90.putReference(idnull, ref47);
+  var idT = cTID('T   ');
+  var desc91 = new ActionDescriptor();
+  var idStrt = cTID('Strt');
+  var desc92 = new ActionDescriptor();
+  var idHrzn = cTID('Hrzn');
+  var idPxl = pathUnit;
+  desc92.putUnitDouble(idHrzn, idPxl, x1);
+  var idVrtc = cTID('Vrtc');
+  var idPxl = pathUnit;
+  desc92.putUnitDouble(idVrtc, idPxl, y1);
+  var idPnt = cTID('Pnt ');
+  desc91.putObject(idStrt, idPnt, desc92);
+  var idEnd = cTID('End ');
+  var desc93 = new ActionDescriptor();
+  var idHrzn = cTID('Hrzn');
+  var idPxl = pathUnit;
+  desc93.putUnitDouble(idHrzn, idPxl, x2);
+  var idVrtc = cTID('Vrtc');
+  var idPxl = pathUnit;
+  desc93.putUnitDouble(idVrtc, idPxl, y2);
+  var idPnt = cTID('Pnt ');
+  desc91.putObject(idEnd, idPnt, desc93);
+  var idWdth = cTID('Wdth');
+  var idPxl = pathUnit;
+  desc91.putUnitDouble(idWdth, idPxl, width);
+  var idLn = cTID('Ln  ');
+  desc90.putObject(idT, idLn, desc91);
+  executeAction(idAddT, desc90, DialogModes.NO);
 };
 
 // by SzopeN
 Stdlib.flipPath = function(h, v) {
-  var idTrnf = cTID( "Trnf" );
+  var idTrnf = cTID('Trnf');
   var desc108 = new ActionDescriptor();
   var ref101 = new ActionReference();
-  ref101.putEnumerated( cTID( "Path" ), cTID( "Ordn" ), cTID( "Trgt" ));
-  desc108.putReference(  cTID( "null" ), ref101 );
-  desc108.putEnumerated( cTID( "FTcs" ), cTID( "QCSt" ), cTID( "Qcsa" ) );
-  if (h) desc108.putUnitDouble( cTID( "Wdth" ), cTID( "#Prc" ), -100.000000 );
-  if (v) desc108.putUnitDouble( cTID( "Hght" ), cTID( "#Prc" ), -100.000000 );
-  executeAction( idTrnf, desc108, DialogModes.NO );
+  ref101.putEnumerated(cTID('Path'), cTID('Ordn'), cTID('Trgt'));
+  desc108.putReference(cTID('null'), ref101);
+  desc108.putEnumerated(cTID('FTcs'), cTID('QCSt'), cTID('Qcsa'));
+  if (h) desc108.putUnitDouble(cTID('Wdth'), cTID('#Prc'), -100.0);
+  if (v) desc108.putUnitDouble(cTID('Hght'), cTID('#Prc'), -100.0);
+  executeAction(idTrnf, desc108, DialogModes.NO);
 };
 
 // by SzopeN
 Stdlib.createPathPoint = function(point, lHandle, rHandle) {
-  var kind = (lHandle || rHandle)?PointKind.SMOOTHPOINT:PointKind.CORNERPOINT;
+  var kind = lHandle || rHandle ? PointKind.SMOOTHPOINT : PointKind.CORNERPOINT;
   if (!lHandle) lHandle = point;
   if (!rHandle) rHandle = point;
 
@@ -6882,8 +6850,6 @@ Stdlib.createPathPoint = function(point, lHandle, rHandle) {
   o.kind = kind;
   return o;
 };
-
-
 
 //
 //================================= Actions ==================================
@@ -6914,17 +6880,16 @@ Stdlib.hasAction = function(atn, atnSet) {
 
   while (true) {
     var ref = new ActionReference();
-    ref.putIndex(cTID("ASet"), i);
+    ref.putIndex(cTID('ASet'), i);
     var desc;
     try {
       desc = executeActionGet(ref);
     } catch (e) {
-      break;    // all done
+      break; // all done
     }
-    if (desc.hasKey(cTID("Nm  ")) &&
-        desc.getString(cTID("Nm  ")) == atnSet) {
+    if (desc.hasKey(cTID('Nm  ')) && desc.getString(cTID('Nm  ')) == atnSet) {
       asetDesc = desc;
-      asMatches.push({ index: i, desc: desc});
+      asMatches.push({ index: i, desc: desc });
       //break;
     }
     i++;
@@ -6939,23 +6904,22 @@ Stdlib.hasAction = function(atn, atnSet) {
     var asetIndex = asmatch.index;
     asetDesc = asmatch.desc;
 
-    if (!asetDesc.hasKey(cTID("NmbC"))) {
+    if (!asetDesc.hasKey(cTID('NmbC'))) {
       continue;
     }
-    var max = asetDesc.getInteger(cTID("NmbC"));
+    var max = asetDesc.getInteger(cTID('NmbC'));
     for (var j = 1; j <= max; j++) {
       var ref = new ActionReference();
-      ref.putIndex(cTID("Actn"), j);           // Action index
-      ref.putIndex(cTID("ASet"), asetIndex);   // ActionSet index
+      ref.putIndex(cTID('Actn'), j); // Action index
+      ref.putIndex(cTID('ASet'), asetIndex); // ActionSet index
 
       var desc;
       try {
         desc = executeActionGet(ref);
       } catch (e) {
-        break;   // all done
+        break; // all done
       }
-      if (desc.hasKey(cTID("Nm  ")) &&
-          desc.getString(cTID("Nm  ")) == atn) {
+      if (desc.hasKey(cTID('Nm  ')) && desc.getString(cTID('Nm  ')) == atn) {
         return true;
       }
     }
@@ -6967,11 +6931,11 @@ Stdlib.deleteActionStep = function(index, atn, atnSet) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putIndex(cTID("Cmnd"), index);
-    ref.putName(cTID("Actn"), atn);
-    ref.putName(cTID("ASet"), atnSet);
-    desc.putReference(cTID("null"), ref);
-    executeAction(cTID("Dlt "), desc, DialogModes.NO);
+    ref.putIndex(cTID('Cmnd'), index);
+    ref.putName(cTID('Actn'), atn);
+    ref.putName(cTID('ASet'), atnSet);
+    desc.putReference(cTID('null'), ref);
+    executeAction(cTID('Dlt '), desc, DialogModes.NO);
   }
 
   _ftn();
@@ -6980,10 +6944,10 @@ Stdlib.deleteAction = function(atn, atnSet) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putName(cTID("Actn"), atn);
-    ref.putName(cTID("ASet"), atnSet);
-    desc.putReference(cTID("null"), ref);
-    executeAction(cTID("Dlt "), desc, DialogModes.NO);
+    ref.putName(cTID('Actn'), atn);
+    ref.putName(cTID('ASet'), atnSet);
+    desc.putReference(cTID('null'), ref);
+    executeAction(cTID('Dlt '), desc, DialogModes.NO);
   }
 
   _ftn();
@@ -6992,9 +6956,9 @@ Stdlib.deleteActionSet = function(atnSet) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putName(cTID("ASet"), atnSet);
-    desc.putReference(cTID("null"), ref);
-    executeAction(cTID("Dlt "), desc, DialogModes.NO);
+    ref.putName(cTID('ASet'), atnSet);
+    desc.putReference(cTID('null'), ref);
+    executeAction(cTID('Dlt '), desc, DialogModes.NO);
   }
 
   try {
@@ -7011,7 +6975,6 @@ Stdlib.deleteActionSet = function(atnSet) {
   return true;
 };
 
-
 Stdlib.createDroplet = function(atn, atnSet, fptr) {
   fptr = Stdlib.convertFptr(fptr);
 
@@ -7027,7 +6990,6 @@ Stdlib.createDroplet = function(atn, atnSet, fptr) {
 
   _ftn();
 };
-
 
 //
 //  f = File.openDialog(); Stdlib.loadActionFile(f);
@@ -7055,23 +7017,25 @@ Stdlib.getActionSets = function() {
 
   while (true) {
     var ref = new ActionReference();
-    ref.putIndex(cTID("ASet"), i);
+    ref.putIndex(cTID('ASet'), i);
     var desc;
     var lvl = $.level;
     $.level = 0;
     try {
       desc = executeActionGet(ref);
     } catch (e) {
-      break;    // all done
+      break; // all done
     } finally {
       $.level = lvl;
     }
-    if (desc.hasKey(cTID("Nm  "))) {
+    if (desc.hasKey(cTID('Nm  '))) {
       var set = {};
       set.index = i;
-      set.name = desc.getString(cTID("Nm  "));
-      set.toString = function() { return this.name; };
-      set.count = desc.getInteger(cTID("NmbC"));
+      set.name = desc.getString(cTID('Nm  '));
+      set.toString = function() {
+        return this.name;
+      };
+      set.count = desc.getInteger(cTID('NmbC'));
       set.actions = [];
       for (var j = 1; j <= set.count; j++) {
         var ref = new ActionReference();
@@ -7094,23 +7058,23 @@ Stdlib.getActions = function(aset) {
   var names = [];
 
   if (!aset) {
-    throw Error.runtimeError(9001, "Action set must be specified");
+    throw Error.runtimeError(9001, 'Action set must be specified');
   }
 
   while (true) {
     var ref = new ActionReference();
-    ref.putIndex(cTID("ASet"), i);
+    ref.putIndex(cTID('ASet'), i);
     var desc;
     try {
       desc = executeActionGet(ref);
     } catch (e) {
       names = undefined;
-      break;    // all done
+      break; // all done
     }
-    if (desc.hasKey(cTID("Nm  "))) {
-      var aname = desc.getString(cTID("Nm  "));
+    if (desc.hasKey(cTID('Nm  '))) {
+      var aname = desc.getString(cTID('Nm  '));
       if (aname == aset) {
-        var count = desc.getInteger(cTID("NmbC"));
+        var count = desc.getInteger(cTID('NmbC'));
         for (var j = 1; j <= count; j++) {
           var ref = new ActionReference();
           ref.putIndex(cTID('Actn'), j);
@@ -7132,12 +7096,11 @@ Stdlib.getSelectedAction = function() {
   var obj = {};
   try {
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("Actn"), cTID("Ordn"), cTID("Trgt"));
+    ref.putEnumerated(cTID('Actn'), cTID('Ordn'), cTID('Trgt'));
     var desc = executeActionGet(ref);
-    obj.name = desc.getString(cTID("Nm  "));
-    obj.set = desc.getString(cTID("PrNm"));
-  } catch (e) {
-  }
+    obj.name = desc.getString(cTID('Nm  '));
+    obj.set = desc.getString(cTID('PrNm'));
+  } catch (e) {}
 
   return obj;
 };
@@ -7145,23 +7108,26 @@ Stdlib.getSelectedAction = function() {
 Stdlib.backupActionsPalette = function(file) {
   if (file) {
     file = Stdlib.convertFptr(file);
-
   } else {
-    file = Stdlib.selectFileSave("Save Backup ActionsPalette", "*.psp",
-                                 Folder.desktop + "/Actions Palette.psp");
+    file = Stdlib.selectFileSave(
+      'Save Backup ActionsPalette',
+      '*.psp',
+      Folder.desktop + '/Actions Palette.psp'
+    );
   }
 
   if (file) {
     if (!app.preferencesFolder) {
-      Error.runtimeError(9001, "\rNo preferencesFolder property found. " +
-                         "\rUnable to complete request.");
+      Error.runtimeError(
+        9001,
+        '\rNo preferencesFolder property found. ' + '\rUnable to complete request.'
+      );
     }
-    var paletteFile = new File(app.preferencesFolder +
-                               "/Actions Palette.psp");
+    var paletteFile = new File(app.preferencesFolder + '/Actions Palette.psp');
     if (!paletteFile.exists) {
-      Error.runtimeError(9001, "Unable to locate palette file.");
+      Error.runtimeError(9001, 'Unable to locate palette file.');
     }
-    paletteFile.copy(file) || throwFileError(file, "Copy failed ");
+    paletteFile.copy(file) || throwFileError(file, 'Copy failed ');
   }
 };
 
@@ -7170,14 +7136,14 @@ Stdlib.backupActionsPalette = function(file) {
 //
 Stdlib.deleteAllActionSets = function(confirmDelete) {
   if (confirmDelete != false) {
-    if (!confirm("Do you really want to empty your Actions Palette?")) {
+    if (!confirm('Do you really want to empty your Actions Palette?')) {
       return;
     }
   }
 
   var sets = Stdlib.getActionSets();
 
-  for (var i = sets.length-1; i >= 0; i--) {
+  for (var i = sets.length - 1; i >= 0; i--) {
     Stdlib.deleteActionSet(sets[i].name);
   }
 };
@@ -7186,41 +7152,40 @@ Stdlib.setActionPlaybackOption = function(opt, arg) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putProperty(cTID("Prpr"), cTID("PbkO"));
-    ref.putEnumerated(cTID("capp"), cTID("Ordn"), cTID("Trgt"));
-    desc.putReference(cTID("null"), ref );
+    ref.putProperty(cTID('Prpr'), cTID('PbkO'));
+    ref.putEnumerated(cTID('capp'), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
     var pdesc = new ActionDescriptor();
-    pdesc.putEnumerated(sTID("performance"), sTID("performance"), sTID(opt));
-    if (opt == "pause" && arg != undefined) {
-      pdesc.putInteger(sTID("pause"), parseInt(arg));
+    pdesc.putEnumerated(sTID('performance'), sTID('performance'), sTID(opt));
+    if (opt == 'pause' && arg != undefined) {
+      pdesc.putInteger(sTID('pause'), parseInt(arg));
     }
-    desc.putObject(cTID("T   "), cTID("PbkO"), pdesc );
-    executeAction(cTID("setd"), desc, DialogModes.NO);
+    desc.putObject(cTID('T   '), cTID('PbkO'), pdesc);
+    executeAction(cTID('setd'), desc, DialogModes.NO);
   }
   _ftn();
 };
 Stdlib.setPlaybackAccelerated = function() {
-  Stdlib.setActionPlaybackOption("accelerated");
+  Stdlib.setActionPlaybackOption('accelerated');
 };
 Stdlib.setPlaybackStepByStep = function() {
-  Stdlib.setActionPlaybackOption("stepByStep");
+  Stdlib.setActionPlaybackOption('stepByStep');
 };
 Stdlib.setPlaybackPaused = function(delaySec) {
-  Stdlib.setActionPlaybackOption("pause", delaySec);
+  Stdlib.setActionPlaybackOption('pause', delaySec);
 };
 
 Stdlib.allowToolRecording = function() {
   var desc = new ActionDescriptor();
   var ref = new ActionReference();
-  ref.putEnumerated(cTID('Mn  '), cTID('MnIt'), sTID("allowToolRecording"));
+  ref.putEnumerated(cTID('Mn  '), cTID('MnIt'), sTID('allowToolRecording'));
   desc.putReference(cTID('null'), ref);
   executeAction(cTID('slct'), desc, DialogModes.NO);
 };
 
-
 Stdlib.getApplicationDescriptor = function() {
   var ref = new ActionReference();
-  ref.putEnumerated(cTID("capp"), cTID("Ordn"), cTID("Trgt"));
+  ref.putEnumerated(cTID('capp'), cTID('Ordn'), cTID('Trgt'));
   return executeActionGet(ref);
 };
 
@@ -7236,7 +7201,7 @@ Stdlib.getDescriptorKeySyms = function(desc) {
   var keys = [];
 
   for (var i = 0; i < desc.count; i++) {
-    keys.push(id2char(desc.getKey(i), "Key"));
+    keys.push(id2char(desc.getKey(i), 'Key'));
   }
   return keys;
 };
@@ -7245,7 +7210,7 @@ Stdlib.getDescriptorKeyNames = function(desc) {
   var keys = [];
 
   for (var i = 0; i < desc.count; i++) {
-    keys.push(PSConstants.reverseNameLookup(desc.getKey(i), "Key"));
+    keys.push(PSConstants.reverseNameLookup(desc.getKey(i), 'Key'));
   }
   return keys;
 };
@@ -7258,23 +7223,21 @@ Stdlib.getDescriptorKeyNames = function(desc) {
 Stdlib.fileImportDataSets = function(dsfile) {
   var desc = new ActionDescriptor();
   var ref = new ActionReference();
-  ref.putClass(sTID("dataSetClass"));
-  desc.putReference(cTID("null"), ref);
-  desc.putPath(cTID("Usng"), new File(dsfile));
-  desc.putEnumerated(cTID("Encd"),
-                     sTID("dataSetEncoding"),
-                     sTID("dataSetEncodingAuto"));
-  desc.putBoolean(sTID("eraseAll"), true);
-  desc.putBoolean(sTID("useFirstColumn"), false);
-  executeAction(sTID("importDataSets"), desc, DialogModes.NO);
+  ref.putClass(sTID('dataSetClass'));
+  desc.putReference(cTID('null'), ref);
+  desc.putPath(cTID('Usng'), new File(dsfile));
+  desc.putEnumerated(cTID('Encd'), sTID('dataSetEncoding'), sTID('dataSetEncodingAuto'));
+  desc.putBoolean(sTID('eraseAll'), true);
+  desc.putBoolean(sTID('useFirstColumn'), false);
+  executeAction(sTID('importDataSets'), desc, DialogModes.NO);
 };
 
 Stdlib.applyDataSet = function(setName) {
   var desc = new ActionDescriptor();
   var setRef = new ActionReference();
-  setRef.putName(sTID("dataSetClass"), setName);
-  desc.putReference(cTID("null"), setRef);
-  executeAction(cTID("Aply"), desc, DialogModes.NO);
+  setRef.putName(sTID('dataSetClass'), setName);
+  desc.putReference(cTID('null'), setRef);
+  executeAction(cTID('Aply'), desc, DialogModes.NO);
 };
 
 //
@@ -7297,7 +7260,7 @@ Stdlib.applyDataSet = function(setName) {
 //
 Stdlib.batch = function(src, act, actset, opts, mask, recurse) {
   if (CSVersion() < 2) {
-    Error.runtimeError(9001, "Batch is only available in CS2+.");
+    Error.runtimeError(9001, 'Batch is only available in CS2+.');
   }
 
   var desc = new ActionDescriptor();
@@ -7329,42 +7292,40 @@ Stdlib.batch = function(src, act, actset, opts, mask, recurse) {
     }
   }
 
-//   $.level = 1; debugger;
-  desc.putPath(cTID("null"), src); // source
+  //   $.level = 1; debugger;
+  desc.putPath(cTID('null'), src); // source
 
   if (opts.suppressProfile == true) {
-    desc.putBoolean(sTID("suppressWarnings"), true);
+    desc.putBoolean(sTID('suppressWarnings'), true);
   }
   if (opts.suppressOpen == true) {
-    desc.putBoolean(sTID("suppressOpenOptions"), true);
+    desc.putBoolean(sTID('suppressOpenOptions'), true);
   }
 
   var actref = new ActionReference();
-  actref.putName(cTID("Actn"), act);
-  actref.putName(cTID("ASet"), actset);
-  desc.putReference(cTID("Usng"), actref);
+  actref.putName(cTID('Actn'), act);
+  actref.putName(cTID('ASet'), actset);
+  desc.putReference(cTID('Usng'), actref);
 
   if (opts.overrideOpen == true) {
-    desc.putBoolean(cTID("OvrO"), true);
+    desc.putBoolean(cTID('OvrO'), true);
   }
 
   if (opts.destination != BatchDestinationType.NODESTINATION) {
-    desc.putPath(cTID("T   "), opts.destinationFolder);
+    desc.putPath(cTID('T   '), opts.destinationFolder);
   }
 
   var fileNaming;
 
   if (opts.destination == BatchDestinationType.FOLDER) {
     fileNaming = opts.fileNaming;
-
   } else if (opts.destination == BatchDestinationType.SAVEANDCLOSE) {
-    fileNaming = [ FileNamingType.DOCUMENTNAMEMIXED,
-                   FileNamingType.EXTENSIONLOWER ];
+    fileNaming = [FileNamingType.DOCUMENTNAMEMIXED, FileNamingType.EXTENSIONLOWER];
   }
 
   if (fileNaming) {
     if (fileNaming.length > 6) {
-      Error.runtimeError(9001, "Too many BatchOptions.fileNaming components.");
+      Error.runtimeError(9001, 'Too many BatchOptions.fileNaming components.');
     }
     var fnrdesc = new ActionDescriptor();
     var fnclist = new ActionList();
@@ -7373,43 +7334,40 @@ Stdlib.batch = function(src, act, actset, opts, mask, recurse) {
       var namingComponent = opts.fileNaming[i];
       var fncdesc = new ActionDescriptor();
 
-      if (typeof namingComponent == "string" ||
-          namingComponent instanceof String) {
-        fncdesc.putString(cTID("Txt "), opts.fileNaming[i]);
+      if (typeof namingComponent == 'string' || namingComponent instanceof String) {
+        fncdesc.putString(cTID('Txt '), opts.fileNaming[i]);
       } else {
         var mappedId = Stdlib.batch.map[namingComponent];
-        fncdesc.putEnumerated(sTID("component"),
-                              sTID("fileNamingComponent"),
-                              mappedId);
+        fncdesc.putEnumerated(sTID('component'), sTID('fileNamingComponent'), mappedId);
       }
-      fnclist.putObject(sTID("fileNamingComponents"), fncdesc);
+      fnclist.putObject(sTID('fileNamingComponents'), fncdesc);
     }
 
-    fnrdesc.putList(sTID("fileNamingComponents"), fnclist);
+    fnrdesc.putList(sTID('fileNamingComponents'), fnclist);
 
-    fnrdesc.putInteger(cTID("Strt"), opts.startingSerial);
+    fnrdesc.putInteger(cTID('Strt'), opts.startingSerial);
 
-    fnrdesc.putBoolean(cTID("Mcnt"), opts.macintoshCompatible);
-    fnrdesc.putBoolean(cTID("Win "), opts.windowsCompatible);
-    fnrdesc.putBoolean(sTID("unix"), opts.unixCompatible);
-    desc.putObject(sTID("fileNamingRules"), sTID("fileNamingRules"), fnrdesc);
+    fnrdesc.putBoolean(cTID('Mcnt'), opts.macintoshCompatible);
+    fnrdesc.putBoolean(cTID('Win '), opts.windowsCompatible);
+    fnrdesc.putBoolean(sTID('unix'), opts.unixCompatible);
+    desc.putObject(sTID('fileNamingRules'), sTID('fileNamingRules'), fnrdesc);
   }
 
   if (opts.destination != BatchDestinationType.NODESTINATION) {
     if (opts.overrideSave == true) {
-      desc.putBoolean(cTID("Ovrd"), true);
+      desc.putBoolean(cTID('Ovrd'), true);
     }
   }
 
   if (opts.destination == BatchDestinationType.SAVEANDCLOSE) {
-    desc.putBoolean(cTID("SvAn"), true);
+    desc.putBoolean(cTID('SvAn'), true);
   }
 
   if (opts.errorFile) {
-    desc.putPath(cTID("Log "), opts.errorFile.parent);
-    desc.putString(cTID("Nm  "), opts.errorFile.name);
+    desc.putPath(cTID('Log '), opts.errorFile.parent);
+    desc.putString(cTID('Nm  '), opts.errorFile.name);
   }
-  executeAction(cTID("Btch"), desc, DialogModes.NO);
+  executeAction(cTID('Btch'), desc, DialogModes.NO);
 
   if (subdirs) {
     for (var i = 0; i < subdirs.length; i++) {
@@ -7426,24 +7384,24 @@ Stdlib.batch.init = function() {
     return;
   }
   Stdlib.batch.map = {};
-  Stdlib.batch.map[FileNamingType.DDMM] = sTID("ddmm");
-  Stdlib.batch.map[FileNamingType.DDMMYY] = sTID("ddmmyy");
-  Stdlib.batch.map[FileNamingType.DOCUMENTNAMELOWER] = sTID("lowerCase");
-  Stdlib.batch.map[FileNamingType.DOCUMENTNAMEMIXED] = cTID("Nm  ");
-  Stdlib.batch.map[FileNamingType.DOCUMENTNAMEUPPER] = sTID("upperCase");
-  Stdlib.batch.map[FileNamingType.EXTENSIONLOWER] = sTID("lowerCaseExtension");
-  Stdlib.batch.map[FileNamingType.EXTENSIONUPPER] = sTID("upperCaseExtension");
-  Stdlib.batch.map[FileNamingType.MMDD] = sTID("mmdd");
-  Stdlib.batch.map[FileNamingType.MMDDYY] = sTID("mmddyy");
-  Stdlib.batch.map[FileNamingType.SERIALLETTERLOWER] = sTID("upperCaseSerial");
-  Stdlib.batch.map[FileNamingType.SERIALLETTERUPPER] = sTID("lowerCaseSerial");
-  Stdlib.batch.map[FileNamingType.SERIALNUMBER1] = sTID("oneDigit");
-  Stdlib.batch.map[FileNamingType.SERIALNUMBER2] = sTID("twoDigit");
-  Stdlib.batch.map[FileNamingType.SERIALNUMBER3] = sTID("threeDigit");
-  Stdlib.batch.map[FileNamingType.SERIALNUMBER4] = sTID("fourDigit");
-  Stdlib.batch.map[FileNamingType.YYDDMM] = sTID("yyddmm");
-  Stdlib.batch.map[FileNamingType.YYMMDD] = sTID("yymmdd");
-  Stdlib.batch.map[FileNamingType.YYYYMMDD] = sTID("yyyymmdd");
+  Stdlib.batch.map[FileNamingType.DDMM] = sTID('ddmm');
+  Stdlib.batch.map[FileNamingType.DDMMYY] = sTID('ddmmyy');
+  Stdlib.batch.map[FileNamingType.DOCUMENTNAMELOWER] = sTID('lowerCase');
+  Stdlib.batch.map[FileNamingType.DOCUMENTNAMEMIXED] = cTID('Nm  ');
+  Stdlib.batch.map[FileNamingType.DOCUMENTNAMEUPPER] = sTID('upperCase');
+  Stdlib.batch.map[FileNamingType.EXTENSIONLOWER] = sTID('lowerCaseExtension');
+  Stdlib.batch.map[FileNamingType.EXTENSIONUPPER] = sTID('upperCaseExtension');
+  Stdlib.batch.map[FileNamingType.MMDD] = sTID('mmdd');
+  Stdlib.batch.map[FileNamingType.MMDDYY] = sTID('mmddyy');
+  Stdlib.batch.map[FileNamingType.SERIALLETTERLOWER] = sTID('upperCaseSerial');
+  Stdlib.batch.map[FileNamingType.SERIALLETTERUPPER] = sTID('lowerCaseSerial');
+  Stdlib.batch.map[FileNamingType.SERIALNUMBER1] = sTID('oneDigit');
+  Stdlib.batch.map[FileNamingType.SERIALNUMBER2] = sTID('twoDigit');
+  Stdlib.batch.map[FileNamingType.SERIALNUMBER3] = sTID('threeDigit');
+  Stdlib.batch.map[FileNamingType.SERIALNUMBER4] = sTID('fourDigit');
+  Stdlib.batch.map[FileNamingType.YYDDMM] = sTID('yyddmm');
+  Stdlib.batch.map[FileNamingType.YYMMDD] = sTID('yymmdd');
+  Stdlib.batch.map[FileNamingType.YYYYMMDD] = sTID('yyyymmdd');
 };
 
 Stdlib.batch.init();
@@ -7451,7 +7409,6 @@ Stdlib.batch.init();
 //
 //================================= misc =====================================
 //
-
 
 //
 // selectColorRange
@@ -7466,7 +7423,7 @@ Stdlib.batch.init();
 // Thanks to Andrew Hall for the original idea
 //
 Stdlib.selectColorRange = function(doc, color, range, inverse) {
-  var clr = (color instanceof SolidColor) ? color.lab : color;
+  var clr = color instanceof SolidColor ? color.lab : color;
   if (inverse == undefined) {
     inverse = false;
   }
@@ -7476,25 +7433,25 @@ Stdlib.selectColorRange = function(doc, color, range, inverse) {
 
   function _ftn() {
     var desc = new ActionDescriptor();
-    desc.putInteger(cTID("Fzns"), range);
+    desc.putInteger(cTID('Fzns'), range);
 
     var mnDesc = new ActionDescriptor();
-    mnDesc.putDouble(cTID("Lmnc"), clr.l);
-    mnDesc.putDouble(cTID("A   "), clr.a);
-    mnDesc.putDouble(cTID("B   "), clr.b);
-    desc.putObject(cTID("Mnm "), cTID("LbCl"), mnDesc);
+    mnDesc.putDouble(cTID('Lmnc'), clr.l);
+    mnDesc.putDouble(cTID('A   '), clr.a);
+    mnDesc.putDouble(cTID('B   '), clr.b);
+    desc.putObject(cTID('Mnm '), cTID('LbCl'), mnDesc);
 
     var mxDesc = new ActionDescriptor();
-    mxDesc.putDouble(cTID("Lmnc"), clr.l);
-    mxDesc.putDouble(cTID("A   "), clr.a);
-    mxDesc.putDouble(cTID("B   "), clr.b);
-    desc.putObject(cTID("Mxm "), cTID("LbCl"), mxDesc);
+    mxDesc.putDouble(cTID('Lmnc'), clr.l);
+    mxDesc.putDouble(cTID('A   '), clr.a);
+    mxDesc.putDouble(cTID('B   '), clr.b);
+    desc.putObject(cTID('Mxm '), cTID('LbCl'), mxDesc);
 
     if (inverse) {
-      desc.putBoolean(cTID("Invr"), inverse);
+      desc.putBoolean(cTID('Invr'), inverse);
     }
 
-    executeAction(cTID("ClrR"), desc, DialogModes.NO );
+    executeAction(cTID('ClrR'), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLC(doc, _ftn);
@@ -7510,7 +7467,9 @@ Stdlib.selectColorRange = function(doc, color, range, inverse) {
 Stdlib.selectColorRangeRGB = function(doc, clr, range, inverse) {
   if (clr instanceof Array) {
     var c = new RGBColor();
-    c.red = clr[0]; c.green = clr[1]; c.blue = clr[2];
+    c.red = clr[0];
+    c.green = clr[1];
+    c.blue = clr[2];
     clr = new SolidColor();
     clr.rgb = c;
   } else if (clr instanceof RGBColor) {
@@ -7520,7 +7479,7 @@ Stdlib.selectColorRangeRGB = function(doc, clr, range, inverse) {
   } else if (clr instanceof SolidColor) {
     // do nothing
   } else {
-    Error.runtimeError(19, "color"); // "Bad color argument");
+    Error.runtimeError(19, 'color'); // "Bad color argument");
   }
 
   Stdlib.selectColorRange(doc, clr, range, inverse);
@@ -7529,16 +7488,15 @@ Stdlib.selectColorRangeRGB = function(doc, clr, range, inverse) {
 Stdlib.selectOutOfGamutColor = function(doc) {
   function _ftn() {
     var desc = new ActionDescriptor();
-    desc.putEnumerated(cTID("Clrs"), cTID("Clrs"), cTID("OtOf"));
-    executeAction(cTID("ClrR"), desc, DialogModes.NO );
+    desc.putEnumerated(cTID('Clrs'), cTID('Clrs'), cTID('OtOf'));
+    executeAction(cTID('ClrR'), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLC(doc, _ftn);
 };
 
-
 Stdlib.rgbToString = function(c) {
-  return "[" + c.rgb.red + "," + c.rgb.green + "," + c.rgb.blue + "]";
+  return '[' + c.rgb.red + ',' + c.rgb.green + ',' + c.rgb.blue + ']';
 };
 Stdlib.rgbToArray = function(c) {
   return [c.rgb.red, c.rgb.green, c.rgb.blue];
@@ -7547,18 +7505,20 @@ Stdlib.rgbFromString = function(str) {
   var rex = /([\d\.]+),([\d\.]+),([\d\.]+)/;
   var m = str.match(rex);
   if (m) {
-    return Stdlib.createRGBColor(Number(m[1]),
-                                 Number(m[2]),
-                                 Number(m[3]));
+    return Stdlib.createRGBColor(Number(m[1]), Number(m[2]), Number(m[3]));
   }
   return undefined;
 };
 Stdlib.createRGBColor = function(r, g, b) {
   var c = new RGBColor();
   if (r instanceof Array) {
-    b = r[2]; g = r[1]; r = r[0];
+    b = r[2];
+    g = r[1];
+    r = r[0];
   }
-  c.red = parseInt(r); c.green = parseInt(g); c.blue = parseInt(b);
+  c.red = parseInt(r);
+  c.green = parseInt(g);
+  c.blue = parseInt(b);
   var sc = new SolidColor();
   sc.rgb = c;
   return sc;
@@ -7573,40 +7533,38 @@ try {
     Stdlib.COLOR_GRAY = Stdlib.createRGBColor(128, 128, 128);
     Stdlib.COLOR_WHITE = Stdlib.createRGBColor(255, 255, 255);
   }
-} catch (e) {
-}
+} catch (e) {}
 
 Stdlib.colorFromString = function(str) {
   var c = Stdlib.rgbFromString(str);
   if (!c) {
     str = str.toLowerCase();
-    if (str == "black") {
+    if (str == 'black') {
       c = Stdlib.COLOR_BLACK;
-    } else if (str == "white") {
+    } else if (str == 'white') {
       c = Stdlib.COLOR_WHITE;
-    } else if (str == "foreground") {
+    } else if (str == 'foreground') {
       c = app.foregroundColor;
-    } else if (str == "background") {
+    } else if (str == 'background') {
       c = app.backgroundColor;
-    } else if (str == "gray" || str == "grey") {
+    } else if (str == 'gray' || str == 'grey') {
       c = Stdlib.COLOR_GRAY;
-    } else if (str == "red") {
+    } else if (str == 'red') {
       c = Stdlib.COLOR_RED;
-    } else if (str == "green") {
+    } else if (str == 'green') {
       c = Stdlib.COLOR_GREEN;
-    } else if (str == "blue") {
+    } else if (str == 'blue') {
       c = Stdlib.COLOR_BLUE;
     }
   }
   return c;
 };
 
-
 // the slow way to draw...
 Stdlib.setColorAt = function(doc, x, y, color, mode, opacity) {
-  Stdlib.selectBounds(doc, [x, y, x+1, y+1], SelectionType.REPLACE, 0, false);
+  Stdlib.selectBounds(doc, [x, y, x + 1, y + 1], SelectionType.REPLACE, 0, false);
   if (!Stdlib.hasSelection(doc)) {
-    Error.runtimeError(20, "Unable to select pixel at " + x + ',' + y);
+    Error.runtimeError(20, 'Unable to select pixel at ' + x + ',' + y);
   }
   if (mode == undefined) {
     mode = ColorBlendMode.NORMAL;
@@ -7631,16 +7589,17 @@ Stdlib.putColorAt = Stdlib.setColorAt;
 //
 Stdlib.getColorAt = function(doc, x, y, undo) {
   if (CSVersion() >= 3) {
-    if (x != Math.ceil(x)){
+    if (x != Math.ceil(x)) {
       x += 0.5;
     }
-    if (y != Math.ceil(y)){
+    if (y != Math.ceil(y)) {
       y += 0.5;
     }
-    var sample = doc.colorSamplers.add([UnitValue(x, "px"),
-      UnitValue(y, "px")]);
+    var sample = doc.colorSamplers.add([UnitValue(x, 'px'), UnitValue(y, 'px')]);
     var clr = undefined;
-    try { clr = sample.color; } catch (e) {}
+    try {
+      clr = sample.color;
+    } catch (e) {}
     sample.remove();
     return clr;
   }
@@ -7653,12 +7612,14 @@ Stdlib.getColorAt = function(doc, x, y, undo) {
   x = Math.floor(x);
   y = Math.floor(y);
 
-  Stdlib.selectBounds(doc, [x, y, x+1, y+1]);
+  Stdlib.selectBounds(doc, [x, y, x + 1, y + 1]);
 
   try {
     function findPV(h) {
-      for (var i = 0; i <= 255; i++ ) {
-        if (h[i]) { return i; }
+      for (var i = 0; i <= 255; i++) {
+        if (h[i]) {
+          return i;
+        }
       }
       return 0;
     }
@@ -7667,19 +7628,16 @@ Stdlib.getColorAt = function(doc, x, y, undo) {
 
     if (doc.mode == DocumentMode.RGB) {
       pColour.mode = ColorModel.RGB;
-      pColour.rgb.red   = findPV(doc.channels["Red"].histogram);
-      pColour.rgb.green = findPV(doc.channels["Green"].histogram);
-      pColour.rgb.blue  = findPV(doc.channels["Blue"].histogram);
-
+      pColour.rgb.red = findPV(doc.channels['Red'].histogram);
+      pColour.rgb.green = findPV(doc.channels['Green'].histogram);
+      pColour.rgb.blue = findPV(doc.channels['Blue'].histogram);
     } else if (doc.mode == DocumentMode.GRAYSCALE) {
-      var gr = findPV(doc.channels["Gray"].histogram);
+      var gr = findPV(doc.channels['Gray'].histogram);
       pColour.mode = ColorModel.GRAYSCALE;
-      pColour.gray.gray = 100 * (gr/255);
-
+      pColour.gray.gray = 100 * (gr / 255);
     } else {
-      Error.runtimeError(9001, "Color Mode not supported: " + doc.mode);
+      Error.runtimeError(9001, 'Color Mode not supported: ' + doc.mode);
     }
-
   } finally {
     if (undo) {
       doc.activeHistoryState = st;
@@ -7695,19 +7653,18 @@ Stdlib.convertProfile = function(doc, profile) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated( cTID('Dcmn'), cTID('Ordn'), cTID('Trgt') );
-    desc.putReference( cTID('null'), ref);
-    desc.putString( cTID('T   '), profile );
-    desc.putEnumerated( cTID('Inte'), cTID('Inte'), cTID('Clrm') );
-    desc.putBoolean( cTID('MpBl'), true );
-    desc.putBoolean( cTID('Dthr'), false );
-    desc.putInteger( cTID('sdwM'), -1 );
-    executeAction( sTID('convertToProfile'), desc, DialogModes.NO );
+    ref.putEnumerated(cTID('Dcmn'), cTID('Ordn'), cTID('Trgt'));
+    desc.putReference(cTID('null'), ref);
+    desc.putString(cTID('T   '), profile);
+    desc.putEnumerated(cTID('Inte'), cTID('Inte'), cTID('Clrm'));
+    desc.putBoolean(cTID('MpBl'), true);
+    desc.putBoolean(cTID('Dthr'), false);
+    desc.putInteger(cTID('sdwM'), -1);
+    executeAction(sTID('convertToProfile'), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLC(doc, _ftn);
 };
-
 
 // deprecated: Use Document.changeMode
 Stdlib.convertMode = function(doc, cmode) {
@@ -7715,50 +7672,96 @@ Stdlib.convertMode = function(doc, cmode) {
 
   function _ftn() {
     var desc = new ActionDescriptor();
-    desc.putClass(cTID("T   "), cTID(mode));
-    executeAction(sTID("convertMode"), desc, DialogModes.NO);
-  };
+    desc.putClass(cTID('T   '), cTID(mode));
+    executeAction(sTID('convertMode'), desc, DialogModes.NO);
+  }
 
   switch (cmode) {
-    case DocumentMode.BITMAP:       mode = "BtmM"; break;
-    case DocumentMode.CMYK:         mode = "CMYM"; break;
-    case DocumentMode.GRAYSCALE:    mode = "Grys"; break;
-    case DocumentMode.INDEXEDCOLOR: mode = "IndC"; break;
-    case DocumentMode.LAB:          mode = "LbCM"; break;
-    case DocumentMode.MULTICHANNEL: mode = "MltC"; break;
-    case DocumentMode.RGB:          mode = "RGBM"; break;
-    default: Error.runtimeError(9001, "Bad color mode specified: " + cmode);
+    case DocumentMode.BITMAP:
+      mode = 'BtmM';
+      break;
+    case DocumentMode.CMYK:
+      mode = 'CMYM';
+      break;
+    case DocumentMode.GRAYSCALE:
+      mode = 'Grys';
+      break;
+    case DocumentMode.INDEXEDCOLOR:
+      mode = 'IndC';
+      break;
+    case DocumentMode.LAB:
+      mode = 'LbCM';
+      break;
+    case DocumentMode.MULTICHANNEL:
+      mode = 'MltC';
+      break;
+    case DocumentMode.RGB:
+      mode = 'RGBM';
+      break;
+    default:
+      Error.runtimeError(9001, 'Bad color mode specified: ' + cmode);
   }
   Stdlib.wrapLC(doc, _ftn);
 };
 
 Stdlib.colorModeString = function(cmode) {
-  var mode = "Unknown Mode";
+  var mode = 'Unknown Mode';
 
   var cmodeN = toNumber(cmode);
 
   if (isNaN(cmodeN)) {
     switch (cmode) {
-      case DocumentMode.BITMAP:       mode = "Bitmap"; break;
-      case DocumentMode.CMYK:         mode = "CMYK"; break;
-      case DocumentMode.DUOTONE:      mode = "Duotone"; break;
-      case DocumentMode.GRAYSCALE:    mode = "Grayscale"; break;
-      case DocumentMode.INDEXEDCOLOR: mode = "Indexed Color"; break;
-      case DocumentMode.LAB:          mode = "Lab"; break;
-      case DocumentMode.MULTICHANNEL: mode = "Multichannel"; break;
-      case DocumentMode.RGB:          mode = "RGB"; break;
+      case DocumentMode.BITMAP:
+        mode = 'Bitmap';
+        break;
+      case DocumentMode.CMYK:
+        mode = 'CMYK';
+        break;
+      case DocumentMode.DUOTONE:
+        mode = 'Duotone';
+        break;
+      case DocumentMode.GRAYSCALE:
+        mode = 'Grayscale';
+        break;
+      case DocumentMode.INDEXEDCOLOR:
+        mode = 'Indexed Color';
+        break;
+      case DocumentMode.LAB:
+        mode = 'Lab';
+        break;
+      case DocumentMode.MULTICHANNEL:
+        mode = 'Multichannel';
+        break;
+      case DocumentMode.RGB:
+        mode = 'RGB';
+        break;
     }
-
   } else {
     switch (cmode) {
-      case 0: mode = "Bitmap"; break;
-      case 1: mode = "Grayscale"; break;
-      case 2: mode = "Indexed Color"; break;
-      case 3: mode = "RGB"; break;
-      case 4: mode = "CMYK"; break;
-      case 7: mode = "Multichannel"; break;
-      case 8: mode = "Duotone"; break;
-      case 9: mode = "Lab"; break;
+      case 0:
+        mode = 'Bitmap';
+        break;
+      case 1:
+        mode = 'Grayscale';
+        break;
+      case 2:
+        mode = 'Indexed Color';
+        break;
+      case 3:
+        mode = 'RGB';
+        break;
+      case 4:
+        mode = 'CMYK';
+        break;
+      case 7:
+        mode = 'Multichannel';
+        break;
+      case 8:
+        mode = 'Duotone';
+        break;
+      case 9:
+        mode = 'Lab';
+        break;
     }
   }
 
@@ -7767,9 +7770,15 @@ Stdlib.colorModeString = function(cmode) {
 Stdlib.copyrightedString = function(copy) {
   var str = '';
   switch (copy) {
-    case CopyrightedType.COPYRIGHTEDWORK: str = "Copyrighted"; break;
-    case CopyrightedType.PUBLICDOMAIN:    str = 'Public Domain'; break;
-    case CopyrightedType.UNMARKED:        str = 'Unmarked'; break;
+    case CopyrightedType.COPYRIGHTEDWORK:
+      str = 'Copyrighted';
+      break;
+    case CopyrightedType.PUBLICDOMAIN:
+      str = 'Public Domain';
+      break;
+    case CopyrightedType.UNMARKED:
+      str = 'Unmarked';
+      break;
   }
 
   return str;
@@ -7777,14 +7786,30 @@ Stdlib.copyrightedString = function(copy) {
 Stdlib.urgencyString = function(urgency) {
   var str = '';
   switch (urgency) {
-    case Urgency.LOW:    str = "Urgency Low"; break;
-    case Urgency.TWO:    str = "Urgency Two"; break;
-    case Urgency.THREE:  str = "Urgency Three"; break;
-    case Urgency.FOUR:   str = "Urgency Four"; break;
-    case Urgency.NORMAL: str = "Urgency Normal"; break;
-    case Urgency.SIX:    str = "Urgency Six"; break;
-    case Urgency.SEVEN:  str = "Urgency Seven"; break;
-    case Urgency.HIGH:   str = "Urgency High"; break;
+    case Urgency.LOW:
+      str = 'Urgency Low';
+      break;
+    case Urgency.TWO:
+      str = 'Urgency Two';
+      break;
+    case Urgency.THREE:
+      str = 'Urgency Three';
+      break;
+    case Urgency.FOUR:
+      str = 'Urgency Four';
+      break;
+    case Urgency.NORMAL:
+      str = 'Urgency Normal';
+      break;
+    case Urgency.SIX:
+      str = 'Urgency Six';
+      break;
+    case Urgency.SEVEN:
+      str = 'Urgency Seven';
+      break;
+    case Urgency.HIGH:
+      str = 'Urgency High';
+      break;
   }
 
   return str;
@@ -7811,8 +7836,8 @@ Stdlib.setFillLayerColor = function(doc, layer, color) {
     var cdesc = new ActionDescriptor();
     var rgbdesc = new ActionDescriptor();
     rgbdesc.putDouble(cTID('Rd  '), color.rgb.red);
-    rgbdesc.putDouble(cTID('Grn '),  color.rgb.green);
-    rgbdesc.putDouble(cTID('Bl  '),  color.rgb.blue);
+    rgbdesc.putDouble(cTID('Grn '), color.rgb.green);
+    rgbdesc.putDouble(cTID('Bl  '), color.rgb.blue);
     cdesc.putObject(cTID('Clr '), cTID('RGBC'), rgbdesc);
     desc.putObject(cTID('T   '), sTID('solidColorLayer'), cdesc);
     return executeAction(cTID('setd'), desc, DialogModes.NO);
@@ -7823,46 +7848,46 @@ Stdlib.setFillLayerColor = function(doc, layer, color) {
 
 Stdlib.createSwatch = function(name, red, green, blue) {
   var clrDesc = new ActionDescriptor();
-  clrDesc.putDouble(cTID("Rd  "), red);
-  clrDesc.putDouble(cTID("Grn "), green);
-  clrDesc.putDouble(cTID("Bl  "), blue);
+  clrDesc.putDouble(cTID('Rd  '), red);
+  clrDesc.putDouble(cTID('Grn '), green);
+  clrDesc.putDouble(cTID('Bl  '), blue);
 
   var clrsDesc = new ActionDescriptor();
-  clrsDesc.putString(cTID("Nm  "), name);
-  clrsDesc.putObject(cTID("Clr "), cTID("RGBC"), clrDesc);
+  clrsDesc.putString(cTID('Nm  '), name);
+  clrsDesc.putObject(cTID('Clr '), cTID('RGBC'), clrDesc);
 
   var ref = new ActionReference();
-  ref.putClass(cTID("Clrs"));
+  ref.putClass(cTID('Clrs'));
 
   var desc = new ActionDescriptor();
-  desc.putReference(cTID("null"), ref);
-  desc.putObject(cTID("Usng"), cTID("Clrs"), clrsDesc);
+  desc.putReference(cTID('null'), ref);
+  desc.putObject(cTID('Usng'), cTID('Clrs'), clrsDesc);
 
-  app.executeAction(cTID("Mk  "), desc, DialogModes.NO);
+  app.executeAction(cTID('Mk  '), desc, DialogModes.NO);
 };
 
 Stdlib.saveAllPatterns = function(file) {
   var desc = new ActionDescriptor();
-  desc.putPath(cTID("null"), file);
+  desc.putPath(cTID('null'), file);
   var ref = new ActionReference();
-  ref.putProperty(cTID("Prpr"), cTID("Ptrn"));
-  ref.putEnumerated(cTID("capp"), cTID("Ordn"), cTID("Trgt"));
-  desc.putReference(cTID("T   "), ref);
-  executeAction(cTID("setd"), desc, DialogModes.NO);
+  ref.putProperty(cTID('Prpr'), cTID('Ptrn'));
+  ref.putEnumerated(cTID('capp'), cTID('Ordn'), cTID('Trgt'));
+  desc.putReference(cTID('T   '), ref);
+  executeAction(cTID('setd'), desc, DialogModes.NO);
 };
 
 Stdlib.savePatterns = function(file, indexArray) {
   var desc = new ActionDescriptor();
-  desc.putPath(cTID("null"), file);
+  desc.putPath(cTID('null'), file);
 
   var list = new ActionList();
   for (var i = 0; i < indexArray.length; i++) {
     var ref = new ActionReference();
-    ref.putIndex(cTID("Ptrn"), indexArray[i]);
+    ref.putIndex(cTID('Ptrn'), indexArray[i]);
     list.putReference(ref);
   }
-  desc.putList(cTID("T   "), list);
-  executeAction(cTID("setd"), desc, DialogModes.NO);
+  desc.putList(cTID('T   '), list);
+  executeAction(cTID('setd'), desc, DialogModes.NO);
 };
 
 Stdlib.savePattern = function(file, index) {
@@ -7872,18 +7897,18 @@ Stdlib.savePattern = function(file, index) {
 Stdlib.fillPattern = function(doc, name, id) {
   function _ftn() {
     var desc203 = new ActionDescriptor();
-    desc203.putEnumerated( cTID('Usng'), cTID('FlCn'), cTID('Ptrn') );
+    desc203.putEnumerated(cTID('Usng'), cTID('FlCn'), cTID('Ptrn'));
     var desc204 = new ActionDescriptor();
     if (name) {
-      desc204.putString( cTID('Nm  '), name);
+      desc204.putString(cTID('Nm  '), name);
     }
     if (id) {
-      desc204.putString( cTID('Idnt'), id);
+      desc204.putString(cTID('Idnt'), id);
     }
-    desc203.putObject( cTID('Ptrn'), cTID('Ptrn'), desc204 );
-    desc203.putUnitDouble( cTID('Opct'), cTID('#Prc'), 100.000000 );
-    desc203.putEnumerated( cTID('Md  '), cTID('BlnM'), cTID('Nrml') );
-    executeAction( cTID('Fl  '), desc203, DialogModes.NO );
+    desc203.putObject(cTID('Ptrn'), cTID('Ptrn'), desc204);
+    desc203.putUnitDouble(cTID('Opct'), cTID('#Prc'), 100.0);
+    desc203.putEnumerated(cTID('Md  '), cTID('BlnM'), cTID('Nrml'));
+    executeAction(cTID('Fl  '), desc203, DialogModes.NO);
   }
 
   Stdlib.wrapLC(doc, _ftn);
@@ -7893,45 +7918,44 @@ Stdlib.definePatternFromSelection = function(doc, name) {
   function _ftn() {
     var desc182 = new ActionDescriptor();
     var ref89 = new ActionReference();
-    ref89.putClass( cTID('Ptrn') );
-    desc182.putReference( cTID('null'), ref89 );
+    ref89.putClass(cTID('Ptrn'));
+    desc182.putReference(cTID('null'), ref89);
     var ref90 = new ActionReference();
-    ref90.putProperty( cTID('Prpr'), cTID('fsel') );
-    ref90.putEnumerated( cTID('Dcmn'), cTID('Ordn'), cTID('Trgt') );
-    desc182.putReference( cTID('Usng'), ref90 );
-    desc182.putString( cTID('Nm  '), name );
-    executeAction( cTID('Mk  '), desc182, DialogModes.NO );
+    ref90.putProperty(cTID('Prpr'), cTID('fsel'));
+    ref90.putEnumerated(cTID('Dcmn'), cTID('Ordn'), cTID('Trgt'));
+    desc182.putReference(cTID('Usng'), ref90);
+    desc182.putString(cTID('Nm  '), name);
+    executeAction(cTID('Mk  '), desc182, DialogModes.NO);
   }
 
   Stdlib.wrapLC(doc, _ftn);
 };
-
 
 Stdlib.createGuide = function(doc, orientation, position) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var gdesc = new ActionDescriptor();
-    gdesc.putUnitDouble(cTID("Pstn"), cTID("#Pxl"), position);
-    gdesc.putEnumerated(cTID("Ornt"), cTID("Ornt"), cTID(orientation));
-    desc.putObject(cTID("Nw  "), cTID("Gd  "), gdesc);
-    executeAction(cTID("Mk  "), desc, DialogModes.NO );
+    gdesc.putUnitDouble(cTID('Pstn'), cTID('#Pxl'), position);
+    gdesc.putEnumerated(cTID('Ornt'), cTID('Ornt'), cTID(orientation));
+    desc.putObject(cTID('Nw  '), cTID('Gd  '), gdesc);
+    executeAction(cTID('Mk  '), desc, DialogModes.NO);
   }
   Stdlib.wrapLC(doc, _ftn);
 };
 Stdlib.createVerticalGuide = function(doc, position) {
-  Stdlib.createGuide(doc, "Vrtc", position);
+  Stdlib.createGuide(doc, 'Vrtc', position);
 };
 Stdlib.createHorizontalGuide = function(doc, position) {
-  Stdlib.createGuide(doc, "Hrzn", position);
+  Stdlib.createGuide(doc, 'Hrzn', position);
 };
 
 Stdlib.clearGuides = function(doc) {
   function _ftn() {
     var desc = new ActionDescriptor();
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("Gd  "), cTID("Ordn"), cTID("Al  "));
-    desc.putReference(cTID("null"), ref );
-    executeAction(cTID("Dlt "), desc, DialogModes.NO );
+    ref.putEnumerated(cTID('Gd  '), cTID('Ordn'), cTID('Al  '));
+    desc.putReference(cTID('null'), ref);
+    executeAction(cTID('Dlt '), desc, DialogModes.NO);
   }
 
   Stdlib.wrapLC(doc, _ftn);
@@ -7953,8 +7977,8 @@ Stdlib.selectChannel = function(doc, layer, chnl) {
     var ref = new ActionReference();
     ref.putEnumerated(cTID('Chnl'), cTID('Chnl'), cTID(chnl));
     desc.putReference(cTID('null'), ref);
-    desc.putBoolean(cTID('MkVs'), false );
-    executeAction(cTID('slct'), desc, DialogModes.NO );
+    desc.putBoolean(cTID('MkVs'), false);
+    executeAction(cTID('slct'), desc, DialogModes.NO);
   }
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
@@ -7963,7 +7987,6 @@ Stdlib.selectRGBChannel = function(doc, layer) {
 };
 
 Stdlib.drawLine = function(doc, start, stop) {
-
   var startPoint = new PathPointInfo();
   startPoint.anchor = start;
   startPoint.leftDirection = start;
@@ -7981,13 +8004,13 @@ Stdlib.drawLine = function(doc, start, stop) {
   spi.operation = ShapeOperation.SHAPEXOR;
   spi.entireSubPath = [startPoint, stopPoint];
 
-  var line = doc.pathItems.add("Line", [spi]);
+  var line = doc.pathItems.add('Line', [spi]);
   line.strokePath(ToolType.PENCIL);
   line.remove();
 };
 
 Stdlib.selectEllipse = function(doc, bnds, antiAlias) {
-  antiAlias = (antiAlias != false);  // defaults to true
+  antiAlias = antiAlias != false; // defaults to true
 
   var desc = new ActionDescriptor();
   var ref = new ActionReference();
@@ -8003,17 +8026,16 @@ Stdlib.selectEllipse = function(doc, bnds, antiAlias) {
   executeAction(cTID('setd'), desc, DialogModes.NO);
 };
 
-
 Stdlib.stop = function(msg, cont) {
   if (msg == undefined) {
-    msg = "Operation cancelled.";
+    msg = 'Operation cancelled.';
   }
   var desc = new ActionDescriptor();
-  desc.putString(cTID("Msge"), msg);
+  desc.putString(cTID('Msge'), msg);
   if (cont != undefined) {
-    desc.putBoolean(cTID("Cntn"), cont);
+    desc.putBoolean(cTID('Cntn'), cont);
   }
-  app.executeAction(cTID("Stop"), desc, DialogModes.ALL);
+  app.executeAction(cTID('Stop'), desc, DialogModes.ALL);
 };
 
 //
@@ -8023,7 +8045,9 @@ Stdlib.addTextLayer = function(doc, contents, name, size) {
   var layer = doc.artLayers.add();
 
   layer.kind = LayerKind.TEXT;
-  if (name) { layer.name = name; }
+  if (name) {
+    layer.name = name;
+  }
   layer.blendMode = BlendMode.NORMAL;
   layer.opacity = 100.0;
 
@@ -8038,18 +8062,17 @@ Stdlib.addTextLayer = function(doc, contents, name, size) {
     app.preferences.typeUnits = TypeUnits.POINTS;
     app.preferences.rulerUnits = Units.PIXELS;
 
-    text.size = (size ? size : 24);    //Math.max(doc.height/100, 3);
-    text.font = "ArialMT";
+    text.size = size ? size : 24; //Math.max(doc.height/100, 3);
+    text.font = 'ArialMT';
     text.kind = TextType.PARAGRAPHTEXT;
     text.color = newColor;
 
     app.preferences.rulerUnits = Units.PERCENT;
     text.position = new Array(5, 5);
     app.preferences.rulerUnits = Units.PIXELS;
-    text.width  = doc.width;
+    text.width = doc.width;
     text.height = doc.height;
     text.contents = contents;
-
   } finally {
     app.preferences.rulerUnits = ru;
     app.preferences.typeUnits = tu;
@@ -8065,18 +8088,16 @@ Stdlib.convertTextLayerToShape = function(doc, layer) {
   function _ftn() {
     var desc96 = new ActionDescriptor();
     var ref61 = new ActionReference();
-    ref61.putClass( sTID('contentLayer') );
-    desc96.putReference( cTID('null'), ref61 );
+    ref61.putClass(sTID('contentLayer'));
+    desc96.putReference(cTID('null'), ref61);
     var ref62 = new ActionReference();
-    ref62.putEnumerated( cTID('TxLr'), cTID('Ordn'), cTID('Trgt') );
-    desc96.putReference( cTID('Usng'), ref62 );
-    executeAction( cTID('Mk  '), desc96, DialogModes.NO );
+    ref62.putEnumerated(cTID('TxLr'), cTID('Ordn'), cTID('Trgt'));
+    desc96.putReference(cTID('Usng'), ref62);
+    executeAction(cTID('Mk  '), desc96, DialogModes.NO);
   }
 
   Stdlib.wrapLCLayer(doc, layer, _ftn);
 };
-
-
 
 Stdlib.getPSFontList = function() {
   var flist = app.fonts;
@@ -8089,7 +8110,7 @@ Stdlib.getPSFontList = function() {
 
 Stdlib.findPSFont = function(f) {
   var tf = Stdlib.getByName(app.fonts, f);
-  return (tf ? tf.postScriptName : undefined);
+  return tf ? tf.postScriptName : undefined;
 };
 
 Stdlib.getFont = function(f) {
@@ -8115,8 +8136,7 @@ Stdlib.findFont = function(f) {
 };
 
 Stdlib.determineFont = function(str) {
-  return (Stdlib.getByName(app.fonts, str) ||
-          Stdlib.getByProperty(app.fonts, 'postScriptName', str));
+  return Stdlib.getByName(app.fonts, str) || Stdlib.getByProperty(app.fonts, 'postScriptName', str);
 };
 
 //
@@ -8128,9 +8148,9 @@ Stdlib.getDefaultFont = function() {
   var str;
 
   if (isMac()) {
-    str = localize("$$$/Project/Effects/Icon/Font/Name/Mac=Lucida Grande");
+    str = localize('$$$/Project/Effects/Icon/Font/Name/Mac=Lucida Grande');
   } else {
-    str = localize("$$$/Project/Effects/Icon/Font/Name/Win=Tahoma");
+    str = localize('$$$/Project/Effects/Icon/Font/Name/Win=Tahoma');
   }
 
   var font = Stdlib.determineFont(str);
@@ -8145,7 +8165,7 @@ Stdlib.getDefaultFont = function() {
   return font;
 };
 
-// 
+//
 // This attemps gets the default Type Tool font. Since there is no
 // direct API for this, we have to save the current type tool settings,
 // reset the settings, then restore the saved settings.
@@ -8155,13 +8175,13 @@ Stdlib.getDefaultFont = function() {
 //
 Stdlib.getDefaultTypeToolFont = function() {
   var str = undefined;
-  var typeTool = "typeCreateOrEditTool";
+  var typeTool = 'typeCreateOrEditTool';
 
   // need to back-port to use Stdlib functions
   try {
     // get the current tool
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("capp"), cTID("Ordn"), cTID("Trgt") );
+    ref.putEnumerated(cTID('capp'), cTID('Ordn'), cTID('Trgt'));
     var desc = executeActionGet(ref);
     var tid = desc.getEnumerationType(sTID('tool'));
     var currentTool = typeIDToStringID(tid);
@@ -8176,58 +8196,57 @@ Stdlib.getDefaultTypeToolFont = function() {
     }
 
     var ref = new ActionReference();
-    ref.putEnumerated(cTID("capp"), cTID("Ordn"), cTID("Trgt") );
+    ref.putEnumerated(cTID('capp'), cTID('Ordn'), cTID('Trgt'));
     var desc = executeActionGet(ref);
-    var tdesc = desc.hasKey(cTID('CrnT')) ?
-      desc.getObjectValue(cTID('CrnT')) : undefined;
+    var tdesc = desc.hasKey(cTID('CrnT')) ? desc.getObjectValue(cTID('CrnT')) : undefined;
 
     if (tdesc) {
       // save the current type tool settings
       var desc4 = new ActionDescriptor();
       var ref4 = new ActionReference();
-      ref4.putClass( sTID('toolPreset') );
-      desc4.putReference( cTID('null'), ref4 );
+      ref4.putClass(sTID('toolPreset'));
+      desc4.putReference(cTID('null'), ref4);
       var ref5 = new ActionReference();
-      ref5.putProperty( cTID('Prpr'), cTID('CrnT') );
-      ref5.putEnumerated( cTID('capp'), cTID('Ordn'), cTID('Trgt') );
-      desc4.putReference( cTID('Usng'), ref5 );
-      desc4.putString( cTID('Nm  '), "__temp__" );
+      ref5.putProperty(cTID('Prpr'), cTID('CrnT'));
+      ref5.putEnumerated(cTID('capp'), cTID('Ordn'), cTID('Trgt'));
+      desc4.putReference(cTID('Usng'), ref5);
+      desc4.putString(cTID('Nm  '), '__temp__');
 
       // this will fail if there is already a preset called __temp__
-      executeAction( cTID('Mk  '), desc4, DialogModes.NO );
+      executeAction(cTID('Mk  '), desc4, DialogModes.NO);
 
       // reset the type tool
       var desc2 = new ActionDescriptor();
       var ref2 = new ActionReference();
-      ref2.putProperty( cTID('Prpr'), cTID('CrnT') );
-      ref2.putEnumerated( cTID('capp'), cTID('Ordn'), cTID('Trgt') );
-      desc2.putReference( cTID('null'), ref2 );
-      executeAction( cTID('Rset'), desc2, DialogModes.NO );
+      ref2.putProperty(cTID('Prpr'), cTID('CrnT'));
+      ref2.putEnumerated(cTID('capp'), cTID('Ordn'), cTID('Trgt'));
+      desc2.putReference(cTID('null'), ref2);
+      executeAction(cTID('Rset'), desc2, DialogModes.NO);
 
       // get the current type tool settings
       var ref = new ActionReference();
-      ref.putEnumerated(cTID("capp"), cTID("Ordn"), cTID("Trgt") );
+      ref.putEnumerated(cTID('capp'), cTID('Ordn'), cTID('Trgt'));
       var desc = executeActionGet(ref);
       var tdesc = desc.getObjectValue(cTID('CrnT'));
 
       // get the default type tool font
-      var charOpts = tdesc.getObjectValue(sTID("textToolCharacterOptions"));
-      var styleOpts = charOpts.getObjectValue(cTID("TxtS"));
-      str = styleOpts.getString(sTID("fontPostScriptName"));
+      var charOpts = tdesc.getObjectValue(sTID('textToolCharacterOptions'));
+      var styleOpts = charOpts.getObjectValue(cTID('TxtS'));
+      str = styleOpts.getString(sTID('fontPostScriptName'));
 
       // restore the type tool settings
       var desc9 = new ActionDescriptor();
       var ref10 = new ActionReference();
-      ref10.putName( sTID('toolPreset'), "__temp__" );
-      desc9.putReference( cTID('null'), ref10 );
-      executeAction( cTID('slct'), desc9, DialogModes.NO );
+      ref10.putName(sTID('toolPreset'), '__temp__');
+      desc9.putReference(cTID('null'), ref10);
+      executeAction(cTID('slct'), desc9, DialogModes.NO);
 
       // delete the temp setting
       var desc11 = new ActionDescriptor();
       var ref12 = new ActionReference();
-      ref12.putEnumerated( sTID('toolPreset'), cTID('Ordn'), cTID('Trgt') );
-      desc11.putReference( cTID('null'), ref12 );
-      executeAction( cTID('Dlt '), desc11, DialogModes.NO );
+      ref12.putEnumerated(sTID('toolPreset'), cTID('Ordn'), cTID('Trgt'));
+      desc11.putReference(cTID('null'), ref12);
+      executeAction(cTID('Dlt '), desc11, DialogModes.NO);
     }
 
     // switch back to the original tool
@@ -8245,14 +8264,11 @@ Stdlib.getDefaultTypeToolFont = function() {
   return str;
 };
 
-
 // XXX fix this later
-Stdlib.setFontRealName = function( fontName ) {
+Stdlib.setFontRealName = function(fontName) {
   var ref = new ActionReference();
   ref.putProperty(sTID('property'), sTID('textStyle'));
-  ref.putEnumerated(sTID('textLayer'),
-                    sTID('ordinal'),
-                    sTID('targetEnum'));
+  ref.putEnumerated(sTID('textLayer'), sTID('ordinal'), sTID('targetEnum'));
 
   var desc = new ActionDescriptor();
   desc.putReference(sTID('null'), ref);
@@ -8267,7 +8283,6 @@ Stdlib.setFontRealName = function( fontName ) {
 // UnitValue functions
 
 Stdlib.unitValueRex = /(-)?(\d+)?(\.\d+)? (in|ft|yd|mi|mm|cm|m|km|pt|pc|tpt|ptc|ci|px|%)/;
-
 
 //
 //=============================== Debugging ===================================
@@ -8291,11 +8306,11 @@ Stdlib.fullStop = function(stop) {
 // long enough for your purposes.
 // This is deprecated in CS2.
 //
-Stdlib.pause = function(units){
+Stdlib.pause = function(units) {
   for (var i = 0; i < units; i++) {
-    var x = 11.400930;
+    var x = 11.40093;
     var y = 33.902312;
-    Stdlib.pause_dummy = eval("Math.sqrt(x/y)");
+    Stdlib.pause_dummy = eval('Math.sqrt(x/y)');
   }
 };
 Stdlib.listGlobals = function() {
@@ -8307,17 +8322,17 @@ Stdlib.listGlobals = function() {
   var str = '';
   for (var j in lst) {
     i = lst[j];
-    str += i + ":\t";
+    str += i + ':\t';
     try {
       var o = global[i];
-      str += "[" + (typeof o) + "]";
-      if (typeof o != "function") {
-        str += ":\t" + global[i].toString();
+      str += '[' + typeof o + ']';
+      if (typeof o != 'function') {
+        str += ':\t' + global[i].toString();
       }
     } catch (e) {
-      str += "[]";
+      str += '[]';
     }
-    str += "\r\n";
+    str += '\r\n';
   }
   return str;
 };
@@ -8325,15 +8340,14 @@ listGlobals = Stdlib.listGlobals;
 
 Stdlib.listProps = function(obj) {
   var s = [];
-  var sep = (isBridge() ? "\r" : "\r\n");
+  var sep = isBridge() ? '\r' : '\r\n';
 
   for (var x in obj) {
-    var str = x + ":\t";
+    var str = x + ':\t';
     try {
       var o = obj[x];
-      str += (typeof o == "function") ? "[function]" : o;
-    } catch (e) {
-    }
+      str += typeof o == 'function' ? '[function]' : o;
+    } catch (e) {}
     s.push(str);
   }
   s.sort();
@@ -8343,8 +8357,8 @@ Stdlib.listProps = function(obj) {
 listProps = Stdlib.listProps;
 
 Stdlib.dumpGlobals = function(fname) {
-  var f = new File(fname || "/c/temp/globals.log");
-  f.open("w", "TEXT", "????");
+  var f = new File(fname || '/c/temp/globals.log');
+  f.open('w', 'TEXT', '????');
   f.writeln(listGlobals());
   f.close();
 };
@@ -8359,25 +8373,26 @@ Stdlib.showtext = function showtext(msg) {
 // get a flashing cursor for a number (long) time
 Stdlib.waitForRedraw = function() {
   var desc = new ActionDescriptor();
-  desc.putEnumerated(cTID("Stte"), cTID("Stte"), cTID("RdCm"));
-  executeAction(cTID("Wait"), desc, DialogModes.NO);
+  desc.putEnumerated(cTID('Stte'), cTID('Stte'), cTID('RdCm'));
+  executeAction(cTID('Wait'), desc, DialogModes.NO);
 };
 
 // refresh = Stdlib.waitForRedraw;
 
 Stdlib._dumpRI = function(ri) {
   var str = '';
-  var props =
-  [ "name",
-    "arguments",
-    "dataType",
-    "defaultValue",
-    "description",
-    "help",
-    "isCollection",
-    "max",
-    "min",
-    "type"];
+  var props = [
+    'name',
+    'arguments',
+    'dataType',
+    'defaultValue',
+    'description',
+    'help',
+    'isCollection',
+    'max',
+    'min',
+    'type'
+  ];
 
   str += '\t' + ri.name + '\r\n';
 
@@ -8386,24 +8401,24 @@ Stdlib._dumpRI = function(ri) {
     var v = ri[n];
 
     if (v != undefined) {
-      str += "\t\t" + n + " : " + v + "\r\n";
+      str += '\t\t' + n + ' : ' + v + '\r\n';
     }
   }
   return str;
-}
+};
 Stdlib.dumpRTI = function(o) {
   var r = o.reflect;
   var str = '';
 
   //debugger;
-  str += "//\r\n// " + r.name + "\r\n//    " + r.help + "\r\n//\r\n";
-  str += "class " + r.name + "\r\n";
-  str += "  props:\r\n";
+  str += '//\r\n// ' + r.name + '\r\n//    ' + r.help + '\r\n//\r\n';
+  str += 'class ' + r.name + '\r\n';
+  str += '  props:\r\n';
   for (var i = 0; i < r.properties.length; i++) {
     var ri = r.properties[i];
     str += Stdlib._dumpRI(ri);
   }
-  str += "  methods:\r\n";
+  str += '  methods:\r\n';
   for (var i = 0; i < r.methods.length; i++) {
     var ri = r.methods[i];
     str += Stdlib._dumpRI(ri);
@@ -8415,20 +8430,20 @@ Stdlib.getLastJSLogEntry = function(fptr) {
   if (fptr) {
     fptr = Stdlib.convertFptr(fptr);
   } else {
-    fptr = new File("/c/ScriptingListenerJS.log");
+    fptr = new File('/c/ScriptingListenerJS.log');
     if (!fptr.exists) {
-      Error.runtimeError(Stdlib.IO_ERROR_CODE, "Unable to find SLC log.");
+      Error.runtimeError(Stdlib.IO_ERROR_CODE, 'Unable to find SLC log.');
     }
   }
 
-  fptr.open("r", "TEXT", "????") || throwFileError(fptr, "Unable to open");
+  fptr.open('r', 'TEXT', '????') || throwFileError(fptr, 'Unable to open');
   //fptr.lineFeed = "unix";
 
-  fptr.seek(1, 2);  // start of at the end of the file
+  fptr.seek(1, 2); // start of at the end of the file
   var prev = fptr.readch();
 
   for (var i = 2; i < fptr.length; i++) {
-    fptr.seek(i, 2);  // start of at the end of the file
+    fptr.seek(i, 2); // start of at the end of the file
     var c = fptr.readch();
     if (c == '\n' && prev == '/') {
       break;
@@ -8450,10 +8465,9 @@ Stdlib.getLastJSLogEntry = function(fptr) {
     var str = fptr.read();
 
     if (str[0] == 'a') {
-      fptr.seek(loc-1);
+      fptr.seek(loc - 1);
       str = fptr.read();
     }
-
   } else {
     var str = fptr.read();
   }
@@ -8461,11 +8475,10 @@ Stdlib.getLastJSLogEntry = function(fptr) {
   return str;
 };
 
-
 Stdlib.writeDescriptor = function(fptr, desc) {
   fptr = Stdlib.convertFptr(fptr);
   fptr.encoding = 'BINARY';
-  if (!fptr.open("w")) {
+  if (!fptr.open('w')) {
     throwFileError(fptr);
   }
   var str = desc.toStream();
@@ -8479,7 +8492,7 @@ Stdlib.writeDescriptor = function(fptr, desc) {
 Stdlib.readDescriptor = function(fptr) {
   var fptr = Stdlib.convertFptr(fptr);
   fptr.encoding = 'BINARY';
-  if (!fptr.open("r")) {
+  if (!fptr.open('r')) {
     throwFileError(fptr);
   }
   var str = fptr.read();
@@ -8498,22 +8511,22 @@ Stdlib._unitsInit = function() {
   }
   Stdlib._units = app.preferences.rulerUnits.toString();
   Stdlib._unitMap = {};
-  Stdlib._unitMap[Units.INCHES.toString()] =  "in";
-  Stdlib._unitMap[Units.CM.toString()] =      "cm";
-  Stdlib._unitMap[Units.MM.toString()] =      "mm";
-  Stdlib._unitMap[Units.PERCENT.toString()] = "%";
-  Stdlib._unitMap[Units.PICAS.toString()] =   "pc";
-  Stdlib._unitMap[Units.PIXELS.toString()] =  "px";
-  Stdlib._unitMap[Units.POINTS.toString()] =  "pt";
+  Stdlib._unitMap[Units.INCHES.toString()] = 'in';
+  Stdlib._unitMap[Units.CM.toString()] = 'cm';
+  Stdlib._unitMap[Units.MM.toString()] = 'mm';
+  Stdlib._unitMap[Units.PERCENT.toString()] = '%';
+  Stdlib._unitMap[Units.PICAS.toString()] = 'pc';
+  Stdlib._unitMap[Units.PIXELS.toString()] = 'px';
+  Stdlib._unitMap[Units.POINTS.toString()] = 'pt';
 
   Stdlib._unitStrMap = {};
-  Stdlib._unitStrMap["in"] = "in";
-  Stdlib._unitStrMap["cm"] = "cm";
-  Stdlib._unitStrMap["mm"] = "mm";
-  Stdlib._unitStrMap["%"]  = "%";
-  Stdlib._unitStrMap["pc"] = "picas";
-  Stdlib._unitStrMap["px"] = "pixels";
-  Stdlib._unitStrMap["pt"] = "points";
+  Stdlib._unitStrMap['in'] = 'in';
+  Stdlib._unitStrMap['cm'] = 'cm';
+  Stdlib._unitStrMap['mm'] = 'mm';
+  Stdlib._unitStrMap['%'] = '%';
+  Stdlib._unitStrMap['pc'] = 'picas';
+  Stdlib._unitStrMap['px'] = 'pixels';
+  Stdlib._unitStrMap['pt'] = 'points';
 };
 Stdlib._unitsInit();
 Stdlib.getDefaultUnits = function() {
@@ -8531,22 +8544,21 @@ Stdlib.validateUnitValue = function(str, bu, ru) {
     return str;
   }
 
-  if (bu && bu.typename == "Document") {
+  if (bu && bu.typename == 'Document') {
     var doc = bu;
     ru = doc.width.type;
-    bu = UnitValue(1/doc.resolution, ru);
-
+    bu = UnitValue(1 / doc.resolution, ru);
   } else {
     if (!ru) {
       ru = Stdlib.getDefaultRulerUnitsString();
     }
     if (!bu) {
-      UnitValue.baseUnit = UnitValue(1/72, ru);
+      UnitValue.baseUnit = UnitValue(1 / 72, ru);
     }
   }
   str = str.toString();
 
-  var zero = new UnitValue("0 " + ru);
+  var zero = new UnitValue('0 ' + ru);
   var un = zero;
   if (!str.match(/[a-z%]+/)) {
     str += ' ' + ru.units;
@@ -8609,7 +8621,7 @@ Stdlib.getPixelValue = function(docRes, val, base, defaultUnits) {
 
   // handle '%' manually
   if (u.type == '%') {
-    u = new UnitValue(base * u.value / 100, "px");
+    u = new UnitValue((base * u.value) / 100, 'px');
   }
 
   var pxVal;
@@ -8617,13 +8629,11 @@ Stdlib.getPixelValue = function(docRes, val, base, defaultUnits) {
   // handle 'in' manually
   if (u.type == 'in') {
     pxVal = res * u.value;
-
   } else if (u.type == 'px') {
     pxVal = u.value;
-
   } else {
-    u.baseUnit = new UnitValue(1/res, "in");
-    pxVal = u.as("px");
+    u.baseUnit = new UnitValue(1 / res, 'in');
+    pxVal = u.as('px');
   }
 
   return pxVal;
@@ -8640,7 +8650,6 @@ try {
 }
 
 */
-
 
 //
 //============================= File Browser =================================
@@ -8665,53 +8674,53 @@ FileBrowser.getFiles = function(selected, flagged) {
   var ffIndex = 0;
 
   var ref = new ActionReference();
-  var fileBrowserStrID = sTID( "fileBrowser" );
-  ref.putProperty( cTID( 'Prpr' ), fileBrowserStrID );
-  ref.putEnumerated( cTID( 'capp' ), cTID( 'Ordn' ),
-                     cTID( 'Trgt' ) );
-  var desc = executeActionGet( ref );
+  var fileBrowserStrID = sTID('fileBrowser');
+  ref.putProperty(cTID('Prpr'), fileBrowserStrID);
+  ref.putEnumerated(cTID('capp'), cTID('Ordn'), cTID('Trgt'));
+  var desc = executeActionGet(ref);
 
-  if ( desc.count > 0 && desc.hasKey( fileBrowserStrID ) ) {
-    var fbDesc = desc.getObjectValue( fileBrowserStrID );
-    var keyFilesList = cTID( 'flst' );
+  if (desc.count > 0 && desc.hasKey(fileBrowserStrID)) {
+    var fbDesc = desc.getObjectValue(fileBrowserStrID);
+    var keyFilesList = cTID('flst');
 
-    if ( fbDesc.count > 0 && fbDesc.hasKey( keyFilesList ) ) {
-      var fileList = fbDesc.getList( keyFilesList );
-      var flaggedID = sTID( "flagged" );
-      var selectedID = cTID( 'fsel' );
-      var keyPath = cTID( 'Path' );
+    if (fbDesc.count > 0 && fbDesc.hasKey(keyFilesList)) {
+      var fileList = fbDesc.getList(keyFilesList);
+      var flaggedID = sTID('flagged');
+      var selectedID = cTID('fsel');
+      var keyPath = cTID('Path');
 
-      for ( var i = 0; i < fileList.count; i++ ) {
-        var fileDesc = fileList.getObjectValue( i );
-        if ( fileDesc.count > 0 && fileDesc.hasKey( keyPath )) {
-          if ( flagged == true && fileDesc.hasKey( flaggedID )
-               && fileDesc.getBoolean( flaggedID )) {
-            var fileOrFolder = fileDesc.getPath( keyPath );
-            if ( fileOrFolder instanceof File ) {
+      for (var i = 0; i < fileList.count; i++) {
+        var fileDesc = fileList.getObjectValue(i);
+        if (fileDesc.count > 0 && fileDesc.hasKey(keyPath)) {
+          if (flagged == true && fileDesc.hasKey(flaggedID) && fileDesc.getBoolean(flaggedID)) {
+            var fileOrFolder = fileDesc.getPath(keyPath);
+            if (fileOrFolder instanceof File) {
               fileArray[ffIndex++] = fileOrFolder;
             }
           }
 
           // fixed so that a file will not be added twice if its flagged
           // and selected and both options are 'true'
-          if ( flagged == true && fileDesc.hasKey( flaggedID )
-               && fileDesc.getBoolean( flaggedID )) {
-            var fileOrFolder = fileDesc.getPath( keyPath );
-            if ( fileOrFolder instanceof File ) {
+          if (flagged == true && fileDesc.hasKey(flaggedID) && fileDesc.getBoolean(flaggedID)) {
+            var fileOrFolder = fileDesc.getPath(keyPath);
+            if (fileOrFolder instanceof File) {
               fileArray[ffIndex++] = fileOrFolder;
             }
-          } else if ( selected == true && fileDesc.hasKey( selectedID )
-               && fileDesc.getBoolean( selectedID )) {
-            var fileOrFolder = fileDesc.getPath( keyPath );
-            if ( fileOrFolder instanceof File ) {
+          } else if (
+            selected == true &&
+            fileDesc.hasKey(selectedID) &&
+            fileDesc.getBoolean(selectedID)
+          ) {
+            var fileOrFolder = fileDesc.getPath(keyPath);
+            if (fileOrFolder instanceof File) {
               fileArray[ffIndex++] = fileOrFolder;
             }
           }
 
           // if neither option is set, add everything
           if (selected != true && flagged != true) {
-            var fileOrFolder = fileDesc.getPath( keyPath );
-            if ( fileOrFolder instanceof File ) {
+            var fileOrFolder = fileDesc.getPath(keyPath);
+            if (fileOrFolder instanceof File) {
               fileArray[ffIndex++] = fileOrFolder;
             }
           }
@@ -8731,7 +8740,9 @@ FileBrowser.getFiles = function(selected, flagged) {
 //     like doc.info.keywords
 //
 Set = function Set() {};
-Set.add = function(ar, str) { return Set.merge(ar, new Array(str)); };
+Set.add = function(ar, str) {
+  return Set.merge(ar, new Array(str));
+};
 Set.remove = function(ar, str) {
   var nar = Set.copy(ar);
   for (var idx in nar) {
@@ -8759,7 +8770,7 @@ Set.merge = function(ar1, ar2) {
         obj[ar1[i]] = 1;
       }
     } else {
-      Error.runtimeError(19, "ar1");  // Bad Argument
+      Error.runtimeError(19, 'ar1'); // Bad Argument
     }
   }
   if (ar2 != undefined) {
@@ -8768,29 +8779,28 @@ Set.merge = function(ar1, ar2) {
         obj[ar2[i]] = 1;
       }
     } else {
-      Error.runtimeError(19, "ar2");  // Bad Argument
+      Error.runtimeError(19, 'ar2'); // Bad Argument
     }
   }
   for (var idx in obj) {
-    if (typeof (obj[idx]) != "function") {
+    if (typeof obj[idx] != 'function') {
       ar.push(idx);
     }
   }
   ar.sort();
   return ar;
-}
+};
 Set.copy = function(ar) {
   return ar.slice(0);
 };
 
-
 ColorProfileNames = {};
-ColorProfileNames.ADOBE_RGB      = "Adobe RGB (1998)";
-ColorProfileNames.APPLE_RGB      = "Apple RGB";
-ColorProfileNames.PROPHOTO_RGB   = "ProPhoto RGB";
-ColorProfileNames.SRGB           = "sRGB IEC61966-2.1";
-ColorProfileNames.COLORMATCH_RGB = "ColorMatch RGB";
-ColorProfileNames.WIDEGAMUT_RGB  = "Wide Gamut RGB";
+ColorProfileNames.ADOBE_RGB = 'Adobe RGB (1998)';
+ColorProfileNames.APPLE_RGB = 'Apple RGB';
+ColorProfileNames.PROPHOTO_RGB = 'ProPhoto RGB';
+ColorProfileNames.SRGB = 'sRGB IEC61966-2.1';
+ColorProfileNames.COLORMATCH_RGB = 'ColorMatch RGB';
+ColorProfileNames.WIDEGAMUT_RGB = 'Wide Gamut RGB';
 
 Stdlib.getProfileNameFromFile = function(file) {
   file.encoding = 'BINARY';
@@ -8803,9 +8813,9 @@ Stdlib.getProfileNameFromFile = function(file) {
     return file.name.replace(/\.ic(c|m)/i, '');
   }
 
-  var ofs = m.index+12;
+  var ofs = m.index + 12;
   var len = str.charCodeAt(ofs);
-  var s = str.substring(ofs+1, ofs+len);
+  var s = str.substring(ofs + 1, ofs + len);
   return s;
 };
 
@@ -8813,14 +8823,14 @@ Stdlib.getProfileNameFromFile = function(file) {
 // ColorProfileNames.MONITOR_SRGB = "Monitor - sRGB IEC61966-2.1";
 
 Stdlib.getColorSettings = function() {
-  var desc = Stdlib.getApplicationProperty(sTID("colorSettings"));
+  var desc = Stdlib.getApplicationProperty(sTID('colorSettings'));
   return desc;
 };
 
 Timer = function() {
   var self = this;
   self.startTime = 0;
-  self.stopTime  = 0;
+  self.stopTime = 0;
   self.elapsed = 0;
   self.cummulative = 0;
   self.count = 0;
@@ -8832,13 +8842,13 @@ Timer.prototype.start = function() {
 Timer.prototype.stop = function() {
   var self = this;
   self.stopTime = new Date().getTime();
-  self.elapsed = (self.stopTime - self.startTime)/1000.00;
+  self.elapsed = (self.stopTime - self.startTime) / 1000.0;
   self.cummulative += self.elapsed;
   self.count++;
-  self.per = self.cummulative/self.count;
+  self.per = self.cummulative / self.count;
 };
 
-Stdlib.decimalPoint = ($.decimalPoint || '.');
+Stdlib.decimalPoint = $.decimalPoint || '.';
 
 //========================= String formatting ================================
 //
@@ -8860,18 +8870,25 @@ String.prototype.sprintf = function() {
 };
 String.sprintf = function() {
   function _sprintf() {
-    if (!arguments || arguments.length < 1 || !RegExp)  {
-      return "Error";
+    if (!arguments || arguments.length < 1 || !RegExp) {
+      return 'Error';
     }
     var str = arguments[0];
     var re = /([^%]*)%('.|0|\x20)?(-)?(\d+)?(\.\d+)?(%|b|c|d|u|f|o|s|x|X)/m;
-            //') /* for xemacs auto-indent  */
-    var a = b = [], numSubstitutions = 0, numMatches = 0;
+    //') /* for xemacs auto-indent  */
+    var a = (b = []),
+      numSubstitutions = 0,
+      numMatches = 0;
     var result = '';
 
-    while (a = re.exec(str)) {
-      var leftpart = a[1], pPad = a[2], pJustify = a[3], pMinLength = a[4];
-      var pPrecision = a[5], pType = a[6], rightPart = a[7];
+    while ((a = re.exec(str))) {
+      var leftpart = a[1],
+        pPad = a[2],
+        pJustify = a[3],
+        pMinLength = a[4];
+      var pPrecision = a[5],
+        pType = a[6],
+        rightPart = a[7];
 
       rightPart = str.slice(a[0].length);
 
@@ -8882,21 +8899,24 @@ String.sprintf = function() {
       } else {
         numSubstitutions++;
         if (numSubstitutions >= arguments.length) {
-          alert('Error! Not enough function arguments (' +
-                (arguments.length - 1)
-                + ', excluding the string)\n'
-                + 'for the number of substitution parameters in string ('
-                + numSubstitutions + ' so far).');
+          alert(
+            'Error! Not enough function arguments (' +
+              (arguments.length - 1) +
+              ', excluding the string)\n' +
+              'for the number of substitution parameters in string (' +
+              numSubstitutions +
+              ' so far).'
+          );
         }
         var param = arguments[numSubstitutions];
         var pad = '';
-        if (pPad && pPad.slice(0,1) == "'") {
-          pad = leftpart.slice(1,2);
+        if (pPad && pPad.slice(0, 1) == "'") {
+          pad = leftpart.slice(1, 2);
         } else if (pPad) {
           pad = pPad;
         }
         var justifyRight = true;
-        if (pJustify && pJustify === "-") {
+        if (pJustify && pJustify === '-') {
           justifyRight = false;
         }
         var minLength = -1;
@@ -8909,47 +8929,47 @@ String.sprintf = function() {
         }
         var subst = param;
         switch (pType) {
-        case 'b':
-          subst = toNumber(param).toString(2);
-          break;
-        case 'c':
-          subst = String.fromCharCode(toNumber(param));
-          break;
-        case 'd':
-          subst = toNumber(param) ? Math.round(toNumber(param)) : 0;
+          case 'b':
+            subst = toNumber(param).toString(2);
             break;
-        case 'u':
-          subst = Math.abs(Math.round(toNumber(param)));
-          break;
-        case 'f':
-          if (precision == -1) {
-            precision = 6;
-          }
-          subst = parseFloat(param).toFixed(Math.min(precision, 20));
-          subst = subst.replace('.', Stdlib.decimalPoint);
-//             ? Math.round(parseFloat(param) * Math.pow(10, precision))
-//             / Math.pow(10, precision)
-//             : ;
+          case 'c':
+            subst = String.fromCharCode(toNumber(param));
             break;
-        case 'o':
-          subst = toNumber(param).toString(8);
-          break;
-        case 's':
-          subst = param;
-          break;
-        case 'x':
-          subst = ('' + toNumber(param).toString(16)).toLowerCase();
-          break;
-        case 'X':
-          subst = ('' + toNumber(param).toString(16)).toUpperCase();
-          break;
+          case 'd':
+            subst = toNumber(param) ? Math.round(toNumber(param)) : 0;
+            break;
+          case 'u':
+            subst = Math.abs(Math.round(toNumber(param)));
+            break;
+          case 'f':
+            if (precision == -1) {
+              precision = 6;
+            }
+            subst = parseFloat(param).toFixed(Math.min(precision, 20));
+            subst = subst.replace('.', Stdlib.decimalPoint);
+            //             ? Math.round(parseFloat(param) * Math.pow(10, precision))
+            //             / Math.pow(10, precision)
+            //             : ;
+            break;
+          case 'o':
+            subst = toNumber(param).toString(8);
+            break;
+          case 's':
+            subst = param;
+            break;
+          case 'x':
+            subst = ('' + toNumber(param).toString(16)).toLowerCase();
+            break;
+          case 'X':
+            subst = ('' + toNumber(param).toString(16)).toUpperCase();
+            break;
         }
         var padLeft = minLength - subst.toString().length;
         if (padLeft > 0) {
-          var arrTmp = new Array(padLeft+1);
-          var padding = arrTmp.join(pad?pad:" ");
+          var arrTmp = new Array(padLeft + 1);
+          var padding = arrTmp.join(pad ? pad : ' ');
         } else {
-          var padding = "";
+          var padding = '';
         }
       }
       result += leftpart + padding + subst;
@@ -8957,11 +8977,10 @@ String.sprintf = function() {
     }
     result += str;
     return result;
-  };
+  }
 
   return _sprintf.apply(null, arguments);
 };
-
 
 //========================= Date formatting ================================
 //
@@ -8977,7 +8996,7 @@ String.sprintf = function() {
 //       http://wiki.osafoundation.org/bin/view/Documentation/JavaScriptStrftime
 //
 // Object Method
-Date.prototype.strftime = function (fmt) {
+Date.prototype.strftime = function(fmt) {
   return Date.strftime(this, fmt);
 };
 
@@ -8990,7 +9009,7 @@ Date.strftime = function(date, fmt) {
   var rex = /([^%]*)%([%aAbBcCdDehHIjmMprRStTuwxXyYZ]{1})(.*)/;
 
   var result = '';
-  while (m = rex.exec(str)) {
+  while ((m = rex.exec(str))) {
     var pre = m[1];
     var typ = m[2];
     var post = m[3];
@@ -9002,98 +9021,188 @@ Date.strftime = function(date, fmt) {
 };
 
 // some ISO8601 formats
-Date.strftime.iso8601_date = "%Y-%m-%d";
-Date.strftime.iso8601_full = "%Y-%m-%dT%H:%M:%S";
-Date.strftime.iso8601      = "%Y-%m-%d %H:%M:%S";
-Date.strftime.iso8601_time = "%H:%M:%S";
+Date.strftime.iso8601_date = '%Y-%m-%d';
+Date.strftime.iso8601_full = '%Y-%m-%dT%H:%M:%S';
+Date.strftime.iso8601 = '%Y-%m-%d %H:%M:%S';
+Date.strftime.iso8601_time = '%H:%M:%S';
 
 Date.prototype.toISO = function() {
   return this.strftime(Date.strftime.iso8601);
 };
 
-
 // the specifier conversion function table
 Date.prototype.strftime._cnvt = {
-  zeropad: function( n ){ return n>9 ? n : '0'+n; },
-  spacepad: function( n ){ return n>9 ? n : ' '+n; },
+  zeropad: function(n) {
+    return n > 9 ? n : '0' + n;
+  },
+  spacepad: function(n) {
+    return n > 9 ? n : ' ' + n;
+  },
   ytd: function(t) {
     var first = new Date(t.getFullYear(), 0, 1).getTime();
     var diff = t.getTime() - first;
-    return parseInt(((((diff/1000)/60)/60)/24))+1;
+    return parseInt(diff / 1000 / 60 / 60 / 24) + 1;
   },
   a: function(t) {
-    return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][t.getDay()];
+    return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][t.getDay()];
   },
   A: function(t) {
-    return ['Sunday','Monday','Tuesdsay','Wednesday','Thursday','Friday',
-            'Saturday'][t.getDay()];
+    return ['Sunday', 'Monday', 'Tuesdsay', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][
+      t.getDay()
+    ];
   },
   b: function(t) {
-    return ['Jan','Feb','Mar','Apr','May','Jun', 'Jul','Aug','Sep','Oct',
-            'Nov','Dec'][t.getMonth()]; },
-  B: function(t) {
-    return ['January','February','March','April','May','June', 'July','August',
-            'September','October','November','December'][t.getMonth()]; },
-  c: function(t) {
-    return (this.a(t) + ' ' + this.b(t) + ' ' + this.e(t) + ' ' +
-            this.H(t) + ':' + this.M(t) + ':' + this.S(t) + ' ' + this.Y(t));
+    return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][
+      t.getMonth()
+    ];
   },
-  C: function(t) { return this.Y(t).slice(0, 2); },
-  d: function(t) { return this.zeropad(t.getDate()); },
-  D: function(t) { return this.m(t) + '/' + this.d(t) + '/' + this.y(t); },
-  e: function(t) { return this.spacepad(t.getDate()); },
+  B: function(t) {
+    return [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ][t.getMonth()];
+  },
+  c: function(t) {
+    return (
+      this.a(t) +
+      ' ' +
+      this.b(t) +
+      ' ' +
+      this.e(t) +
+      ' ' +
+      this.H(t) +
+      ':' +
+      this.M(t) +
+      ':' +
+      this.S(t) +
+      ' ' +
+      this.Y(t)
+    );
+  },
+  C: function(t) {
+    return this.Y(t).slice(0, 2);
+  },
+  d: function(t) {
+    return this.zeropad(t.getDate());
+  },
+  D: function(t) {
+    return this.m(t) + '/' + this.d(t) + '/' + this.y(t);
+  },
+  e: function(t) {
+    return this.spacepad(t.getDate());
+  },
   // E: function(t) { return '-' },
-  F: function(t) { return this.Y(t) + '-' + this.m(t) + '-' + this.d(t); },
-  g: function(t) { return '-'; },
-  G: function(t) { return '-'; },
-  h: function(t) { return this.b(t); },
-  H: function(t) { return this.zeropad(t.getHours()); },
+  F: function(t) {
+    return this.Y(t) + '-' + this.m(t) + '-' + this.d(t);
+  },
+  g: function(t) {
+    return '-';
+  },
+  G: function(t) {
+    return '-';
+  },
+  h: function(t) {
+    return this.b(t);
+  },
+  H: function(t) {
+    return this.zeropad(t.getHours());
+  },
   I: function(t) {
     var s = this.zeropad((t.getHours() + 12) % 12);
-    return (s == "00") ? "12" : s;
+    return s == '00' ? '12' : s;
   },
-  j: function(t) { return this.ytd(t); },
-  k: function(t) { return this.spacepad(t.getHours()); },
+  j: function(t) {
+    return this.ytd(t);
+  },
+  k: function(t) {
+    return this.spacepad(t.getHours());
+  },
   l: function(t) {
     var s = this.spacepad((t.getHours() + 12) % 12);
-    return (s == " 0") ? "12" : s;
+    return s == ' 0' ? '12' : s;
   },
-  m: function(t) { return this.zeropad(t.getMonth()+1); }, // month-1
-  M: function(t) { return this.zeropad(t.getMinutes()); },
-  n: function(t) { return '\n'; },
+  m: function(t) {
+    return this.zeropad(t.getMonth() + 1);
+  }, // month-1
+  M: function(t) {
+    return this.zeropad(t.getMinutes());
+  },
+  n: function(t) {
+    return '\n';
+  },
   // O: function(t) { return '-' },
-  p: function(t) { return this.H(t) < 12 ? 'AM' : 'PM'; },
+  p: function(t) {
+    return this.H(t) < 12 ? 'AM' : 'PM';
+  },
   r: function(t) {
     return this.I(t) + ':' + this.M(t) + ':' + this.S(t) + ' ' + this.p(t);
   },
-  R: function(t) { return this.H(t) + ':' + this.M(t); },
-  S: function(t) { return this.zeropad(t.getSeconds()); },
-  t: function(t) { return '\t'; },
+  R: function(t) {
+    return this.H(t) + ':' + this.M(t);
+  },
+  S: function(t) {
+    return this.zeropad(t.getSeconds());
+  },
+  t: function(t) {
+    return '\t';
+  },
   T: function(t) {
     return this.H(t) + ':' + this.M(t) + ':' + this.S(t) + ' ' + this.p(t);
   },
-  u: function(t) {return t.getDay() ? t.getDay()+1 : 7; },
-  U: function(t) { return '-'; },
-  w: function(t) { return t.getDay(); }, // 0..6 == sun..sat
-  W: function(t) { return '-'; },       // not available
-  x: function(t) { return this.D(t); },
-  X: function(t) { return this.T(t); },
-  y: function(t) { return this.zeropad(this.Y(t) % 100); },
-  Y: function(t) { return t.getFullYear().toString(); },
-  z: function(t) { return ''; },
-  Z: function(t) { return ''; },
-  '%': function(t) { return '%'; }
+  u: function(t) {
+    return t.getDay() ? t.getDay() + 1 : 7;
+  },
+  U: function(t) {
+    return '-';
+  },
+  w: function(t) {
+    return t.getDay();
+  }, // 0..6 == sun..sat
+  W: function(t) {
+    return '-';
+  }, // not available
+  x: function(t) {
+    return this.D(t);
+  },
+  X: function(t) {
+    return this.T(t);
+  },
+  y: function(t) {
+    return this.zeropad(this.Y(t) % 100);
+  },
+  Y: function(t) {
+    return t.getFullYear().toString();
+  },
+  z: function(t) {
+    return '';
+  },
+  Z: function(t) {
+    return '';
+  },
+  '%': function(t) {
+    return '%';
+  }
 };
 
 // this needs to be worked on...
 function _weekNumber(date) {
-  var ytd = toNumber(date.strftime("%j"));
-  var week = Math.floor(ytd/7);
+  var ytd = toNumber(date.strftime('%j'));
+  var week = Math.floor(ytd / 7);
   if (new Date(date.getFullYear(), 0, 1).getDay() < 4) {
     week++;
   }
   return week;
-};
+}
 
 File.prototype.toUIString = function() {
   return decodeURI(this.fsName);
@@ -9175,11 +9284,11 @@ File.prototype.strf = function(fmt, fs) {
   m = name.match(/(.+)\.[^\.\/]+$/);
   var f = m ? m[1] : name;
 
-  fs |= !($.os.match(/windows/i)); // fs only matters on Windows
+  fs |= !$.os.match(/windows/i); // fs only matters on Windows
   // fs |= isMac();
 
   // full path...
-  var d = decodeURI((fs ? self.parent.fsName : self.parent.absoluteURI));
+  var d = decodeURI(fs ? self.parent.fsName : self.parent.absoluteURI);
 
   // parent directory...
   var p = decodeURI(self.parent.name);
@@ -9194,7 +9303,7 @@ File.prototype.strf = function(fmt, fs) {
 
   var result = '';
 
-  while (m = rex.exec(str)) {
+  while ((m = rex.exec(str))) {
     var pre = m[1];
     var sig = m[2];
     var len = m[3];
@@ -9206,37 +9315,43 @@ File.prototype.strf = function(fmt, fs) {
 
     if (typ == '%') {
       subst = '%';
-
     } else {
       var s = '';
       switch (typ) {
-        case 'd': s = d; break;
-        case 'e': s = e; break;
-        case 'f': s = f; break;
-        case 'p': s = p; break;
+        case 'd':
+          s = d;
+          break;
+        case 'e':
+          s = e;
+          break;
+        case 'f':
+          s = f;
+          break;
+        case 'p':
+          s = p;
+          break;
         // default: s = "%" + typ; break; // let others pass through
       }
 
       var strlen = s.length;
 
       if (strlen && (len || ign)) {
-        ign = (ign ? Number(ign.slice(1)) : 0);
+        ign = ign ? Number(ign.slice(1)) : 0;
         if (len) {
           len = Number(len);
           if (sig) {
             var _idx = strlen - len - ign;
-            subst = s.slice(_idx, _idx+len);
+            subst = s.slice(_idx, _idx + len);
           } else {
-            subst = s.slice(ign, ign+len);
+            subst = s.slice(ign, ign + len);
           }
         } else {
           if (sig) {
-            subst = s.slice(0, strlen-ign);
+            subst = s.slice(0, strlen - ign);
           } else {
             subst = s.slice(ign);
           }
         }
-
       } else {
         subst = s;
       }
@@ -9251,7 +9366,6 @@ File.prototype.strf = function(fmt, fs) {
   return result;
 };
 Folder.prototype.strf = File.prototype.strf;
-
 
 //========================= GPS formatting ===============================
 /*
@@ -9292,22 +9406,21 @@ Stdlib.strfGPSstr(undefined, "54.00 deg 59.00 min 22.23 secs");
 */
 //
 
-Stdlib.DEFAULT_GPS_FORMAT = "%d deg %d' %.2f\"";
+Stdlib.DEFAULT_GPS_FORMAT = '%d deg %d\' %.2f"';
 
 Stdlib.strfGPSstr = function(fmtStr, gpsStr) {
-
   // This is the most likely format
   var r = gpsStr.match(/(\d+\.\d+) (\d+\.\d+)\' (\d+\.\d+)\"/);
 
   // This is the format from the XMP Schema spec
   if (!r) {
-    var r2 = r = gpsStr.match(/(\d+)\,(\d+)(\,|\.)(\d+)/);
+    var r2 = (r = gpsStr.match(/(\d+)\,(\d+)(\,|\.)(\d+)/));
   }
 
   // This format should pick up just about anything else
   if (!r) {
     var rex = /(\d+(?:\.\d+)?)[^\d\.]+(\d+(?:\.\d+)?)[^\d\.]+(\d+(?:\.\d+)?)/;
-    var r3 = r = gpsStr.match(rex);
+    var r3 = (r = gpsStr.match(rex));
   }
 
   if (!r) {
@@ -9323,8 +9436,8 @@ Stdlib.strfGPSstr = function(fmtStr, gpsStr) {
     var xm = (d - Math.floor(d)) * 60;
     var xs = (m - Math.floor(m)) * 60;
 
-    m += s/60;
-    d += m/60;
+    m += s / 60;
+    d += m / 60;
     if (s == 0) {
       s = xs;
     }
@@ -9342,8 +9455,7 @@ Stdlib.strfGPSstr = function(fmtStr, gpsStr) {
 
     if (sep == '.') {
       var m = Number(r[2]);
-      var s = Number("0." + r[4]) * 60;
-
+      var s = Number('0.' + r[4]) * 60;
     } else {
       var m = Number(r[2]);
       var s = Number(r[4]);
@@ -9363,10 +9475,10 @@ Stdlib.strfGPS = function(fmtStr, deg, min, sec) {
     min = 0;
   }
   if (min == Math.floor(min)) {
-    min += sec/60;
+    min += sec / 60;
   }
   if (deg == Math.floor(deg)) {
-    deg += min/60;
+    deg += min / 60;
   }
   if (fmtStr == undefined) {
     fmtStr = Stdlib.DEFAULT_GPS_FORMAT;
@@ -9374,7 +9486,6 @@ Stdlib.strfGPS = function(fmtStr, deg, min, sec) {
 
   return String.sprintf(fmtStr, deg, min, sec);
 };
-
 
 //
 // Stdlib.getXMPValue(obj, tag)
@@ -9395,35 +9506,32 @@ Stdlib.strfGPS = function(fmtStr, deg, min, sec) {
 // Stdlib.getXMPValue(File("~/Desktop/test.jpg"), "ModifyDate")
 //
 Stdlib.getXMPValue = function(obj, tag) {
-  var xmp = "";
+  var xmp = '';
 
   if (obj == undefined) {
-    Error.runtimeError(2, "obj");
+    Error.runtimeError(2, 'obj');
   }
 
   if (tag == undefined) {
-    Error.runtimeError(2, "tag");
+    Error.runtimeError(2, 'tag');
   }
 
   if (obj.constructor == String) {
     xmp = new XML(obj);
-
-  } else if (obj.typename == "Document") {
+  } else if (obj.typename == 'Document') {
     xmp = new XML(obj.xmpMetadata.rawData);
-
   } else if (obj instanceof XML) {
     xmp = obj;
-
   } else if (obj instanceof File) {
     if (!ExternalObject.AdobeXMPScript) {
       ExternalObject.AdobeXMPScript = new ExternalObject('lib:AdobeXMPScript');
     }
     // Stdlib.loadXMPScript();
 
-    if (tag == "CreateDate") {
+    if (tag == 'CreateDate') {
       var cstr = obj.created.toISODateString();
-      var mstr = Stdlib.getXMPValue(obj, "ModifyDate");
-      return cstr += mstr.slice(mstr.length-6);
+      var mstr = Stdlib.getXMPValue(obj, 'ModifyDate');
+      return (cstr += mstr.slice(mstr.length - 6));
     }
 
     // add other exceptions here as needed
@@ -9432,35 +9540,31 @@ Stdlib.getXMPValue = function(obj, tag) {
     var xmpFile = undefined;
 
     try {
-      xmpFile = new XMPFile(fstr, XMPConst.UNKNOWN,
-                            XMPConst.OPEN_FOR_READ);
+      xmpFile = new XMPFile(fstr, XMPConst.UNKNOWN, XMPConst.OPEN_FOR_READ);
     } catch (e) {
       try {
-        xmpFile = new XMPFile(fstr, XMPConst.UNKNOWN,
-                              XMPConst.OPEN_USE_PACKET_SCANNING);
+        xmpFile = new XMPFile(fstr, XMPConst.UNKNOWN, XMPConst.OPEN_USE_PACKET_SCANNING);
       } catch (e) {
-        Error.runtimeError(19, "obj");
+        Error.runtimeError(19, 'obj');
       }
     }
 
     var xmpMeta = xmpFile.getXMP();
-    var str = xmpMeta.serialize()
+    var str = xmpMeta.serialize();
     xmp = new XML(str);
     xmpFile.closeFile();
-
   } else {
-    Error.runtimeError(19, "obj");
+    Error.runtimeError(19, 'obj');
   }
 
-	var s;
-	
-	// Handle special cases here
-	if (tag == "ISOSpeedRatings") {
-		s = String(eval("xmp.*::RDF.*::Description.*::ISOSpeedRatings.*::Seq.*::li"));
+  var s;
 
-  }	else {
+  // Handle special cases here
+  if (tag == 'ISOSpeedRatings') {
+    s = String(eval('xmp.*::RDF.*::Description.*::ISOSpeedRatings.*::Seq.*::li'));
+  } else {
     // Handle typical non-complex fields
- 		s = String(eval("xmp.*::RDF.*::Description.*::" + tag));
+    s = String(eval('xmp.*::RDF.*::Description.*::' + tag));
   }
 
   return s;
@@ -9468,22 +9572,22 @@ Stdlib.getXMPValue = function(obj, tag) {
 
 Stdlib.removeXMPData = function(fptr) {
   fptr = Stdlib.convertFptr(fptr);
-  
+
   var f = new XMPFile(fptr.fsName, XMPConst.UNKNOWN, XMPConst.OPEN_FOR_UPDATE);
   var xmp = f.getXMP();
 
-  XMPUtils.removeProperties(xmp, "", "", XMPConst.REMOVE_ALL_PROPERTIES);
+  XMPUtils.removeProperties(xmp, '', '', XMPConst.REMOVE_ALL_PROPERTIES);
 
   if (f.canPutXMP(xmp)) {
-    f.putXMP( xmp );
+    f.putXMP(xmp);
   }
   f.closeFile(XMPConst.CLOSE_UPDATE_SAFELY);
-}
+};
 
 // This only works in CS4+
 Stdlib.loadXMPScript = function() {
   if (CSVersion() < 4) {
-    Error.runtimeError(Stdlib.ERROR_CODE, "XMPScript required");
+    Error.runtimeError(Stdlib.ERROR_CODE, 'XMPScript required');
   }
 
   if (!ExternalObject.AdobeXMPScript) {
@@ -9494,7 +9598,7 @@ Stdlib.loadXMPScript = function() {
 // This only works in CS4+
 Stdlib.unloadXMPScript = function() {
   if (CSVersion() < 4) {
-    Error.runtimeError(Stdlib.ERROR_CODE, "XMPScript required");
+    Error.runtimeError(Stdlib.ERROR_CODE, 'XMPScript required');
   }
 
   if (ExternalObject.AdobeXMPScript) {
@@ -9516,57 +9620,63 @@ o = Stdlib.fromDescriptor(d);
 */
 Stdlib.toDescriptor = function(obj) {
   if (arguments.length != 1) {
-    Error.runtimeError(1221, "obj"); // wrong number of arguments
+    Error.runtimeError(1221, 'obj'); // wrong number of arguments
   }
   if (obj == undefined) {
-    Error.runtimeError(2, "obj");    // undefined
+    Error.runtimeError(2, 'obj'); // undefined
   }
-  if (typeof(obj) != "object") {
-    Error.runtimeError(21, "obj");   // is not an object
+  if (typeof obj != 'object') {
+    Error.runtimeError(21, 'obj'); // is not an object
   }
 
-  var nameID = cTID("nm  ");
-  var valueID = cTID("Vl  ");
-  var componentID = sTID("component");
+  var nameID = cTID('nm  ');
+  var valueID = cTID('Vl  ');
+  var componentID = sTID('component');
 
   function addProperty(desc, nm, val) {
-    var typ = typeof(val);
+    var typ = typeof val;
 
     var pdesc = new ActionDescriptor();
     pdesc.putString(nameID, nm);
 
     switch (typ) {
-      case "number": {
+      case 'number': {
         pdesc.putDouble(valueID, val);
         break;
       }
-      case "string": {
+      case 'string': {
         pdesc.putString(valueID, val);
         break;
       }
-      case "boolean": {
+      case 'boolean': {
         pdesc.putBoolean(valueID, val);
         break;
       }
-      case "object": {
+      case 'object': {
         pdesc.putString(valueID, val.toString());
         break;
       }
-      case "undefined": pdesc = undefined; break;
-      case "function":  pdesc = undefined; break;
-      default:          pdesc = undefined; break;
-    };
+      case 'undefined':
+        pdesc = undefined;
+        break;
+      case 'function':
+        pdesc = undefined;
+        break;
+      default:
+        pdesc = undefined;
+        break;
+    }
     desc.putObject(sTID(nm), componentID, pdesc);
-  };
+  }
 
   var desc = new ActionDescriptor();
 
   for (var idx in obj) {
-    if (idx.startsWith("_")) {
+    if (idx.startsWith('_')) {
       continue;
     }
     var val = obj[idx];
-    if (val || typeof(val) == "undefined" || typeof(val) == "function") {
+    if (val || typeof val == 'undefined' || typeof val == 'function') {
       continue;
     }
 
@@ -9578,20 +9688,20 @@ Stdlib.toDescriptor = function(obj) {
 
 Stdlib.fromDescriptor = function(desc, obj) {
   if (arguments.length < 1 || arguments.length > 2) {
-    Error.runtimeError(1221);        // wrong number of arguments
+    Error.runtimeError(1221); // wrong number of arguments
   }
   if (desc == undefined) {
-    Error.runtimeError(2, "desc");   // is undefined
+    Error.runtimeError(2, 'desc'); // is undefined
   }
-  if (typeof(desc) != "object") {
-    Error.runtimeError(21, "desc");   // is not an object
+  if (typeof desc != 'object') {
+    Error.runtimeError(21, 'desc'); // is not an object
   }
   if (!(desc instanceof ActionDescriptor)) {
-    Error.runtimeError(1330);         // Invalid Type
+    Error.runtimeError(1330); // Invalid Type
   }
 
-  var nameID = cTID("nm  ");
-  var valueID = cTID("Vl  ");
+  var nameID = cTID('nm  ');
+  var valueID = cTID('Vl  ');
 
   if (!obj) {
     obj = {};
@@ -9605,22 +9715,22 @@ Stdlib.fromDescriptor = function(desc, obj) {
       case DescValueType.DOUBLETYPE: {
         val = pdesc.getDouble(valueID);
         break;
-      };
+      }
       case DescValueType.INTEGERTYPE: {
         val = pdesc.getInteger(valueID);
         break;
-      };
+      }
       case DescValueType.STRINGTYPE: {
         val = pdesc.getString(valueID);
         break;
-      };
+      }
       case DescValueType.BOOLEANTYPE: {
         val = pdesc.getBoolean(valueID);
         break;
-      };
-    };
+      }
+    }
     return val;
-  };
+  }
 
   for (var i = 0; i < desc.count; i++) {
     var key = desc.getKey(i);
@@ -9635,53 +9745,71 @@ Stdlib.fromDescriptor = function(desc, obj) {
 };
 
 function toBoolean(s) {
-  if (s == undefined) { return false; }
-  if (s.constructor == Boolean) { return s.valueOf(); }
-  try { if (s instanceof XML) s = s.toString(); } catch (e) {}
-  if (s.constructor == String)  { return s.toLowerCase() == "true"; }
+  if (s == undefined) {
+    return false;
+  }
+  if (s.constructor == Boolean) {
+    return s.valueOf();
+  }
+  try {
+    if (s instanceof XML) s = s.toString();
+  } catch (e) {}
+  if (s.constructor == String) {
+    return s.toLowerCase() == 'true';
+  }
 
   return Boolean(s);
-};
+}
 
 function isBoolean(s) {
-  return (s != undefined && s.constructor == Boolean);
+  return s != undefined && s.constructor == Boolean;
 }
 
 function toNumber(s, def) {
-  if (s == undefined) { return def || NaN; }
-  try { if (s instanceof XML) s = s.toString(); } catch (e) {}
-  if (s.constructor == String && s.length == 0) { return def || NaN; }
-  if (s.constructor == Number) { return s.valueOf(); }
+  if (s == undefined) {
+    return def || NaN;
+  }
+  try {
+    if (s instanceof XML) s = s.toString();
+  } catch (e) {}
+  if (s.constructor == String && s.length == 0) {
+    return def || NaN;
+  }
+  if (s.constructor == Number) {
+    return s.valueOf();
+  }
   var n = Number(s.toString());
-  return (isNaN(n) ? (def || NaN) : n);
-};
+  return isNaN(n) ? def || NaN : n;
+}
 
 function isNumber(s) {
-  try { if (s instanceof XML) s = s.toString(); } catch (e) {}
+  try {
+    if (s instanceof XML) s = s.toString();
+  } catch (e) {}
   return !isNaN(s);
-};
+}
 
 function isString(s) {
-  return (s != undefined && s.constructor == String);
-};
+  return s != undefined && s.constructor == String;
+}
 
 function toFont(fs) {
-  if (fs.typename == "TextFont") { return fs.postScriptName; }
+  if (fs.typename == 'TextFont') {
+    return fs.postScriptName;
+  }
 
   var str = fs.toString();
-  var f = Stdlib.determineFont(str);  // first, check by PS name
+  var f = Stdlib.determineFont(str); // first, check by PS name
 
-  return (f ? f.postScriptName : undefined);
-};
-
-
+  return f ? f.postScriptName : undefined;
+}
 
 Stdlib.objectToXML = function(obj, name, xml) {
   if (!xml) {
     if (name == undefined) {
-      name = "Object";
+      name = 'Object';
     }
-    xml = new XML('<' + name + "></" + name + '>');
+    xml = new XML('<' + name + '></' + name + '>');
     // do the eval because of non-CS/2 syntax
     eval('xml.@type = (obj instanceof Array) ? "array" : "object"');
   }
@@ -9689,7 +9817,7 @@ Stdlib.objectToXML = function(obj, name, xml) {
   function _addChild(xml, obj, idx) {
     var val = obj[idx];
 
-    var isArray = (obj instanceof Array);
+    var isArray = obj instanceof Array;
 
     // skip 'hidden' properties
     if (idx.toString()[0] == '_') {
@@ -9708,27 +9836,26 @@ Stdlib.objectToXML = function(obj, name, xml) {
       idx = xml.localName() + idx;
     }
 
-    switch (type){
-      case "number":
-      case "boolean":
-      case "string":
-        child = new XML('<' + idx + "></" + idx + '>');
+    switch (type) {
+      case 'number':
+      case 'boolean':
+      case 'string':
+        child = new XML('<' + idx + '></' + idx + '>');
         child.appendChild(val);
         // do the eval because of non-CS/2 syntax
         eval('child.@type = type');
-      break;
+        break;
 
-      case "object":
+      case 'object':
         child = Stdlib.objectToXML(val, idx);
-      break;
+        break;
 
       default:
         return undefined;
-       break;
     }
 
     xml.appendChild(child);
-  };
+  }
 
   if (obj instanceof Array) {
     for (var i = 0; i < obj.length; i++) {
@@ -9753,7 +9880,7 @@ Stdlib.xmlToObject = function(xml, obj, parent) {
   } else if (xml instanceof XML) {
     xml = xml.copy();
   } else {
-    Error.runtimeError(2, "xml");
+    Error.runtimeError(2, 'xml');
   }
 
   xml.normalize();
@@ -9782,7 +9909,7 @@ Stdlib.xmlToObject = function(xml, obj, parent) {
     for (var i = 0; i < len; i++) {
       var child = els[i];
       var val = '';
-      var idx = (type == 'array') ? i : child.localName();
+      var idx = type == 'array' ? i : child.localName();
 
       if (child.hasComplexContent()) {
         val = Stdlib.xmlToObject(child);
@@ -9817,30 +9944,8 @@ Stdlib.xmlToObject = function(xml, obj, parent) {
   return obj;
 };
 
-
-/*
-function _xmlTest() {
-  var
-  obj = {
-    str: 'A String',
-    num: 123,
-    bool: true,
-    inner: {
-      inStr: 'string 2',
-      n: 231231,
-      opts: SaveOptions.DONOTSAVECHANGES
-    },
-    ary: ['black', 'blue', 'red', { test: 'green'}]
-  };
-  var xml = Stdlib.objectToXML(obj, 'Preferences');
-  xml.toXMLString();
-  var xobj = Stdlib.xmlToObject(xml);
-  return xobj;
-};
-*/
-
 Stdlib.openURL = function(url) {
-  var fname = "shortcut.url";
+  var fname = 'shortcut.url';
   var shortcut = new File(Folder.temp + '/' + fname);
   shortcut.open('w');
   shortcut.writeln('[InternetShortcut]');
@@ -9851,8 +9956,7 @@ Stdlib.openURL = function(url) {
   shortcut.remove();
 };
 
-"stdlib.js";
-// EOF
+'stdlib.js';
 
 //
 // GenericUI
@@ -9889,74 +9993,145 @@ _initVersionFunctions = function() {
     };
     CSVersion._version = CSVersion();
 
-    isCS6 = function()  { return app.version.match(/^13\./); };
-    isCS5 = function()  { return app.version.match(/^12\./); };
-    isCS4 = function()  { return app.version.match(/^11\./); };
-    isCS3 = function()  { return app.version.match(/^10\./); };
-    isCS2 = function()  { return app.version.match(/^9\./); };
-    isCS  = function()  { return app.version.match(/^8\./); };
-    isPS7 = function()  { return app.version.match(/^7\./); };
-
+    isCS6 = function() {
+      return app.version.match(/^13\./);
+    };
+    isCS5 = function() {
+      return app.version.match(/^12\./);
+    };
+    isCS4 = function() {
+      return app.version.match(/^11\./);
+    };
+    isCS3 = function() {
+      return app.version.match(/^10\./);
+    };
+    isCS2 = function() {
+      return app.version.match(/^9\./);
+    };
+    isCS = function() {
+      return app.version.match(/^8\./);
+    };
+    isPS7 = function() {
+      return app.version.match(/^7\./);
+    };
   } else {
     var appName = BridgeTalk.appName;
     var version = BridgeTalk.appVersion;
 
     if (isPSE()) {
-      isCS5 = function()  { return false; };
-      isCS4 = function()  { return true; };
-      isCS3 = function()  { return false; };
-      isCS2 = function()  { return false; };
-      isCS  = function()  { return false; };
-      isPS7 = function()  { return false; };
+      isCS5 = function() {
+        return false;
+      };
+      isCS4 = function() {
+        return true;
+      };
+      isCS3 = function() {
+        return false;
+      };
+      isCS2 = function() {
+        return false;
+      };
+      isCS = function() {
+        return false;
+      };
+      isPS7 = function() {
+        return false;
+      };
     }
     if (isBridge()) {
-      isCS6 = function()  { return version.match(/^5\./); };
-      isCS5 = function()  { return version.match(/^4\./); };
-      isCS4 = function()  { return version.match(/^3\./); };
-      isCS3 = function()  { return version.match(/^2\./); };
-      isCS2 = function()  { return version.match(/^1\./); };
-      isCS  = function()  { return false; };
-      isPS7 = function()  { return false; };
-
+      isCS6 = function() {
+        return version.match(/^5\./);
+      };
+      isCS5 = function() {
+        return version.match(/^4\./);
+      };
+      isCS4 = function() {
+        return version.match(/^3\./);
+      };
+      isCS3 = function() {
+        return version.match(/^2\./);
+      };
+      isCS2 = function() {
+        return version.match(/^1\./);
+      };
+      isCS = function() {
+        return false;
+      };
+      isPS7 = function() {
+        return false;
+      };
     } else if (isInDesign()) {
-      isCS6 = function()  { return false; };
-      isCS5 = function()  { return false; };
-      isCS4 = function()  { return false; };
-      isCS3 = function()  { return version.match(/^5\./); };
-      isCS2 = function()  { return version.match(/^4\./); };
-      isCS  = function()  { return false; };
-      isPS7 = function()  { return false; };
-
+      isCS6 = function() {
+        return false;
+      };
+      isCS5 = function() {
+        return false;
+      };
+      isCS4 = function() {
+        return false;
+      };
+      isCS3 = function() {
+        return version.match(/^5\./);
+      };
+      isCS2 = function() {
+        return version.match(/^4\./);
+      };
+      isCS = function() {
+        return false;
+      };
+      isPS7 = function() {
+        return false;
+      };
     } else if (isESTK()) {
-      isCS6 = function()  { return version.match(/^3\.8/); };
-      isCS5 = function()  { return version.match(/^3\.5/); };
-      isCS4 = function()  { return version.match(/^3\./); };
-      isCS3 = function()  { return version.match(/^2\./); };
-      isCS2 = function()  { return version.match(/^1\./); };
-      isCS  = function()  { return false; };
-      isPS7 = function()  { return false; };
-
+      isCS6 = function() {
+        return version.match(/^3\.8/);
+      };
+      isCS5 = function() {
+        return version.match(/^3\.5/);
+      };
+      isCS4 = function() {
+        return version.match(/^3\./);
+      };
+      isCS3 = function() {
+        return version.match(/^2\./);
+      };
+      isCS2 = function() {
+        return version.match(/^1\./);
+      };
+      isCS = function() {
+        return false;
+      };
+      isPS7 = function() {
+        return false;
+      };
     } else {
-      isCS6 = function()  { Error.runtimeError(9001,
-                                               "Unsupported application"); };
-      isCS5 = function()  { Error.runtimeError(9001,
-                                               "Unsupported application"); };
-      isCS4 = function()  { Error.runtimeError(9001,
-                                               "Unsupported application"); };
-      isCS3 = function()  { Error.runtimeError(9001,
-                                               "Unsupported application"); };
-      isCS2 = function()  { Error.runtimeError(9001,
-                                               "Unsupported application"); };
-      isCS  = function()  { Error.runtimeError(9001,
-                                               "Unsupported application"); };
-      isPS7 = function()  { Error.runtimeError(9001,
-                                               "Unsupported application"); };
+      isCS6 = function() {
+        Error.runtimeError(9001, 'Unsupported application');
+      };
+      isCS5 = function() {
+        Error.runtimeError(9001, 'Unsupported application');
+      };
+      isCS4 = function() {
+        Error.runtimeError(9001, 'Unsupported application');
+      };
+      isCS3 = function() {
+        Error.runtimeError(9001, 'Unsupported application');
+      };
+      isCS2 = function() {
+        Error.runtimeError(9001, 'Unsupported application');
+      };
+      isCS = function() {
+        Error.runtimeError(9001, 'Unsupported application');
+      };
+      isPS7 = function() {
+        Error.runtimeError(9001, 'Unsupported application');
+      };
     }
   }
 };
 
 var isCS3;
-if (!isCS3 || !isPhotoshop())  {
+if (!isCS3 || !isPhotoshop()) {
   _initVersionFunctions();
 }
 
@@ -9966,27 +10141,28 @@ if (!isCS3 || !isPhotoshop())  {
 GenericUI = function() {
   var self = this;
 
-  self.title = "GenericUI";  // the window title
-  self.notesSize = 50;       // the height of the Notes text panel
-                             // set to 0 to disable
-  self.winRect = {           // the rect for the window
+  self.title = 'GenericUI'; // the window title
+  self.notesSize = 50; // the height of the Notes text panel
+  // set to 0 to disable
+  self.winRect = {
+    // the rect for the window
     x: 200,
     y: 200,
     w: 100,
     h: 200
   };
-  self.documentation = "This is a Photoshop JavaScript script";
+  self.documentation = 'This is a Photoshop JavaScript script';
 
   self.iniFile = undefined; // the name of the ini file used for this script
-  self.saveIni = true;      // Set to 'undefined' to disable saving  to the
-                            // ini file
+  self.saveIni = true; // Set to 'undefined' to disable saving  to the
+  // ini file
   self.hasBorder = true;
 
   self.windowType = 'dialog'; // 'palette';
 
-  self.notesTxt   = 'Notes:';
+  self.notesTxt = 'Notes:';
   self.processTxt = 'Process';
-  self.cancelTxt  = 'Cancel';
+  self.cancelTxt = 'Cancel';
 
   self.buttonOneTxt = undefined;
   self.buttonTwoTxt = undefined;
@@ -10014,7 +10190,7 @@ GenericUI = function() {
 };
 
 GenericUI.getTextOfs = function() {
-  return (CSVersion() > 2) ? 3 : 0;
+  return CSVersion() > 2 ? 3 : 0;
 };
 
 //
@@ -10024,10 +10200,10 @@ GenericUI._getPreferencesFolder = function() {
   var userData = Folder.userData;
 
   if (!userData || !userData.exists) {
-    userData = Folder("~");
+    userData = Folder('~');
   }
 
-  var folder = new Folder(userData + "/xtools");
+  var folder = new Folder(userData + '/xtools');
 
   if (!folder.exists) {
     folder.create();
@@ -10043,7 +10219,7 @@ isMac = function() {
   return !isWindows();
 };
 
-GenericUI.ENCODING = "LATIN1";
+GenericUI.ENCODING = 'LATIN1';
 
 GenericUI.preferencesFolder = GenericUI._getPreferencesFolder();
 GenericUI.PREFERENCES_FOLDER = GenericUI.preferencesFolder;
@@ -10065,12 +10241,16 @@ GenericUI.prototype.createWindow = function(ini, doc) {
   var wrect = self.winRect;
 
   function rectToBounds(r) {
-    return[r.x, r.y, r.x+r.w, r.y+r.h];
-  };
-  var win = new Window(self.windowType, self.title, rectToBounds(wrect),
-                       self.windowCreationProperties);
+    return [r.x, r.y, r.x + r.w, r.y + r.h];
+  }
+  var win = new Window(
+    self.windowType,
+    self.title,
+    rectToBounds(wrect),
+    self.windowCreationProperties
+  );
 
-  win.mgr = self;  // save a ref to the UI manager
+  win.mgr = self; // save a ref to the UI manager
   win.ini = ini;
   if (!self.ini) {
     self.ini = win.ini;
@@ -10081,46 +10261,40 @@ GenericUI.prototype.createWindow = function(ini, doc) {
   var xOfs = 10;
   var yy = 10;
 
-  var hasButtons = (self.processTxt || self.cancelTxt ||
-                    self.buttonOneTxt || self.buttonTwoTxt);
+  var hasButtons = self.processTxt || self.cancelTxt || self.buttonOneTxt || self.buttonTwoTxt;
 
-  var hasNotesPanel = (self.notesSize && self.documentation);
+  var hasNotesPanel = self.notesSize && self.documentation;
 
   if (hasNotesPanel) {
     // define the notes panel (if needed) and insert the documentation text
-    var docPnl = win.add('panel',
-                         [xOfs, yy, wrect.w-xOfs, self.notesSize+10],
-                         self.notesTxt);
+    var docPnl = win.add('panel', [xOfs, yy, wrect.w - xOfs, self.notesSize + 10], self.notesTxt);
 
-    var y = (isCS() ? 20 : 10);
-    var ymax = (isCS() ? self.notesSize-10 : self.notesSize-20);
+    var y = isCS() ? 20 : 10;
+    var ymax = isCS() ? self.notesSize - 10 : self.notesSize - 20;
     var docs = self.documentation;
 
     if (CSVersion() > 2) {
       docs = docs.replace(/&/g, '&&');
     }
-    docPnl.add('statictext',
-               [10,y,docPnl.bounds.width-10,ymax],
-               docs,
-               {multiline:true});
+    docPnl.add('statictext', [10, y, docPnl.bounds.width - 10, ymax], docs, { multiline: true });
 
     yy += self.notesSize + 10;
   }
 
   var appBottom = wrect.h - 10;
   if (self.settingsPanel) {
-    appBottom -=  70;
+    appBottom -= 70;
   }
   if (hasButtons) {
-    appBottom -=  50;
+    appBottom -= 50;
   }
 
   // Now, create the application panel
   var pnlType = 'panel';
   if (!isCS()) {
-    pnlType = (self.hasBorder ? 'panel' : 'group');
+    pnlType = self.hasBorder ? 'panel' : 'group';
   }
-  win.appPnl = win.add(pnlType, [xOfs, yy, wrect.w-xOfs, appBottom]);
+  win.appPnl = win.add(pnlType, [xOfs, yy, wrect.w - xOfs, appBottom]);
 
   win.appPanel = win.appPnl;
 
@@ -10131,7 +10305,7 @@ GenericUI.prototype.createWindow = function(ini, doc) {
 
   // Settings Panel
   if (self.settingsPanel) {
-    win.settingsPnl = win.add('panel', [xOfs,yy,wrect.w-xOfs,yy+60]);
+    win.settingsPnl = win.add('panel', [xOfs, yy, wrect.w - xOfs, yy + 60]);
     win.settingsPnl.text = 'Settings';
     self.createSettingsPanel(win.settingsPnl, ini);
   }
@@ -10153,15 +10327,13 @@ GenericUI.prototype.createWindow = function(ini, doc) {
     }
 
     if (!self.processTxt || !self.cancelTxt) {
-      btnOfs = (wrect.w - (btnW)) / 2;
+      btnOfs = (wrect.w - btnW) / 2;
     } else {
-      btnOfs = (wrect.w - (2 * btnW)) / 3;
+      btnOfs = (wrect.w - 2 * btnW) / 3;
     }
 
     if (self.processTxt) {
-      win.process = win.add('button',
-                            [btnOfs,btnY,btnOfs+btnW,btnY+20],
-                            self.processTxt);
+      win.process = win.add('button', [btnOfs, btnY, btnOfs + btnW, btnY + 20], self.processTxt);
       if (self.setDefault) {
         win.defaultElement = win.process;
       }
@@ -10190,9 +10362,11 @@ GenericUI.prototype.createWindow = function(ini, doc) {
     }
 
     if (self.cancelTxt) {
-      win.cancel  = win.add('button',
-                            [wrect.w-btnOfs-btnW,btnY,wrect.w-btnOfs,btnY+20],
-                            self.cancelTxt);
+      win.cancel = win.add(
+        'button',
+        [wrect.w - btnOfs - btnW, btnY, wrect.w - btnOfs, btnY + 20],
+        self.cancelTxt
+      );
 
       win.cancelElement = win.cancel;
 
@@ -10246,7 +10420,7 @@ GenericUI.prototype.moveWindow = function(x, y) {
       // y -= 22;
     }
     win.bounds.top = y;
-    win.bounds.height = height;  //  Not sure if this is really needed
+    win.bounds.height = height; //  Not sure if this is really needed
   }
 };
 GenericUI.getWindow = function(pnl) {
@@ -10264,22 +10438,22 @@ GenericUI.prototype.createSettingsPanel = function(pnl, ini) {
   pnl.text = 'Settings';
   pnl.win = win;
 
-  pnl.fileMask = "INI Files: *.ini, All Files: *.*";
-  pnl.loadPrompt = "Please choose a settings file to read";
-  pnl.savePrompt = "Please choose a settings file to write";
+  pnl.fileMask = 'INI Files: *.ini, All Files: *.*';
+  pnl.loadPrompt = 'Please choose a settings file to read';
+  pnl.savePrompt = 'Please choose a settings file to write';
   pnl.defaultFile = undefined;
 
   var w = pnl.bounds[2] - pnl.bounds[0];
-  var offsets = [w*0.2, w*0.5, w*0.8];
+  var offsets = [w * 0.2, w * 0.5, w * 0.8];
   var y = 15;
   var bw = 90;
 
-  var x = offsets[0]-(bw/2);
-  pnl.load = pnl.add('button', [x,y,x+bw,y+20], 'Load...');
-  x = offsets[1]-(bw/2);
-  pnl.save = pnl.add('button', [x,y,x+bw,y+20], 'Save...');
-  x = offsets[2]-(bw/2);
-  pnl.reset = pnl.add('button', [x,y,x+bw,y+20], 'Reset');
+  var x = offsets[0] - bw / 2;
+  pnl.load = pnl.add('button', [x, y, x + bw, y + 20], 'Load...');
+  x = offsets[1] - bw / 2;
+  pnl.save = pnl.add('button', [x, y, x + bw, y + 20], 'Save...');
+  x = offsets[2] - bw / 2;
+  pnl.reset = pnl.add('button', [x, y, x + bw, y + 20], 'Reset');
 
   pnl.load.onClick = function() {
     var pnl = this.parent;
@@ -10291,7 +10465,7 @@ GenericUI.prototype.createSettingsPanel = function(pnl, ini) {
       if (mgr.iniFile) {
         def = GenericUI.iniFileToFile(mgr.iniFile);
       } else {
-        def = GenericUI.iniFileToFile("~/settings.ini");
+        def = GenericUI.iniFileToFile('~/settings.ini');
       }
     }
 
@@ -10325,7 +10499,7 @@ GenericUI.prototype.createSettingsPanel = function(pnl, ini) {
       if (mgr.iniFile) {
         def = GenericUI.iniFileToFile(mgr.iniFile);
       } else {
-        def = GenericUI.iniFileToFile("~/settings.ini");
+        def = GenericUI.iniFileToFile('~/settings.ini');
       }
     }
 
@@ -10342,7 +10516,7 @@ GenericUI.prototype.createSettingsPanel = function(pnl, ini) {
       var mgr = win.mgr;
       var res = mgr.validatePanel(win.appPnl, win.ini);
 
-      if (typeof(res) != 'boolean') {
+      if (typeof res != 'boolean') {
         mgr.writeIniFile(f, res);
 
         if (pnl.onSave) {
@@ -10391,21 +10565,21 @@ GenericUI.prototype.createFontPanel = function(pnl, ini, label, lwidth) {
 
   var x = xofs;
   if (label == undefined) {
-    label = "Font:";
+    label = 'Font:';
     lwidth = 40;
   }
 
   if (label != '') {
-    pnl.label = pnl.add('statictext', [x,y+tOfs,x+lwidth,y+22+tOfs], label);
+    pnl.label = pnl.add('statictext', [x, y + tOfs, x + lwidth, y + 22 + tOfs], label);
     x += lwidth;
   }
-  pnl.family = pnl.add('dropdownlist', [x,y,x+180,y+22]);
+  pnl.family = pnl.add('dropdownlist', [x, y, x + 180, y + 22]);
   x += 185;
-  pnl.style  = pnl.add('dropdownlist', [x,y,x+110,y+22]);
+  pnl.style = pnl.add('dropdownlist', [x, y, x + 110, y + 22]);
   x += 115;
-  pnl.fontSize  = pnl.add('edittext', [x,y,x+30,y+22], "12");
+  pnl.fontSize = pnl.add('edittext', [x, y, x + 30, y + 22], '12');
   x += 32;
-  pnl.sizeLabel = pnl.add('statictext', [x,y+tOfs,x+15,y+22+tOfs], 'pt');
+  pnl.sizeLabel = pnl.add('statictext', [x, y + tOfs, x + 15, y + 22 + tOfs], 'pt');
 
   pnl.fontTable = GenericUI._getFontTable();
   var names = [];
@@ -10450,7 +10624,7 @@ GenericUI.prototype.createFontPanel = function(pnl, ini, label, lwidth) {
     if (!str) {
       return;
     }
-    var font = (str.typename == "TextFont") ? str : Stdlib.determineFont(str);
+    var font = str.typename == 'TextFont' ? str : Stdlib.determineFont(str);
     if (font) {
       var it = pnl.family.find(font.family);
       if (it) {
@@ -10478,7 +10652,7 @@ GenericUI.prototype.createFontPanel = function(pnl, ini, label, lwidth) {
       }
     }
     return { font: font, size: Number(font.fontSize) };
-  }
+  };
 
   return pnl;
 };
@@ -10508,711 +10682,660 @@ GenericUI._getFontArray = function() {
 };
 
 if (!isCS()) {
-//============================= FileNaming ====================================
-//
-// FileNaming is only available in PS at present
-//
-FileNamingOptions = function(obj, prefix) {
-  var self = this;
+  //============================= FileNaming ====================================
+  //
+  // FileNaming is only available in PS at present
+  //
+  FileNamingOptions = function(obj, prefix) {
+    var self = this;
 
-  self.fileNaming = [];      // array of FileNamingType and/or String
-  self.startingSerial = 1;
-  self.windowsCompatible = isWindows();
-  self.macintoshCompatible = isMac();
-  self.unixCompatible = true;
+    self.fileNaming = []; // array of FileNamingType and/or String
+    self.startingSerial = 1;
+    self.windowsCompatible = isWindows();
+    self.macintoshCompatible = isMac();
+    self.unixCompatible = true;
 
-  if (obj) {
-    if (prefix == undefined) {
-      prefix = '';
+    if (obj) {
+      if (prefix == undefined) {
+        prefix = '';
+      }
+      var props = FileNamingOptions.props;
+      for (var i = 0; i < props.length; i++) {
+        var name = props[i];
+        var oname = prefix + name;
+        if (oname in obj) {
+          self[name] = obj[oname];
+        }
+      }
+
+      if (self.fileNaming.constructor == String) {
+        self.fileNaming = self.fileNaming.split(',');
+
+        // remove "'s from around custom text
+      }
     }
+  };
+  FileNamingOptions.prototype.typename = FileNamingOptions;
+  FileNamingOptions.props = [
+    'fileNaming',
+    'startingSerial',
+    'windowsCompatible',
+    'macintoshCompatible',
+    'unixCompatible'
+  ];
+
+  FileNamingOptions.prototype.format = function(file, cdate) {
+    var self = this;
+    var str = '';
+
+    file = Stdlib.convertFptr(file);
+
+    if (!cdate) {
+      cdate = file.created || new Date();
+    }
+
+    var fname = file.strf('%f');
+    var ext = file.strf('%e');
+
+    var parts = self.fileNaming;
+
+    if (parts.constructor == String) {
+      parts = parts.split(',');
+    }
+
+    var serial = self.startingSerial;
+    var aCode = 'a'.charCodeAt(0);
+    var ACode = 'A'.charCodeAt(0);
+
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      var fnel = FileNamingElements.getByName(p);
+
+      if (!fnel) {
+        if (p == '--') {
+          p = '-';
+        }
+        // remove "'s from around custom text
+        str += p;
+        continue;
+      }
+
+      var s = '';
+      switch (fnel.type) {
+        case FileNamingType.DOCUMENTNAMEMIXED:
+          s = fname;
+          break;
+        case FileNamingType.DOCUMENTNAMELOWER:
+          s = fname.toLowerCase();
+          break;
+        case FileNamingType.DOCUMENTNAMEUPPER:
+          s = fname.toUpperCase();
+          break;
+        case FileNamingType.SERIALNUMBER1:
+          s = '%d'.sprintf(serial++);
+          break;
+        case FileNamingType.SERIALNUMBER2:
+          s = '%02d'.sprintf(serial++);
+          break;
+        case FileNamingType.SERIALNUMBER3:
+          s = '%03d'.sprintf(serial++);
+          break;
+        case FileNamingType.SERIALNUMBER4:
+          s = '%04d'.sprintf(serial++);
+          break;
+        case FileNamingElement.SERIALNUMBER5:
+          s = '%05d'.sprintf(serial++);
+          break;
+        case FileNamingType.EXTENSIONLOWER:
+          s = '.' + ext.toLowerCase();
+          break;
+        case FileNamingType.EXTENSIONUPPER:
+          s = '.' + ext.toUpperCase();
+          break;
+        case FileNamingType.SERIALLETTERLOWER:
+          s = String.fromCharCode(aCode + serial++);
+          break;
+        case FileNamingType.SERIALLETTERUPPER:
+          s = String.fromCharCode(ACode + serial++);
+          break;
+      }
+
+      if (s) {
+        str += s;
+        continue;
+      }
+
+      var fmt = '';
+      switch (fnel.type) {
+        case FileNamingType.MMDDYY:
+          fmt = '%m%d%y';
+          break;
+        case FileNamingType.MMDD:
+          fmt = '%m%d';
+          break;
+        case FileNamingType.YYYYMMDD:
+          fmt = '%Y%m%d';
+          break;
+        case FileNamingType.YYMMDD:
+          fmt = '%y%m%d';
+          break;
+        case FileNamingType.YYDDMM:
+          fmt = '%y%d%m';
+          break;
+        case FileNamingType.DDMMYY:
+          fmt = '%d%m%y';
+          break;
+        case FileNamingType.DDMM:
+          fmt = '%d%m';
+          break;
+      }
+
+      if (fmt) {
+        str += cdate.strftime(fmt);
+        continue;
+      }
+    }
+
+    self._serial = serial;
+
+    return str;
+  };
+
+  FileNamingOptions.prototype.copyTo = function(opts, prefix) {
+    var self = this;
     var props = FileNamingOptions.props;
+
     for (var i = 0; i < props.length; i++) {
       var name = props[i];
       var oname = prefix + name;
-      if (oname in obj) {
-        self[name] = obj[oname];
-      }
-    }
-
-    if (self.fileNaming.constructor == String) {
-      self.fileNaming = self.fileNaming.split(',');
-
-      // remove "'s from around custom text
-    }
-  }
-};
-FileNamingOptions.prototype.typename = FileNamingOptions;
-FileNamingOptions.props = ["fileNaming", "startingSerial", "windowsCompatible",
-                           "macintoshCompatible", "unixCompatible"];
-
-FileNamingOptions.prototype.format = function(file, cdate) {
-  var self = this;
-  var str  = '';
-
-  file = Stdlib.convertFptr(file);
-
-  if (!cdate) {
-    cdate = file.created || new Date();
-  }
-
-  var fname = file.strf("%f");
-  var ext = file.strf("%e");
-
-  var parts = self.fileNaming;
-
-  if (parts.constructor == String) {
-    parts = parts.split(',');
-  }
-
-  var serial = self.startingSerial;
-  var aCode = 'a'.charCodeAt(0);
-  var ACode = 'A'.charCodeAt(0);
-
-  for (var i = 0; i < parts.length; i++) {
-    var p = parts[i];
-    var fnel = FileNamingElements.getByName(p);
-
-    if (!fnel) {
-      if (p == '--') {
-        p = '-';
-      }
-      // remove "'s from around custom text
-      str += p;
-      continue;
-    }
-
-    var s = '';
-    switch (fnel.type) {
-    case FileNamingType.DOCUMENTNAMEMIXED: s = fname; break;
-    case FileNamingType.DOCUMENTNAMELOWER: s = fname.toLowerCase(); break;
-    case FileNamingType.DOCUMENTNAMEUPPER: s = fname.toUpperCase(); break;
-    case FileNamingType.SERIALNUMBER1:     s = "%d".sprintf(serial++); break;
-    case FileNamingType.SERIALNUMBER2:     s = "%02d".sprintf(serial++); break;
-    case FileNamingType.SERIALNUMBER3:     s = "%03d".sprintf(serial++); break;
-    case FileNamingType.SERIALNUMBER4:     s = "%04d".sprintf(serial++); break;
-    case FileNamingElement.SERIALNUMBER5:  s = "%05d".sprintf(serial++); break;
-    case FileNamingType.EXTENSIONLOWER:    s = '.' + ext.toLowerCase(); break;
-    case FileNamingType.EXTENSIONUPPER:    s = '.' + ext.toUpperCase(); break;
-    case FileNamingType.SERIALLETTERLOWER:
-      s = String.fromCharCode(aCode + (serial++)); break;
-    case FileNamingType.SERIALLETTERUPPER:
-      s = String.fromCharCode(ACode + (serial++)); break;
-    }
-
-    if (s) {
-      str += s;
-      continue;
-    }
-
-    var fmt = '';
-    switch (fnel.type) {
-    case FileNamingType.MMDDYY:   fmt = "%m%d%y"; break;
-    case FileNamingType.MMDD:     fmt = "%m%d"; break;
-    case FileNamingType.YYYYMMDD: fmt = "%Y%m%d"; break;
-    case FileNamingType.YYMMDD:   fmt = "%y%m%d"; break;
-    case FileNamingType.YYDDMM:   fmt = "%y%d%m"; break;
-    case FileNamingType.DDMMYY:   fmt = "%d%m%y"; break;
-    case FileNamingType.DDMM:     fmt = "%d%m"; break;
-    }
-
-    if (fmt) {
-      str += cdate.strftime(fmt);
-      continue;
-    }
-  }
-
-  self._serial = serial;
-
-  return str;
-};
-
-FileNamingOptions.prototype.copyTo = function(opts, prefix) {
-  var self = this;
-  var props = FileNamingOptions.props;
-
-  for (var i = 0; i < props.length; i++) {
-    var name = props[i];
-    var oname = prefix + name;
-    opts[oname] = self[name];
-    if (name == 'fileNaming' && self[name] instanceof Array) {
-      opts[oname] = self[name].join(',');
-    } else {
       opts[oname] = self[name];
+      if (name == 'fileNaming' && self[name] instanceof Array) {
+        opts[oname] = self[name].join(',');
+      } else {
+        opts[oname] = self[name];
+      }
     }
-  }
-};
+  };
 
+  // this array is folder into FileNamingElement
+  FileNamingOptions._examples = [
+    '',
+    'Document',
+    'document',
+    'DOCUMENT',
+    '1',
+    '01',
+    '001',
+    '0001',
+    'a',
+    'A',
+    '103107',
+    '1031',
+    '20071031',
+    '071031',
+    '073110',
+    '311007',
+    '3110',
+    '.psd',
+    '.PSD'
+  ];
 
-// this array is folder into FileNamingElement
-FileNamingOptions._examples =
-  [ "",
-    "Document",
-    "document",
-    "DOCUMENT",
-    "1",
-    "01",
-    "001",
-    "0001",
-    "a",
-    "A",
-    "103107",
-    "1031",
-    "20071031",
-    "071031",
-    "073110",
-    "311007",
-    "3110",
-    ".psd",
-    ".PSD"
-    ];
+  FileNamingOptions.prototype.getExample = function() {
+    var self = this;
+    var str = '';
+    return str;
+  };
 
-FileNamingOptions.prototype.getExample = function() {
-  var self = this;
-  var str = '';
-  return str;
-};
+  FileNamingElement = function(name, menu, type, sm, example) {
+    var self = this;
+    self.name = name;
+    self.menu = menu;
+    self.type = type;
+    self.smallMenu = sm;
+    self.example = example || '';
+  };
+  FileNamingElement.prototype.typename = FileNamingElement;
 
-FileNamingElement = function(name, menu, type, sm, example) {
-  var self = this;
-  self.name = name;
-  self.menu = menu;
-  self.type = type;
-  self.smallMenu = sm;
-  self.example = (example || '');
-};
-FileNamingElement.prototype.typename = FileNamingElement;
+  FileNamingElements = [];
+  FileNamingElements._add = function(name, menu, type, sm, ex) {
+    FileNamingElements.push(new FileNamingElement(name, menu, type, sm, ex));
+  };
 
-FileNamingElements = [];
-FileNamingElements._add = function(name, menu, type, sm, ex) {
-  FileNamingElements.push(new FileNamingElement(name, menu, type, sm, ex));
-}
+  FileNamingElement.NONE = '(None)';
 
-FileNamingElement.NONE = "(None)";
-
-FileNamingElement.SERIALNUMBER5 = {
-  toString: function() { return "FileNamingElement.SERIALNUMBER5"; }
-};
-
-FileNamingElements._init = function() {
-
-  FileNamingElements._add("", "", "", "", "");
-
-  try {
-    FileNamingType;
-  } catch (e) {
-    return;
-  }
-
-  // the names here correspond to the sTID symbols used when making
-  // a Batch request via the ActionManager interface. Except for "Name",
-  // which should be "Nm  ".
-  // the names should be the values used when serializing to and from
-  // an INI file.
-  // A FileNamingOptions object needs to be defined.
-  FileNamingElements._add("Name", "Document Name",
-                          FileNamingType.DOCUMENTNAMEMIXED,
-                          "Name", "Document");
-  FileNamingElements._add("lowerCase", "document name",
-                          FileNamingType.DOCUMENTNAMELOWER,
-                          "name", "document");
-  FileNamingElements._add("upperCase", "DOCUMENT NAME",
-                          FileNamingType.DOCUMENTNAMEUPPER,
-                          "NAME", "DOCUMENT");
-  FileNamingElements._add("oneDigit", "1 Digit Serial Number",
-                          FileNamingType.SERIALNUMBER1,
-                          "Serial #", "1");
-  FileNamingElements._add("twoDigit", "2 Digit Serial Number",
-                          FileNamingType.SERIALNUMBER2,
-                          "Serial ##", "01");
-  FileNamingElements._add("threeDigit", "3 Digit Serial Number",
-                          FileNamingType.SERIALNUMBER3,
-                          "Serial ###", "001");
-  FileNamingElements._add("fourDigit", "4 Digit Serial Number",
-                          FileNamingType.SERIALNUMBER4,
-                          "Serial ####", "0001");
-  FileNamingElements._add("fiveDigit", "5 Digit Serial Number",
-                          FileNamingElement.SERIALNUMBER5,
-                          "Serial #####", "00001");
-  FileNamingElements._add("lowerCaseSerial", "Serial Letter (a, b, c...)",
-                          FileNamingType.SERIALLETTERLOWER,
-                          "Serial a", "a");
-  FileNamingElements._add("upperCaseSerial", "Serial Letter (A, B, C...)",
-                          FileNamingType.SERIALLETTERUPPER,
-                          "Serial A", "A");
-  FileNamingElements._add("mmddyy", "mmddyy (date)",
-                          FileNamingType.MMDDYY,
-                          "mmddyy", "103107");
-  FileNamingElements._add("mmdd", "mmdd (date)",
-                          FileNamingType.MMDD,
-                          "mmdd", "1031");
-  FileNamingElements._add("yyyymmdd", "yyyymmdd (date)",
-                          FileNamingType.YYYYMMDD,
-                          "yyyymmdd", "20071031");
-  FileNamingElements._add("yymmdd", "yymmdd (date)",
-                          FileNamingType.YYMMDD,
-                          "yymmdd", "071031");
-  FileNamingElements._add("yyddmm", "yyddmm (date)",
-                          FileNamingType.YYDDMM,
-                          "yyddmm", "073110");
-  FileNamingElements._add("ddmmyy", "ddmmyy (date)",
-                          FileNamingType.DDMMYY,
-                          "ddmmyy", "311007");
-  FileNamingElements._add("ddmm", "ddmm (date)",
-                          FileNamingType.DDMM,
-                          "ddmm", "3110");
-  FileNamingElements._add("lowerCaseExtension", "extension",
-                          FileNamingType.EXTENSIONLOWER,
-                          "ext", ".psd");
-  FileNamingElements._add("upperCaseExtension", "EXTENSION",
-                          FileNamingType.EXTENSIONUPPER,
-                          "EXT", ".PSD");
-};
-FileNamingElements._init();
-FileNamingElements.getByName = function(name) {
-  return Stdlib.getByName(FileNamingElements, name);
-};
-
-GenericUI.prototype.createFileNamingPanel = function(pnl, ini,
-                                                     prefix,
-                                                     useSerial,
-                                                     useCompatibility,
-                                                     columns) {
-  var win = GenericUI.getWindow(pnl);
-  if (useSerial == undefined) {
-    useSerial = false;
-  }
-  if (useCompatibility == undefined) {
-    useCompatibility = false;
-  }
-  if (columns == undefined) {
-    columns = 3;
-  } else {
-    if (columns != 2 && columns != 3) {
-      Error.runtimeError(9001, "Internal Error: Bad column spec for " +
-                         "FileNaming panel");
+  FileNamingElement.SERIALNUMBER5 = {
+    toString: function() {
+      return 'FileNamingElement.SERIALNUMBER5';
     }
-  }
+  };
 
-  pnl.fnmenuElements = [];
-  for (var i = 0; i < FileNamingElements.length; i++) {
-    var fnel = FileNamingElements[i];
-    pnl.fnmenuElements.push(fnel.menu);
-  }
-  var extrasMenuEls = [
-    "-",
-    "Create Custom Text",
-    "Edit Custom Text",
-    "Delete Custom Text",
-    "-",
-    FileNamingElement.NONE,
-    ];
-  for (var i = 0; i < extrasMenuEls.length; i++) {
-    pnl.fnmenuElements.push(extrasMenuEls[i]);
-  }
+  FileNamingElements._init = function() {
+    FileNamingElements._add('', '', '', '', '');
 
-  pnl.win = win;
-  if (prefix == undefined) {
-    prefix = '';
-  }
-  pnl.prefix = prefix;
-
-  var w = pnl.bounds[2] - pnl.bounds[0];
-  var xofs = 0;
-  var y = 0;
-
-  if (pnl.type == 'panel') {
-    xofs += 5;
-    y += 10;
-  }
-  pnl.text = "File Naming";
-
-  var tOfs = GenericUI.getTextOfs();
-
-  if (columns == 2) {
-    var menuW = (w - 50)/2;
-
-  } else {
-    var menuW = (w - 65)/3;
-  }
-
-  var opts = new FileNamingOptions(ini, pnl.prefix);
-
-  x = xofs;
-
-  pnl.exampleLabel = pnl.add('statictext', [x,y+tOfs,x+70,y+22+tOfs],
-                             'Example:');
-  x += 70;
-  pnl.example = pnl.add('statictext', [x,y+tOfs,x+400,y+22+tOfs], '');
-  y += 30;
-  x = xofs;
-
-  pnl.menus = [];
-
-  pnl.menus[0]  = pnl.add('dropdownlist', [x,y,x+menuW,y+22],
-                          pnl.fnmenuElements);
-  x += menuW + 5;
-  pnl.add('statictext', [x,y+tOfs,x+10,y+22+tOfs], '+');
-
-  x += 15;
-
-  pnl.menus[1]  = pnl.add('dropdownlist', [x,y,x+menuW,y+22],
-                          pnl.fnmenuElements);
-  x += menuW + 5;
-  pnl.add('statictext', [x,y+tOfs,x+10,y+22+tOfs], '+');
-
-  if (columns == 2) {
-    y += 30;
-    x = xofs;
-  } else {
-    x += 15;
-  }
-
-  pnl.menus[2]  = pnl.add('dropdownlist', [x,y,x+menuW,y+22],
-                          pnl.fnmenuElements);
-  x += menuW + 5;
-  pnl.add('statictext', [x,y+tOfs,x+10,y+22+tOfs], '+');
-
-  if (columns == 3) {
-    y += 30;
-    x = xofs;
-
-  } else {
-    x += 15;
-  }
-
-  pnl.menus[3]  = pnl.add('dropdownlist', [x,y,x+menuW,y+22],
-                          pnl.fnmenuElements);
-  x += menuW + 5;
-  pnl.add('statictext', [x,y+tOfs,x+10,y+22+tOfs], '+');
-
-  if (columns == 2) {
-    y += 30;
-    x = xofs;
-
-  } else {
-    x += 15;
-  }
-
-  pnl.menus[4]  = pnl.add('dropdownlist', [x,y,x+menuW,y+22],
-                          pnl.fnmenuElements);
-  x += menuW + 5;
-  pnl.add('statictext', [x,y+tOfs,x+10,y+22+tOfs], '+');
-
-  x += 15;
-
-  pnl.menus[5]  = pnl.add('dropdownlist', [x,y,x+menuW,y+22],
-                          pnl.fnmenuElements);
-  y += 30;
-  x = xofs;
-
-  pnl.addMenuElement = function(text) {
-    var pnl = this;
-    for (var i = 0; i < 6; i++) {
-      var vmenu = pnl.menus[i];
-      vmenu.add('item', text);
-    }
-  }
-
-  pnl.useSerial = useSerial;
-  if (useSerial) {
-    pnl.add('statictext', [x,y+tOfs,x+80,y+22+tOfs], 'Starting serial#:');
-    x += 90;
-    pnl.startingSerial = pnl.add('edittext', [x,y,x+50,y+22],
-                                 opts.startingSerial);
-    y += 30;
-    x = xofs;
-    pnl.startingSerial.onChanging = GenericUI.numberKeystrokeFilter;
-    pnl.startingSerial.onChange = function() {
-      var pnl = this.parent;
-    }
-  }
-
-  pnl.useCompatibility = useCompatibility;
-  if (useCompatibility) {
-    pnl.add('statictext', [x,y+tOfs,x+80,y+22+tOfs], 'Compatibility:');
-    x += 90;
-    pnl.compatWindows = pnl.add('checkbox', [x,y,x+70,y+22], 'Windows');
-    x += 80;
-    pnl.compatMac = pnl.add('checkbox', [x,y,x+70,y+22], 'MacOS');
-    x += 80;
-    pnl.compatUnix = pnl.add('checkbox', [x,y,x+70,y+22], 'Unix');
-
-    pnl.compatWindows.value = opts.windowsCompatible;
-    pnl.compatMac.value = opts.macintoshCompatible;
-    pnl.compatUnix.value = opts.unixCompatible;
-  }
-
-  function menuOnChange() {
-    var pnl = this.parent;
-    var win = GenericUI.getWindow(pnl);
-    if (pnl.processing) {
+    try {
+      FileNamingType;
+    } catch (e) {
       return;
     }
-    pnl.processing = true;
-    try {
-      var menu = this;
-      if (!menu.selection) {
+
+    // the names here correspond to the sTID symbols used when making
+    // a Batch request via the ActionManager interface. Except for "Name",
+    // which should be "Nm  ".
+    // the names should be the values used when serializing to and from
+    // an INI file.
+    // A FileNamingOptions object needs to be defined.
+    FileNamingElements._add(
+      'Name',
+      'Document Name',
+      FileNamingType.DOCUMENTNAMEMIXED,
+      'Name',
+      'Document'
+    );
+    FileNamingElements._add(
+      'lowerCase',
+      'document name',
+      FileNamingType.DOCUMENTNAMELOWER,
+      'name',
+      'document'
+    );
+    FileNamingElements._add(
+      'upperCase',
+      'DOCUMENT NAME',
+      FileNamingType.DOCUMENTNAMEUPPER,
+      'NAME',
+      'DOCUMENT'
+    );
+    FileNamingElements._add(
+      'oneDigit',
+      '1 Digit Serial Number',
+      FileNamingType.SERIALNUMBER1,
+      'Serial #',
+      '1'
+    );
+    FileNamingElements._add(
+      'twoDigit',
+      '2 Digit Serial Number',
+      FileNamingType.SERIALNUMBER2,
+      'Serial ##',
+      '01'
+    );
+    FileNamingElements._add(
+      'threeDigit',
+      '3 Digit Serial Number',
+      FileNamingType.SERIALNUMBER3,
+      'Serial ###',
+      '001'
+    );
+    FileNamingElements._add(
+      'fourDigit',
+      '4 Digit Serial Number',
+      FileNamingType.SERIALNUMBER4,
+      'Serial ####',
+      '0001'
+    );
+    FileNamingElements._add(
+      'fiveDigit',
+      '5 Digit Serial Number',
+      FileNamingElement.SERIALNUMBER5,
+      'Serial #####',
+      '00001'
+    );
+    FileNamingElements._add(
+      'lowerCaseSerial',
+      'Serial Letter (a, b, c...)',
+      FileNamingType.SERIALLETTERLOWER,
+      'Serial a',
+      'a'
+    );
+    FileNamingElements._add(
+      'upperCaseSerial',
+      'Serial Letter (A, B, C...)',
+      FileNamingType.SERIALLETTERUPPER,
+      'Serial A',
+      'A'
+    );
+    FileNamingElements._add('mmddyy', 'mmddyy (date)', FileNamingType.MMDDYY, 'mmddyy', '103107');
+    FileNamingElements._add('mmdd', 'mmdd (date)', FileNamingType.MMDD, 'mmdd', '1031');
+    FileNamingElements._add(
+      'yyyymmdd',
+      'yyyymmdd (date)',
+      FileNamingType.YYYYMMDD,
+      'yyyymmdd',
+      '20071031'
+    );
+    FileNamingElements._add('yymmdd', 'yymmdd (date)', FileNamingType.YYMMDD, 'yymmdd', '071031');
+    FileNamingElements._add('yyddmm', 'yyddmm (date)', FileNamingType.YYDDMM, 'yyddmm', '073110');
+    FileNamingElements._add('ddmmyy', 'ddmmyy (date)', FileNamingType.DDMMYY, 'ddmmyy', '311007');
+    FileNamingElements._add('ddmm', 'ddmm (date)', FileNamingType.DDMM, 'ddmm', '3110');
+    FileNamingElements._add(
+      'lowerCaseExtension',
+      'extension',
+      FileNamingType.EXTENSIONLOWER,
+      'ext',
+      '.psd'
+    );
+    FileNamingElements._add(
+      'upperCaseExtension',
+      'EXTENSION',
+      FileNamingType.EXTENSIONUPPER,
+      'EXT',
+      '.PSD'
+    );
+  };
+  FileNamingElements._init();
+  FileNamingElements.getByName = function(name) {
+    return Stdlib.getByName(FileNamingElements, name);
+  };
+
+  GenericUI.prototype.createFileNamingPanel = function(
+    pnl,
+    ini,
+    prefix,
+    useSerial,
+    useCompatibility,
+    columns
+  ) {
+    var win = GenericUI.getWindow(pnl);
+    if (useSerial == undefined) {
+      useSerial = false;
+    }
+    if (useCompatibility == undefined) {
+      useCompatibility = false;
+    }
+    if (columns == undefined) {
+      columns = 3;
+    } else {
+      if (columns != 2 && columns != 3) {
+        Error.runtimeError(9001, 'Internal Error: Bad column spec for ' + 'FileNaming panel');
+      }
+    }
+
+    pnl.fnmenuElements = [];
+    for (var i = 0; i < FileNamingElements.length; i++) {
+      var fnel = FileNamingElements[i];
+      pnl.fnmenuElements.push(fnel.menu);
+    }
+    var extrasMenuEls = [
+      '-',
+      'Create Custom Text',
+      'Edit Custom Text',
+      'Delete Custom Text',
+      '-',
+      FileNamingElement.NONE
+    ];
+    for (var i = 0; i < extrasMenuEls.length; i++) {
+      pnl.fnmenuElements.push(extrasMenuEls[i]);
+    }
+
+    pnl.win = win;
+    if (prefix == undefined) {
+      prefix = '';
+    }
+    pnl.prefix = prefix;
+
+    var w = pnl.bounds[2] - pnl.bounds[0];
+    var xofs = 0;
+    var y = 0;
+
+    if (pnl.type == 'panel') {
+      xofs += 5;
+      y += 10;
+    }
+    pnl.text = 'File Naming';
+
+    var tOfs = GenericUI.getTextOfs();
+
+    if (columns == 2) {
+      var menuW = (w - 50) / 2;
+    } else {
+      var menuW = (w - 65) / 3;
+    }
+
+    var opts = new FileNamingOptions(ini, pnl.prefix);
+
+    x = xofs;
+
+    pnl.exampleLabel = pnl.add('statictext', [x, y + tOfs, x + 70, y + 22 + tOfs], 'Example:');
+    x += 70;
+    pnl.example = pnl.add('statictext', [x, y + tOfs, x + 400, y + 22 + tOfs], '');
+    y += 30;
+    x = xofs;
+
+    pnl.menus = [];
+
+    pnl.menus[0] = pnl.add('dropdownlist', [x, y, x + menuW, y + 22], pnl.fnmenuElements);
+    x += menuW + 5;
+    pnl.add('statictext', [x, y + tOfs, x + 10, y + 22 + tOfs], '+');
+
+    x += 15;
+
+    pnl.menus[1] = pnl.add('dropdownlist', [x, y, x + menuW, y + 22], pnl.fnmenuElements);
+    x += menuW + 5;
+    pnl.add('statictext', [x, y + tOfs, x + 10, y + 22 + tOfs], '+');
+
+    if (columns == 2) {
+      y += 30;
+      x = xofs;
+    } else {
+      x += 15;
+    }
+
+    pnl.menus[2] = pnl.add('dropdownlist', [x, y, x + menuW, y + 22], pnl.fnmenuElements);
+    x += menuW + 5;
+    pnl.add('statictext', [x, y + tOfs, x + 10, y + 22 + tOfs], '+');
+
+    if (columns == 3) {
+      y += 30;
+      x = xofs;
+    } else {
+      x += 15;
+    }
+
+    pnl.menus[3] = pnl.add('dropdownlist', [x, y, x + menuW, y + 22], pnl.fnmenuElements);
+    x += menuW + 5;
+    pnl.add('statictext', [x, y + tOfs, x + 10, y + 22 + tOfs], '+');
+
+    if (columns == 2) {
+      y += 30;
+      x = xofs;
+    } else {
+      x += 15;
+    }
+
+    pnl.menus[4] = pnl.add('dropdownlist', [x, y, x + menuW, y + 22], pnl.fnmenuElements);
+    x += menuW + 5;
+    pnl.add('statictext', [x, y + tOfs, x + 10, y + 22 + tOfs], '+');
+
+    x += 15;
+
+    pnl.menus[5] = pnl.add('dropdownlist', [x, y, x + menuW, y + 22], pnl.fnmenuElements);
+    y += 30;
+    x = xofs;
+
+    pnl.addMenuElement = function(text) {
+      var pnl = this;
+      for (var i = 0; i < 6; i++) {
+        var vmenu = pnl.menus[i];
+        vmenu.add('item', text);
+      }
+    };
+
+    pnl.useSerial = useSerial;
+    if (useSerial) {
+      pnl.add('statictext', [x, y + tOfs, x + 80, y + 22 + tOfs], 'Starting serial#:');
+      x += 90;
+      pnl.startingSerial = pnl.add('edittext', [x, y, x + 50, y + 22], opts.startingSerial);
+      y += 30;
+      x = xofs;
+      pnl.startingSerial.onChanging = GenericUI.numberKeystrokeFilter;
+      pnl.startingSerial.onChange = function() {
+        var pnl = this.parent;
+      };
+    }
+
+    pnl.useCompatibility = useCompatibility;
+    if (useCompatibility) {
+      pnl.add('statictext', [x, y + tOfs, x + 80, y + 22 + tOfs], 'Compatibility:');
+      x += 90;
+      pnl.compatWindows = pnl.add('checkbox', [x, y, x + 70, y + 22], 'Windows');
+      x += 80;
+      pnl.compatMac = pnl.add('checkbox', [x, y, x + 70, y + 22], 'MacOS');
+      x += 80;
+      pnl.compatUnix = pnl.add('checkbox', [x, y, x + 70, y + 22], 'Unix');
+
+      pnl.compatWindows.value = opts.windowsCompatible;
+      pnl.compatMac.value = opts.macintoshCompatible;
+      pnl.compatUnix.value = opts.unixCompatible;
+    }
+
+    function menuOnChange() {
+      var pnl = this.parent;
+      var win = GenericUI.getWindow(pnl);
+      if (pnl.processing) {
         return;
       }
-
-      var currentSelection = menu.selection.index;
-      var lastSelection = menu.lastMenuSelection;
-
-      menu.lastMenuSelection = menu.selection.index;
-
-      var lastWasCustomText = (lastSelection >= pnl.fnmenuElements.length);
-
-      var sel = menu.selection.text;
-      if (sel == FileNamingElement.NONE) {
-        menu.selection = menu.items[0];
-        sel = menu.selection.text;
-      }
-
-      if (sel == "Create Custom Text") {
-        var text = GenericUI.createCustomTextDialog(win,
-                                                    "Create Custom Text",
-                                                    "new");
-        if (text) {
-          if (text.match(/^\-+$/)) {
-            text += '-';
-          }
-          if (!menu.find(text)) {
-            pnl.addMenuElement(text);
-          }
-
-          var it = menu.find(text);
-          menu.selection = it;
-          menu.lastMenuSelection = it.index;
-
-        } else {
-          if (lastSelection >= 0) {
-            menu.selection = menu.items[lastSelection];
-            menu.lastMenuSelection = lastSelection;
-
-          } else {
-            menu.selection = menu.items[0];
-          }
+      pnl.processing = true;
+      try {
+        var menu = this;
+        if (!menu.selection) {
+          return;
         }
 
-      } else if (lastWasCustomText) {
-        if (sel == "Edit Custom Text") {
-          var lastText = menu.items[lastSelection].text;
-          var text = GenericUI.createCustomTextDialog(win,
-                                                      "Edit Custom Text",
-                                                      "edit",
-                                                      lastText);
+        var currentSelection = menu.selection.index;
+        var lastSelection = menu.lastMenuSelection;
+
+        menu.lastMenuSelection = menu.selection.index;
+
+        var lastWasCustomText = lastSelection >= pnl.fnmenuElements.length;
+
+        var sel = menu.selection.text;
+        if (sel == FileNamingElement.NONE) {
+          menu.selection = menu.items[0];
+          sel = menu.selection.text;
+        }
+
+        if (sel == 'Create Custom Text') {
+          var text = GenericUI.createCustomTextDialog(win, 'Create Custom Text', 'new');
           if (text) {
-            for (var i = 0; i < 6; i++) {
-              var vmenu = pnl.menus[i];
-              var it = vmenu.add('item', text);
-
-              if (vmenu.selection &&
-                  vmenu.selection.index == lastSelection) {
-
-                // if a menu already has the previous version of this edited
-                // entry, we have to remove the old one before setting the
-                // new one or else the menu selection gets lost
-                vmenu.remove(lastSelection);
-                vmenu.selection = it;
-
-              } else {
-                var it = vmenu.selection;
-                vmenu.remove(lastSelection);
-                vmenu.selection = it;
-              }
+            if (text.match(/^\-+$/)) {
+              text += '-';
+            }
+            if (!menu.find(text)) {
+              pnl.addMenuElement(text);
             }
 
             var it = menu.find(text);
             menu.selection = it;
-            pnl.lastMenuSelection = it.index;
-
+            menu.lastMenuSelection = it.index;
           } else {
             if (lastSelection >= 0) {
               menu.selection = menu.items[lastSelection];
               menu.lastMenuSelection = lastSelection;
-
             } else {
               menu.selection = menu.items[0];
             }
           }
+        } else if (lastWasCustomText) {
+          if (sel == 'Edit Custom Text') {
+            var lastText = menu.items[lastSelection].text;
+            var text = GenericUI.createCustomTextDialog(win, 'Edit Custom Text', 'edit', lastText);
+            if (text) {
+              for (var i = 0; i < 6; i++) {
+                var vmenu = pnl.menus[i];
+                var it = vmenu.add('item', text);
 
-        } else if (sel == "Delete Custom Text") {
-          var lastText = menu.items[lastSelection].text;
-          if (confirm("Do you really want to remove \"" + lastText + "\"?")) {
-            for (var i = 0; i < 6; i++) {
-              var vmenu = pnl.menus[i];
-              vmenu.remove(lastSelection);
+                if (vmenu.selection && vmenu.selection.index == lastSelection) {
+                  // if a menu already has the previous version of this edited
+                  // entry, we have to remove the old one before setting the
+                  // new one or else the menu selection gets lost
+                  vmenu.remove(lastSelection);
+                  vmenu.selection = it;
+                } else {
+                  var it = vmenu.selection;
+                  vmenu.remove(lastSelection);
+                  vmenu.selection = it;
+                }
+              }
+
+              var it = menu.find(text);
+              menu.selection = it;
+              pnl.lastMenuSelection = it.index;
+            } else {
+              if (lastSelection >= 0) {
+                menu.selection = menu.items[lastSelection];
+                menu.lastMenuSelection = lastSelection;
+              } else {
+                menu.selection = menu.items[0];
+              }
             }
-            menu.selection = menu.items[0];
-
+          } else if (sel == 'Delete Custom Text') {
+            var lastText = menu.items[lastSelection].text;
+            if (confirm('Do you really want to remove "' + lastText + '"?')) {
+              for (var i = 0; i < 6; i++) {
+                var vmenu = pnl.menus[i];
+                vmenu.remove(lastSelection);
+              }
+              menu.selection = menu.items[0];
+            } else {
+              menu.selection = menu.items[lastSelection];
+              menu.lastMenuSelection = lastSelection;
+            }
           } else {
+            //alert("Internal error, Custom Text request");
+          }
+        } else {
+          if (lastSelection >= 0 && (sel == 'Edit Custom Text' || sel == 'Delete Custom Text')) {
             menu.selection = menu.items[lastSelection];
             menu.lastMenuSelection = lastSelection;
           }
-
-        } else {
-          //alert("Internal error, Custom Text request");
         }
 
-      } else {
-        if (lastSelection >= 0 && (sel == "Edit Custom Text" ||
-                                   sel == "Delete Custom Text")) {
-          menu.selection = menu.items[lastSelection];
-          menu.lastMenuSelection = lastSelection;
-        }
-      }
+        var example = '';
+        var format = [];
 
-      var example = '';
-      var format = [];
-
-      for (var i = 0; i < 6; i++) {
-        var vmenu = pnl.menus[i];
-        if (vmenu.selection) {
-          var fmt = '';
-          var text = vmenu.selection.text;
-          var fne = Stdlib.getByProperty(FileNamingElements, "menu", text);
-          if (fne) {
-            text = fne.example;
-            fmt = fne.name;
-          } else {
-            fmt = text;
-          }
-
-          if (text) {
-            if (text.match(/^\-+$/)) {
-              text = text.substr(1);
-            }
-            example += text;
-          }
-
-          if (fmt) {
-            if (fmt.match(/^\-+$/)) {
-              fmt = fmt.substr(1);
-            }
-            format.push(fmt);
-          }
-        }
-      }
-      if (pnl.example) {
-        pnl.example.text = example;
-      }
-      format = format.join(",");
-      var win = GenericUI.getWindow(pnl);
-      if (win.mgr.updateNamingFormat) {
-        win.mgr.updateNamingFormat(format, example);
-      }
-
-    } finally {
-      pnl.processing = false;
-    }
-
-    if (pnl.onChange) {
-      pnl.onChange();
-    }
-  }
-
-  // default all slots to ''
-  for (var i = 0; i < 6; i++) {
-    var menu = pnl.menus[i];
-    menu.selection = menu.items[0];
-    menu.lastMenuSelection = 0;
-  }
-
-  for (var i = 0; i < 6; i++) {
-    var name = opts.fileNaming[i];
-    if (name) {
-      var fne = FileNamingElements.getByName(name);
-      var it;
-
-      if (!fne) {
-        if (name.match(/^\-+$/)) {
-          name += '-';
-        }
-        it = pnl.menus[i].find(name);
-        if (!it) {
-          pnl.addMenuElement(name);
-          it = pnl.menus[i].find(name);
-        }
-      } else {
-        it = pnl.menus[i].find(fne.menu);
-      }
-      pnl.menus[i].selection = it;
-    }
-  }
-
-//   pnl.menus[0].selection = pnl.menus[0].find("document name");
-//   pnl.menus[0].lastMenuSelection = pnl.menus[0].selection.index;
-//   pnl.menus[1].selection = pnl.menus[1].find("extension");
-//   pnl.menus[1].lastMenuSelection = pnl.menus[1].selection.index;
-
-  for (var i = 0; i < 6; i++) {
-    var menu = pnl.menus[i];
-    menu.onChange = menuOnChange;
-  }
-
-  pnl.getFileNamingOptions = function(ini) {
-    var pnl = this;
-    var fileNaming = [];
-
-    for (var i = 0; i < 6; i++) {
-      var menu = pnl.menus[i];
-
-      if (menu.selection) {
-        var idx = menu.selection.index;
-
-        if (idx) {
-          // [0] is the "" item so we ignore it
-          var fnel = FileNamingElements[idx];
-          if (fnel) {
-            fileNaming.push(fnel.name);
-
-          } else {
-            // its a custom naming option
-            var txt = menu.selection.text;
-            if (txt.match(/^\-+$/)) {
-              txt = txt.substr(1);
+        for (var i = 0; i < 6; i++) {
+          var vmenu = pnl.menus[i];
+          if (vmenu.selection) {
+            var fmt = '';
+            var text = vmenu.selection.text;
+            var fne = Stdlib.getByProperty(FileNamingElements, 'menu', text);
+            if (fne) {
+              text = fne.example;
+              fmt = fne.name;
+            } else {
+              fmt = text;
             }
 
-            // txt = '"' + text + '"';
-            fileNaming.push(txt);
+            if (text) {
+              if (text.match(/^\-+$/)) {
+                text = text.substr(1);
+              }
+              example += text;
+            }
+
+            if (fmt) {
+              if (fmt.match(/^\-+$/)) {
+                fmt = fmt.substr(1);
+              }
+              format.push(fmt);
+            }
           }
         }
+        if (pnl.example) {
+          pnl.example.text = example;
+        }
+        format = format.join(',');
+        var win = GenericUI.getWindow(pnl);
+        if (win.mgr.updateNamingFormat) {
+          win.mgr.updateNamingFormat(format, example);
+        }
+      } finally {
+        pnl.processing = false;
       }
-    }
 
-    var prefix = pnl.prefix;
-    var opts = new FileNamingOptions(ini, prefix);
-    opts.fileNaming = fileNaming;
-
-    if (pnl.startingSerial) {
-      opts.startingSerial = Number(pnl.startingSerial.text);
-    }
-    if (pnl.compatWindows) {
-      opts.windowsCompatible = pnl.compatWindows.value;
-    }
-    if (pnl.compatMac) {
-      opts.macintoshCompatible = pnl.compatMac.value;
-    }
-    if (pnl.compatUnix) {
-      opts.unixCompatible = pnl.compatUnix.value;
-    }
-    return opts;
-  }
-  pnl.getFilenamingOptions = pnl.getFileNamingOptions;
-
-  pnl.updateSettings = function(ini) {
-    var pnl = this;
-
-    var opts = new FileNamingOptions(ini, pnl.prefix);
-
-    if (pnl.useSerial) {
-      pnl.startingSerial.text = opts.startingSerial;
-    }
-
-    if (pnl.useCompatibility) {
-      pnl.compatWindows.value = opts.windowsCompatible;
-      pnl.compatMac.value = opts.macintoshCompatible;
-      pnl.compatUnix.value = opts.unixCompatible;
+      if (pnl.onChange) {
+        pnl.onChange();
+      }
     }
 
     // default all slots to ''
@@ -11244,10 +11367,122 @@ GenericUI.prototype.createFileNamingPanel = function(pnl, ini,
       }
     }
 
+    //   pnl.menus[0].selection = pnl.menus[0].find("document name");
+    //   pnl.menus[0].lastMenuSelection = pnl.menus[0].selection.index;
+    //   pnl.menus[1].selection = pnl.menus[1].find("extension");
+    //   pnl.menus[1].lastMenuSelection = pnl.menus[1].selection.index;
+
     for (var i = 0; i < 6; i++) {
       var menu = pnl.menus[i];
       menu.onChange = menuOnChange;
     }
+
+    pnl.getFileNamingOptions = function(ini) {
+      var pnl = this;
+      var fileNaming = [];
+
+      for (var i = 0; i < 6; i++) {
+        var menu = pnl.menus[i];
+
+        if (menu.selection) {
+          var idx = menu.selection.index;
+
+          if (idx) {
+            // [0] is the "" item so we ignore it
+            var fnel = FileNamingElements[idx];
+            if (fnel) {
+              fileNaming.push(fnel.name);
+            } else {
+              // its a custom naming option
+              var txt = menu.selection.text;
+              if (txt.match(/^\-+$/)) {
+                txt = txt.substr(1);
+              }
+
+              // txt = '"' + text + '"';
+              fileNaming.push(txt);
+            }
+          }
+        }
+      }
+
+      var prefix = pnl.prefix;
+      var opts = new FileNamingOptions(ini, prefix);
+      opts.fileNaming = fileNaming;
+
+      if (pnl.startingSerial) {
+        opts.startingSerial = Number(pnl.startingSerial.text);
+      }
+      if (pnl.compatWindows) {
+        opts.windowsCompatible = pnl.compatWindows.value;
+      }
+      if (pnl.compatMac) {
+        opts.macintoshCompatible = pnl.compatMac.value;
+      }
+      if (pnl.compatUnix) {
+        opts.unixCompatible = pnl.compatUnix.value;
+      }
+      return opts;
+    };
+    pnl.getFilenamingOptions = pnl.getFileNamingOptions;
+
+    pnl.updateSettings = function(ini) {
+      var pnl = this;
+
+      var opts = new FileNamingOptions(ini, pnl.prefix);
+
+      if (pnl.useSerial) {
+        pnl.startingSerial.text = opts.startingSerial;
+      }
+
+      if (pnl.useCompatibility) {
+        pnl.compatWindows.value = opts.windowsCompatible;
+        pnl.compatMac.value = opts.macintoshCompatible;
+        pnl.compatUnix.value = opts.unixCompatible;
+      }
+
+      // default all slots to ''
+      for (var i = 0; i < 6; i++) {
+        var menu = pnl.menus[i];
+        menu.selection = menu.items[0];
+        menu.lastMenuSelection = 0;
+      }
+
+      for (var i = 0; i < 6; i++) {
+        var name = opts.fileNaming[i];
+        if (name) {
+          var fne = FileNamingElements.getByName(name);
+          var it;
+
+          if (!fne) {
+            if (name.match(/^\-+$/)) {
+              name += '-';
+            }
+            it = pnl.menus[i].find(name);
+            if (!it) {
+              pnl.addMenuElement(name);
+              it = pnl.menus[i].find(name);
+            }
+          } else {
+            it = pnl.menus[i].find(fne.menu);
+          }
+          pnl.menus[i].selection = it;
+        }
+      }
+
+      for (var i = 0; i < 6; i++) {
+        var menu = pnl.menus[i];
+        menu.onChange = menuOnChange;
+      }
+
+      if (!(isCS() || isCS2())) {
+        pnl.menus[0].onChange();
+      }
+
+      if (pnl.onChange) {
+        pnl.onChange();
+      }
+    };
 
     if (!(isCS() || isCS2())) {
       pnl.menus[0].onChange();
@@ -11256,93 +11491,86 @@ GenericUI.prototype.createFileNamingPanel = function(pnl, ini,
     if (pnl.onChange) {
       pnl.onChange();
     }
-  }
 
-  if (!(isCS() || isCS2())) {
-    pnl.menus[0].onChange();
-  }
-
-  if (pnl.onChange) {
-    pnl.onChange();
-  }
-
-  return pnl;
-};
-GenericUI.createCustomTextDialog = function(win, title, mode, init) {
-  var rect = {
-    x: 200,
-    y: 200,
-    w: 350,
-    h: 150
+    return pnl;
   };
+  GenericUI.createCustomTextDialog = function(win, title, mode, init) {
+    var rect = {
+      x: 200,
+      y: 200,
+      w: 350,
+      h: 150
+    };
 
-  function rectToBounds(r) {
-    return[r.x, r.y, r.x+r.w, r.y+r.h];
-  };
-
-  var cwin = new Window('dialog', title || 'Custom Text Editor',
-                        rectToBounds(rect));
-
-  cwin.text = title || 'Custom Text Editor';
-  if (win) {
-    cwin.center(win);
-  }
-
-  var xofs = 10;
-  var y = 10;
-  var x = xofs;
-
-  var tOfs = GenericUI.getTextOfs();
-
-  cwin.add('statictext', [x,y+tOfs,x+300,y+22+tOfs],
-           "Please enter the desired Custom Text: ");
-  y += 30;
-  cwin.customText = cwin.add('edittext', [x,y,x+330,y+22]);
-
-  cwin.customText.onChanging = function() {
-    cwin = this.parent;
-    var text = cwin.customText.text;
-
-    if (cwin.initText) {
-      cwin.saveBtn.enabled = (text.length > 0) && (text != cwin.initText);
-    } else {
-      cwin.saveBtn.enabled = (text.length > 0);
+    function rectToBounds(r) {
+      return [r.x, r.y, r.x + r.w, r.y + r.h];
     }
-  }
 
-  if (init) {
-    cwin.customText.text = init;
-    cwin.initText = init;
-  }
+    var cwin = new Window('dialog', title || 'Custom Text Editor', rectToBounds(rect));
 
-  y += 50;
-  x += 100;
-  cwin.saveBtn = cwin.add('button', [x,y,x+70,y+22], "Save");
-  cwin.saveBtn.enabled = false;
+    cwin.text = title || 'Custom Text Editor';
+    if (win) {
+      cwin.center(win);
+    }
 
-  x += 100;
-  cwin.cancelBtn = cwin.add('button', [x,y,x+70,y+22], "Cancel");
+    var xofs = 10;
+    var y = 10;
+    var x = xofs;
 
-  cwin.defaultElement = cwin.saveBtn;
+    var tOfs = GenericUI.getTextOfs();
 
-  var res = cwin.show();
-  return (res == 1) ? cwin.customText.text : undefined;
-};
+    cwin.add(
+      'statictext',
+      [x, y + tOfs, x + 300, y + 22 + tOfs],
+      'Please enter the desired Custom Text: '
+    );
+    y += 30;
+    cwin.customText = cwin.add('edittext', [x, y, x + 330, y + 22]);
 
-GenericUI.prototype.validateFileNamingPanel = function(pnl, opts) {
-  var self = this;
-  var win = GenericUI.getWindow(pnl);
-  var fopts = pnl.getFileNamingOptions(opts);
+    cwin.customText.onChanging = function() {
+      cwin = this.parent;
+      var text = cwin.customText.text;
 
-  if (fopts.fileNaming.length == 0) {
-    return self.errorPrompt("You must specify a name for the files.");
-  }
+      if (cwin.initText) {
+        cwin.saveBtn.enabled = text.length > 0 && text != cwin.initText;
+      } else {
+        cwin.saveBtn.enabled = text.length > 0;
+      }
+    };
 
-  fopts.copyTo(opts, pnl.prefix);
+    if (init) {
+      cwin.customText.text = init;
+      cwin.initText = init;
+    }
 
-  return opts;
-};
- }
+    y += 50;
+    x += 100;
+    cwin.saveBtn = cwin.add('button', [x, y, x + 70, y + 22], 'Save');
+    cwin.saveBtn.enabled = false;
+
+    x += 100;
+    cwin.cancelBtn = cwin.add('button', [x, y, x + 70, y + 22], 'Cancel');
+
+    cwin.defaultElement = cwin.saveBtn;
+
+    var res = cwin.show();
+    return res == 1 ? cwin.customText.text : undefined;
+  };
+
+  GenericUI.prototype.validateFileNamingPanel = function(pnl, opts) {
+    var self = this;
+    var win = GenericUI.getWindow(pnl);
+    var fopts = pnl.getFileNamingOptions(opts);
+
+    if (fopts.fileNaming.length == 0) {
+      return self.errorPrompt('You must specify a name for the files.');
+    }
+
+    fopts.copyTo(opts, pnl.prefix);
+
+    return opts;
+  };
+}
 //============================ File Save =====================================
 //
 // FileSave is only available in Photoshop
@@ -11351,7 +11579,7 @@ FileSaveOptions = function(obj) {
   var self = this;
 
   self.saveDocumentType = undefined; // SaveDocumentType
-  self.fileType = "jpg";             // file extension
+  self.fileType = 'jpg'; // file extension
 
   self._saveOpts = undefined;
 
@@ -11368,7 +11596,7 @@ FileSaveOptions = function(obj) {
   self.jpgQuality = 10;
   self.jpgEmbedColorProfile = true;
   self.jpgFormat = FormatOptions.STANDARDBASELINE;
-  self.jpgConvertToSRGB = false;          // requires code
+  self.jpgConvertToSRGB = false; // requires code
 
   self.epsEncoding = SaveEncoding.BINARY;
   self.epsEmbedColorProfile = true;
@@ -11379,7 +11607,7 @@ FileSaveOptions = function(obj) {
   self.psdAlphaChannels = true;
   self.psdEmbedColorProfile = true;
   self.psdLayers = true;
-  self.psdMaximizeCompatibility = true;           // requires code for prefs
+  self.psdMaximizeCompatibility = true; // requires code for prefs
 
   self.pngInterlaced = false;
 
@@ -11387,19 +11615,20 @@ FileSaveOptions = function(obj) {
   self.tgaRLECompression = true;
 
   self.tiffEncoding = TIFFEncoding.NONE;
-  self.tiffByteOrder = (isWindows() ? ByteOrder.IBM : ByteOrder.MACOS);
+  self.tiffByteOrder = isWindows() ? ByteOrder.IBM : ByteOrder.MACOS;
   self.tiffEmbedColorProfile = true;
 
   if (obj) {
     for (var idx in self) {
-      if (idx in obj) {       // only copy in FSO settings
+      if (idx in obj) {
+        // only copy in FSO settings
         self[idx] = obj[idx];
       }
     }
     if (!obj.fileType) {
       self.fileType = obj.fileSaveType;
-      if (self.fileType == "tiff") {
-        self.fileType = "tif";
+      if (self.fileType == 'tiff') {
+        self.fileType = 'tif';
       }
     }
   }
@@ -11423,7 +11652,7 @@ FileSaveOptions.convert = function(fsOpts) {
   saveOpts._ext = fsType;
 
   switch (fsType) {
-    case "bmp": {
+    case 'bmp': {
       saveOpts.rleCompression = toBoolean(fsOpts.bmpRLECompression);
 
       var value = BMPDepthType.TWENTYFOUR;
@@ -11449,7 +11678,7 @@ FileSaveOptions.convert = function(fsOpts) {
       saveOpts._8Bit = true; //XXX Should this be true?
       break;
     }
-    case "gif": {
+    case 'gif': {
       saveOpts.transparency = toBoolean(fsOpts.gifTransparency);
       saveOpts.interlaced = toBoolean(fsOpts.gifInterlaced);
       saveOpts.colors = toNumber(fsOpts.gifColors);
@@ -11460,7 +11689,7 @@ FileSaveOptions.convert = function(fsOpts) {
       saveOpts._saveForWeb = toBoolean(fsOpts.saveForWeb);
       break;
     }
-    case "jpg": {
+    case 'jpg': {
       saveOpts.quality = toNumber(fsOpts.jpgQuality);
       saveOpts.embedColorProfile = toBoolean(fsOpts.jpgEmbedColorProfile);
       var value = FormatOptions.STANDARDBASELINE;
@@ -11480,15 +11709,14 @@ FileSaveOptions.convert = function(fsOpts) {
       saveOpts._saveForWeb = toBoolean(fsOpts.saveForWeb);
       break;
     }
-    case "psd": {
+    case 'psd': {
       saveOpts.alphaChannels = toBoolean(fsOpts.psdAlphaChannels);
       saveOpts.embedColorProfile = toBoolean(fsOpts.psdEmbedColorProfile);
       saveOpts.layers = toBoolean(fsOpts.psdLayers);
-      saveOpts.maximizeCompatibility =
-        toBoolean(fsOpts.psdMaximizeCompatibility);
+      saveOpts.maximizeCompatibility = toBoolean(fsOpts.psdMaximizeCompatibility);
       break;
     }
-    case "eps": {
+    case 'eps': {
       var value = SaveEncoding.BINARY;
       var str = fsOpts.epsEncoding.toString();
       if (str.match(/ascii/i)) {
@@ -11512,26 +11740,26 @@ FileSaveOptions.convert = function(fsOpts) {
       saveOpts._flatten = true;
       break;
     }
-    case "pdf": {
+    case 'pdf': {
       saveOpts.embedColorProfile = toBoolean(fsOpts.pdfEmbedColorProfile);
       break;
     }
-    case "png": {
+    case 'png': {
       saveOpts.interlaced = toBoolean(fsOpts.pngInterlaced);
 
       saveOpts._flatten = true;
       saveOpts._saveForWeb = toBoolean(fsOpts.saveForWeb);
       break;
     }
-    case "tga": {
+    case 'tga': {
       saveOpts.alphaChannels = toBoolean(fsOpts.tgaAlphaChannels);
       saveOpts.rleCompression = toBoolean(fsOpts.tgaRLECompression);
 
       saveOpts._flatten = true;
       break;
     }
-    case "tif": {
-      var value = (isWindows() ? ByteOrder.IBM : ByteOrder.MACOS);
+    case 'tif': {
+      var value = isWindows() ? ByteOrder.IBM : ByteOrder.MACOS;
       var str = fsOpts.tiffByteOrder.toString();
       if (str.match(/ibm|pc/i)) {
         value = ByteOrder.IBM;
@@ -11556,11 +11784,10 @@ FileSaveOptions.convert = function(fsOpts) {
       saveOpts.embedColorProfile = toBoolean(fsOpts.tiffEmbedColorProfile);
       break;
     }
-    case "dng": {
+    case 'dng': {
     }
     default: {
-      Error.runtimeError(9001, "Internal Error: Unknown file type: " +
-                         fs.fileType);
+      Error.runtimeError(9001, 'Internal Error: Unknown file type: ' + fs.fileType);
     }
   }
 
@@ -11570,12 +11797,12 @@ FileSaveOptions.convert = function(fsOpts) {
 FileSaveOptionsType = function(fileType, menu, saveType, optionsType) {
   var self = this;
 
-  self.fileType = fileType;    // the file extension
+  self.fileType = fileType; // the file extension
   self.menu = menu;
   self.saveType = saveType;
   self.optionsType = optionsType;
 };
-FileSaveOptionsType.prototype.typename = "FileSaveOptionsType";
+FileSaveOptionsType.prototype.typename = 'FileSaveOptionsType';
 
 FileSaveOptionsTypes = [];
 FileSaveOptionsTypes._add = function(fileType, menu, saveType, optionsType) {
@@ -11587,27 +11814,23 @@ FileSaveOptionsTypes._init = function() {
   if (!isPhotoshop()) {
     return;
   }
-  FileSaveOptionsTypes._add("bmp", "Bitmap (BMP)", SaveDocumentType.BMP,
-                            BMPSaveOptions);
-  FileSaveOptionsTypes._add("gif", "GIF", SaveDocumentType.COMPUSERVEGIF,
-                            GIFSaveOptions);
-  FileSaveOptionsTypes._add("jpg", "JPEG", SaveDocumentType.JPEG,
-                            JPEGSaveOptions);
-  FileSaveOptionsTypes._add("psd", "Photoshop PSD", SaveDocumentType.PHOTOSHOP,
-                            PhotoshopSaveOptions);
-  FileSaveOptionsTypes._add("eps", "Photoshop EPS",
-                            SaveDocumentType.PHOTOSHOPEPS, EPSSaveOptions);
-  FileSaveOptionsTypes._add("pdf", "Photoshop PDF",
-                            SaveDocumentType.PHOTOSHOPPDF, PDFSaveOptions);
-  FileSaveOptionsTypes._add("png", "PNG", SaveDocumentType.PNG,
-                            PNGSaveOptions);
-  FileSaveOptionsTypes._add("tga", "Targa", SaveDocumentType.TARGA,
-                            TargaSaveOptions);
-  FileSaveOptionsTypes._add("tif", "TIFF", SaveDocumentType.TIFF,
-                            TiffSaveOptions);
+  FileSaveOptionsTypes._add('bmp', 'Bitmap (BMP)', SaveDocumentType.BMP, BMPSaveOptions);
+  FileSaveOptionsTypes._add('gif', 'GIF', SaveDocumentType.COMPUSERVEGIF, GIFSaveOptions);
+  FileSaveOptionsTypes._add('jpg', 'JPEG', SaveDocumentType.JPEG, JPEGSaveOptions);
+  FileSaveOptionsTypes._add(
+    'psd',
+    'Photoshop PSD',
+    SaveDocumentType.PHOTOSHOP,
+    PhotoshopSaveOptions
+  );
+  FileSaveOptionsTypes._add('eps', 'Photoshop EPS', SaveDocumentType.PHOTOSHOPEPS, EPSSaveOptions);
+  FileSaveOptionsTypes._add('pdf', 'Photoshop PDF', SaveDocumentType.PHOTOSHOPPDF, PDFSaveOptions);
+  FileSaveOptionsTypes._add('png', 'PNG', SaveDocumentType.PNG, PNGSaveOptions);
+  FileSaveOptionsTypes._add('tga', 'Targa', SaveDocumentType.TARGA, TargaSaveOptions);
+  FileSaveOptionsTypes._add('tif', 'TIFF', SaveDocumentType.TIFF, TiffSaveOptions);
 
   if (FileSaveOptions._enableDNG) {
-    FileSaveOptionsTypes._add("dng", "DNG", undefined, undefined);
+    FileSaveOptionsTypes._add('dng', 'DNG', undefined, undefined);
   }
 };
 FileSaveOptionsTypes._init();
@@ -11647,24 +11870,22 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
     xofs += 5;
     y += 10;
   }
-  pnl.text = "Save Options";
+  pnl.text = 'Save Options';
 
   var tOfs = GenericUI.getTextOfs();
 
   var x = xofs;
-  pnl.add('statictext', [x,y+tOfs,x+55,y+22+tOfs], 'File Type:');
+  pnl.add('statictext', [x, y + tOfs, x + 55, y + 22 + tOfs], 'File Type:');
   x += 127;
-  pnl.fileType = pnl.add('dropdownlist', [x,y,x+150,y+22], menuElements);
+  pnl.fileType = pnl.add('dropdownlist', [x, y, x + 150, y + 22], menuElements);
 
-  var ftype = opts.fileType || opts.fileSaveType || "jpg";
+  var ftype = opts.fileType || opts.fileSaveType || 'jpg';
 
-  var ft = Stdlib.getByProperty(FileSaveOptionsTypes,
-                                "fileType",
-                                ftype);
+  var ft = Stdlib.getByProperty(FileSaveOptionsTypes, 'fileType', ftype);
   pnl.fileType.selection = pnl.fileType.find(ft.menu);
 
   x += pnl.fileType.bounds.width + 10;
-  pnl.saveForWeb = pnl.add('checkbox', [x,y,x+150,y+22], 'Save for Web');
+  pnl.saveForWeb = pnl.add('checkbox', [x, y, x + 150, y + 22], 'Save for Web');
   pnl.saveForWeb.visible = false;
   pnl.saveForWeb.value = false;
 
@@ -11674,32 +11895,28 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
   x = xofs;
 
   //=============================== Bitmap ===============================
-  if (FileSaveOptionsTypes["bmp"]) {
-    pnl.bmpAlphaChannels = pnl.add('checkbox', [x,y,x+125,y+22],
-                                   "Alpha Channels");
+  if (FileSaveOptionsTypes['bmp']) {
+    pnl.bmpAlphaChannels = pnl.add('checkbox', [x, y, x + 125, y + 22], 'Alpha Channels');
 
     x += 150;
-    var bmpDepthMenu = ["1", "4", "8", "16", "24", "32"];
-    pnl.bmpDepthLabel = pnl.add('statictext', [x,y+tOfs,x+60,y+22+tOfs],
-                                'Bit Depth:');
+    var bmpDepthMenu = ['1', '4', '8', '16', '24', '32'];
+    pnl.bmpDepthLabel = pnl.add('statictext', [x, y + tOfs, x + 60, y + 22 + tOfs], 'Bit Depth:');
     x += 65;
-    pnl.bmpDepth = pnl.add('dropdownlist', [x,y,x+55,y+22], bmpDepthMenu);
-    pnl.bmpDepth.selection = pnl.bmpDepth.find("24");
+    pnl.bmpDepth = pnl.add('dropdownlist', [x, y, x + 55, y + 22], bmpDepthMenu);
+    pnl.bmpDepth.selection = pnl.bmpDepth.find('24');
 
-    pnl.bmpDepth.find("1")._value = BMPDepthType.ONE;
-    pnl.bmpDepth.find("4")._value = BMPDepthType.FOUR;
-    pnl.bmpDepth.find("8")._value = BMPDepthType.EIGHT;
-    pnl.bmpDepth.find("16")._value = BMPDepthType.SIXTEEN;
-    pnl.bmpDepth.find("24")._value = BMPDepthType.TWENTYFOUR;
-    pnl.bmpDepth.find("32")._value = BMPDepthType.THIRTYTWO;
+    pnl.bmpDepth.find('1')._value = BMPDepthType.ONE;
+    pnl.bmpDepth.find('4')._value = BMPDepthType.FOUR;
+    pnl.bmpDepth.find('8')._value = BMPDepthType.EIGHT;
+    pnl.bmpDepth.find('16')._value = BMPDepthType.SIXTEEN;
+    pnl.bmpDepth.find('24')._value = BMPDepthType.TWENTYFOUR;
+    pnl.bmpDepth.find('32')._value = BMPDepthType.THIRTYTWO;
 
     x = xofs;
     y += 30;
-    pnl.bmpRLECompression = pnl.add('checkbox', [x,y,x+145,y+22],
-                                    "RLE Compression");
+    pnl.bmpRLECompression = pnl.add('checkbox', [x, y, x + 145, y + 22], 'RLE Compression');
 
-    pnl.bmp = ["bmpAlphaChannels", "bmpDepthLabel", "bmpDepth",
-               "bmpRLECompression"];
+    pnl.bmp = ['bmpAlphaChannels', 'bmpDepthLabel', 'bmpDepth', 'bmpRLECompression'];
 
     pnl.bmpAlphaChannels.value = toBoolean(opts.bmpAlphaChannels);
     var it = pnl.bmpDepth.find(opts.bmpDepth.toString());
@@ -11712,33 +11929,32 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
     x = xofs;
   }
 
-
   //=============================== GIF ===============================
-  if (FileSaveOptionsTypes["gif"]) {
-    pnl.gifTransparency = pnl.add('checkbox', [x,y,x+125,y+22],
-                                  "Transparency");
+  if (FileSaveOptionsTypes['gif']) {
+    pnl.gifTransparency = pnl.add('checkbox', [x, y, x + 125, y + 22], 'Transparency');
 
     x += 125;
-    pnl.gifInterlaced = pnl.add('checkbox', [x,y,x+125,y+22],
-                                "Interlaced");
+    pnl.gifInterlaced = pnl.add('checkbox', [x, y, x + 125, y + 22], 'Interlaced');
 
     x += 125;
-    pnl.gifColorsLabel = pnl.add('statictext', [x,y+tOfs,x+55,y+22+tOfs],
-                                  'Colors:');
+    pnl.gifColorsLabel = pnl.add('statictext', [x, y + tOfs, x + 55, y + 22 + tOfs], 'Colors:');
 
     x += 60;
-    pnl.gifColors = pnl.add('edittext', [x,y,x+55,y+22], "256");
+    pnl.gifColors = pnl.add('edittext', [x, y, x + 55, y + 22], '256');
     pnl.gifColors.onChanging = GenericUI.numericKeystrokeFilter;
     pnl.gifColors.onChange = function() {
       var pnl = this.parent;
       var n = toNumber(pnl.gifColors.text || 256);
-      if (n < 2)   { n = 2; }
-      if (n > 256) { n = 256; }
+      if (n < 2) {
+        n = 2;
+      }
+      if (n > 256) {
+        n = 256;
+      }
       pnl.gifColors.text = n;
-    }
+    };
 
-    pnl.gif = ["gifTransparency", "gifInterlaced", "gifColors", "gifColorsLabel",
-               "saveForWeb"];
+    pnl.gif = ['gifTransparency', 'gifInterlaced', 'gifColors', 'gifColorsLabel', 'saveForWeb'];
 
     pnl.gifTransparency.value = toBoolean(opts.gifTransparency);
     pnl.gifInterlaced.value = toBoolean(opts.gifInterlaced);
@@ -11749,42 +11965,44 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
     x = xofs;
   }
 
-
   //=============================== JPG ===============================
-  if (FileSaveOptionsTypes["jpg"]) {
-    pnl.jpgQualityLabel = pnl.add('statictext', [x,y+tOfs,x+55,y+22+tOfs],
-                                  'Quality:');
+  if (FileSaveOptionsTypes['jpg']) {
+    pnl.jpgQualityLabel = pnl.add('statictext', [x, y + tOfs, x + 55, y + 22 + tOfs], 'Quality:');
     x += 60;
-    var jpqQualityMenu = ["1","2","3","4","5","6","7","8","9","10","11","12"];
-    pnl.jpgQuality = pnl.add('dropdownlist', [x,y,x+55,y+22], jpqQualityMenu);
-    pnl.jpgQuality.selection = pnl.jpgQuality.find("10");
+    var jpqQualityMenu = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+    pnl.jpgQuality = pnl.add('dropdownlist', [x, y, x + 55, y + 22], jpqQualityMenu);
+    pnl.jpgQuality.selection = pnl.jpgQuality.find('10');
 
     y += 30;
     x = xofs;
-    pnl.jpgEmbedColorProfile = pnl.add('checkbox', [x,y,x+155,y+22],
-                                       "Embed Color Profile");
+    pnl.jpgEmbedColorProfile = pnl.add('checkbox', [x, y, x + 155, y + 22], 'Embed Color Profile');
 
     y = yofs;
     x += 150;
 
-    var jpgFormatMenu = ["Standard", "Progressive", "Optimized"];
-    pnl.jpgFormatLabel = pnl.add('statictext', [x,y+tOfs,x+50,y+22+tOfs],
-                                 'Format:');
+    var jpgFormatMenu = ['Standard', 'Progressive', 'Optimized'];
+    pnl.jpgFormatLabel = pnl.add('statictext', [x, y + tOfs, x + 50, y + 22 + tOfs], 'Format:');
     x += 55;
-    pnl.jpgFormat = pnl.add('dropdownlist', [x,y,x+110,y+22], jpgFormatMenu);
-    pnl.jpgFormat.selection = pnl.jpgFormat.find("Standard");
+    pnl.jpgFormat = pnl.add('dropdownlist', [x, y, x + 110, y + 22], jpgFormatMenu);
+    pnl.jpgFormat.selection = pnl.jpgFormat.find('Standard');
 
-    pnl.jpgFormat.find("Standard")._value = FormatOptions.STANDARDBASELINE;
-    pnl.jpgFormat.find("Progressive")._value = FormatOptions.PROGRESSIVE;
-    pnl.jpgFormat.find("Optimized")._value = FormatOptions.OPTIMIZEDBASELINE;
+    pnl.jpgFormat.find('Standard')._value = FormatOptions.STANDARDBASELINE;
+    pnl.jpgFormat.find('Progressive')._value = FormatOptions.PROGRESSIVE;
+    pnl.jpgFormat.find('Optimized')._value = FormatOptions.OPTIMIZEDBASELINE;
 
     y += 30;
     x = xofs + 150;
-    pnl.jpgConvertToSRGB = pnl.add('checkbox', [x,y,x+145,y+22],
-                                   "Convert to sRGB");
+    pnl.jpgConvertToSRGB = pnl.add('checkbox', [x, y, x + 145, y + 22], 'Convert to sRGB');
 
-    pnl.jpg = ["jpgQualityLabel", "jpgQuality", "jpgEmbedColorProfile",
-               "jpgFormatLabel", "jpgFormat", "jpgConvertToSRGB", "saveForWeb" ];
+    pnl.jpg = [
+      'jpgQualityLabel',
+      'jpgQuality',
+      'jpgEmbedColorProfile',
+      'jpgFormatLabel',
+      'jpgFormat',
+      'jpgConvertToSRGB',
+      'saveForWeb'
+    ];
 
     var it = pnl.jpgQuality.find(opts.jpgQuality.toString());
     if (it) {
@@ -11803,64 +12021,56 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
     y = yofs;
   }
 
-
   //=============================== PSD ===============================
-  if (FileSaveOptionsTypes["psd"]) {
-    pnl.psdAlphaChannels = pnl.add('checkbox', [x,y,x+125,y+22],
-                                   "Alpha Channels");
+  if (FileSaveOptionsTypes['psd']) {
+    pnl.psdAlphaChannels = pnl.add('checkbox', [x, y, x + 125, y + 22], 'Alpha Channels');
 
     y += 30;
-    pnl.psdEmbedColorProfile = pnl.add('checkbox', [x,y,x+155,y+22],
-                                       "Embed Color Profile");
+    pnl.psdEmbedColorProfile = pnl.add('checkbox', [x, y, x + 155, y + 22], 'Embed Color Profile');
 
     y = yofs;
     x = xofs + 150;
 
-    pnl.psdLayers = pnl.add('checkbox', [x,y,x+125,y+22],
-                          "Layers");
+    pnl.psdLayers = pnl.add('checkbox', [x, y, x + 125, y + 22], 'Layers');
 
     y += 30;
-    pnl.psdMaximizeCompatibility = pnl.add('checkbox', [x,y,x+175,y+22],
-                                           "Maximize Compatibility");
+    pnl.psdMaximizeCompatibility = pnl.add(
+      'checkbox',
+      [x, y, x + 175, y + 22],
+      'Maximize Compatibility'
+    );
 
-    pnl.psd = ["psdAlphaChannels", "psdEmbedColorProfile",
-               "psdLayers", "psdMaximizeCompatibility"];
+    pnl.psd = ['psdAlphaChannels', 'psdEmbedColorProfile', 'psdLayers', 'psdMaximizeCompatibility'];
 
     pnl.psdAlphaChannels.value = toBoolean(opts.psdAlphaChannels);
     pnl.psdEmbedColorProfile.value = toBoolean(opts.psdEmbedColorProfile);
     pnl.psdLayers.value = toBoolean(opts.psdLayers);
-    pnl.psdMaximizeCompatibility.value =
-       toBoolean(opts.psdMaximizeCompatibility);
+    pnl.psdMaximizeCompatibility.value = toBoolean(opts.psdMaximizeCompatibility);
 
     x = xofs;
     y = yofs;
   }
 
   //=============================== EPS ===============================
-  if (FileSaveOptionsTypes["eps"]) {
-    var epsEncodingMenu = ["ASCII", "Binary", "JPEG High", "JPEG Med",
-                           "JPEG Low", "JPEG Max"];
-    pnl.epsEncodingLabel = pnl.add('statictext', [x,y+tOfs,x+60,y+22+tOfs],
-                                 'Encoding:');
+  if (FileSaveOptionsTypes['eps']) {
+    var epsEncodingMenu = ['ASCII', 'Binary', 'JPEG High', 'JPEG Med', 'JPEG Low', 'JPEG Max'];
+    pnl.epsEncodingLabel = pnl.add('statictext', [x, y + tOfs, x + 60, y + 22 + tOfs], 'Encoding:');
     x += 65;
-    pnl.epsEncoding = pnl.add('dropdownlist',
-                              [x,y,x+100,y+22],
-                              epsEncodingMenu);
-    pnl.epsEncoding.selection = pnl.epsEncoding.find("Binary");
+    pnl.epsEncoding = pnl.add('dropdownlist', [x, y, x + 100, y + 22], epsEncodingMenu);
+    pnl.epsEncoding.selection = pnl.epsEncoding.find('Binary');
 
-    pnl.epsEncoding.find("ASCII")._value = SaveEncoding.ASCII;
-    pnl.epsEncoding.find("Binary")._value = SaveEncoding.BINARY;
-    pnl.epsEncoding.find("JPEG High")._value = SaveEncoding.JPEGHIGH;
-    pnl.epsEncoding.find("JPEG Low")._value = SaveEncoding.JPEGLOW;
-    pnl.epsEncoding.find("JPEG Max")._value = SaveEncoding.JPEGMAXIMUM;
-    pnl.epsEncoding.find("JPEG Med")._value = SaveEncoding.JPEGMEDIUM;
+    pnl.epsEncoding.find('ASCII')._value = SaveEncoding.ASCII;
+    pnl.epsEncoding.find('Binary')._value = SaveEncoding.BINARY;
+    pnl.epsEncoding.find('JPEG High')._value = SaveEncoding.JPEGHIGH;
+    pnl.epsEncoding.find('JPEG Low')._value = SaveEncoding.JPEGLOW;
+    pnl.epsEncoding.find('JPEG Max')._value = SaveEncoding.JPEGMAXIMUM;
+    pnl.epsEncoding.find('JPEG Med')._value = SaveEncoding.JPEGMEDIUM;
 
     x = xofs;
     y += 30;
-    pnl.epsEmbedColorProfile = pnl.add('checkbox', [x,y,x+155,y+22],
-                                       "Embed Color Profile");
+    pnl.epsEmbedColorProfile = pnl.add('checkbox', [x, y, x + 155, y + 22], 'Embed Color Profile');
 
-    pnl.eps = ["epsEncodingLabel", "epsEncoding", "epsEmbedColorProfile"];
+    pnl.eps = ['epsEncodingLabel', 'epsEncoding', 'epsEmbedColorProfile'];
 
     var it = pnl.epsEncoding.find(opts.epsEncoding);
     if (it) {
@@ -11872,31 +12082,27 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
     y = yofs;
   }
 
-
   //=============================== PDF ===============================
-  if (FileSaveOptionsTypes["pdf"]) {
-    pnl.pdf = ["pdfEmbedColorProfile"];
+  if (FileSaveOptionsTypes['pdf']) {
+    pnl.pdf = ['pdfEmbedColorProfile'];
 
     x = xofs;
     y = yofs;
 
     x = xofs;
     y += 30;
-    pnl.pdfEmbedColorProfile = pnl.add('checkbox', [x,y,x+155,y+22],
-                                       "Embed Color Profile");
+    pnl.pdfEmbedColorProfile = pnl.add('checkbox', [x, y, x + 155, y + 22], 'Embed Color Profile');
     pnl.pdfEmbedColorProfile.value = toBoolean(opts.pdfEmbedColorProfile);
 
     x = xofs;
     y = yofs;
   }
 
-
   //=============================== PNG ===============================
-  if (FileSaveOptionsTypes["png"]) {
-    pnl.pngInterlaced = pnl.add('checkbox', [x,y,x+125,y+22],
-                                "Interlaced");
+  if (FileSaveOptionsTypes['png']) {
+    pnl.pngInterlaced = pnl.add('checkbox', [x, y, x + 125, y + 22], 'Interlaced');
 
-    pnl.png = ["pngInterlaced", "saveForWeb"];
+    pnl.png = ['pngInterlaced', 'saveForWeb'];
 
     pnl.pngInterlaced.value = toBoolean(opts.pngInterlaced);
 
@@ -11906,18 +12112,15 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
     y = yofs;
   }
 
-
   //=============================== TGA ===============================
-  if (FileSaveOptionsTypes["tga"]) {
-    pnl.tgaAlphaChannels = pnl.add('checkbox', [x,y,x+125,y+22],
-                                   "Alpha Channels");
+  if (FileSaveOptionsTypes['tga']) {
+    pnl.tgaAlphaChannels = pnl.add('checkbox', [x, y, x + 125, y + 22], 'Alpha Channels');
 
     y += 30;
 
-    pnl.tgaRLECompression = pnl.add('checkbox', [x,y,x+145,y+22],
-                                    "RLE Compression");
+    pnl.tgaRLECompression = pnl.add('checkbox', [x, y, x + 145, y + 22], 'RLE Compression');
 
-    pnl.tga = ["tgaAlphaChannels", "tgaRLECompression"];
+    pnl.tga = ['tgaAlphaChannels', 'tgaRLECompression'];
 
     pnl.tgaAlphaChannels.value = toBoolean(opts.tgaAlphaChannels);
     pnl.tgaRLECompression.value = toBoolean(opts.tgaRLECompression);
@@ -11926,43 +12129,50 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
     y = yofs;
   }
 
-
   //=============================== TIFF ===============================
-  if (FileSaveOptionsTypes["tif"]) {
-    var tiffEncodingMenu = ["None", "LZW", "ZIP", "JPEG"];
-    pnl.tiffEncodingLabel = pnl.add('statictext', [x,y+tOfs,x+60,y+22+tOfs],
-                                    'Encoding:');
+  if (FileSaveOptionsTypes['tif']) {
+    var tiffEncodingMenu = ['None', 'LZW', 'ZIP', 'JPEG'];
+    pnl.tiffEncodingLabel = pnl.add(
+      'statictext',
+      [x, y + tOfs, x + 60, y + 22 + tOfs],
+      'Encoding:'
+    );
     x += 65;
-    pnl.tiffEncoding = pnl.add('dropdownlist', [x,y,x+75,y+22],
-                               tiffEncodingMenu);
-    pnl.tiffEncoding.selection = pnl.tiffEncoding.find("None");
+    pnl.tiffEncoding = pnl.add('dropdownlist', [x, y, x + 75, y + 22], tiffEncodingMenu);
+    pnl.tiffEncoding.selection = pnl.tiffEncoding.find('None');
 
-    pnl.tiffEncoding.find("None")._value = TIFFEncoding.NONE;
-    pnl.tiffEncoding.find("LZW")._value = TIFFEncoding.TIFFLZW;
-    pnl.tiffEncoding.find("ZIP")._value = TIFFEncoding.TIFFZIP;
-    pnl.tiffEncoding.find("JPEG")._value = TIFFEncoding.JPEG;
+    pnl.tiffEncoding.find('None')._value = TIFFEncoding.NONE;
+    pnl.tiffEncoding.find('LZW')._value = TIFFEncoding.TIFFLZW;
+    pnl.tiffEncoding.find('ZIP')._value = TIFFEncoding.TIFFZIP;
+    pnl.tiffEncoding.find('JPEG')._value = TIFFEncoding.JPEG;
 
     x += 90;
 
-    var tiffByteOrderMenu = ["IBM", "MacOS"];
-    pnl.tiffByteOrderLabel = pnl.add('statictext', [x,y+tOfs,x+65,y+22+tOfs],
-                                     'ByteOrder:');
+    var tiffByteOrderMenu = ['IBM', 'MacOS'];
+    pnl.tiffByteOrderLabel = pnl.add(
+      'statictext',
+      [x, y + tOfs, x + 65, y + 22 + tOfs],
+      'ByteOrder:'
+    );
     x += 70;
-    pnl.tiffByteOrder = pnl.add('dropdownlist', [x,y,x+85,y+22],
-                                tiffByteOrderMenu);
-    var bo = (isWindows() ? "IBM" : "MacOS");
+    pnl.tiffByteOrder = pnl.add('dropdownlist', [x, y, x + 85, y + 22], tiffByteOrderMenu);
+    var bo = isWindows() ? 'IBM' : 'MacOS';
     pnl.tiffByteOrder.selection = pnl.tiffByteOrder.find(bo);
 
-    pnl.tiffByteOrder.find("IBM")._value = ByteOrder.IBM;
-    pnl.tiffByteOrder.find("MacOS")._value = ByteOrder.MACOS;
+    pnl.tiffByteOrder.find('IBM')._value = ByteOrder.IBM;
+    pnl.tiffByteOrder.find('MacOS')._value = ByteOrder.MACOS;
 
     x = xofs;
     y += 30;
-    pnl.tiffEmbedColorProfile = pnl.add('checkbox', [x,y,x+155,y+22],
-                                        "Embed Color Profile");
+    pnl.tiffEmbedColorProfile = pnl.add('checkbox', [x, y, x + 155, y + 22], 'Embed Color Profile');
 
-    pnl.tif = ["tiffEncodingLabel", "tiffEncoding", "tiffByteOrderLabel",
-               "tiffByteOrder", "tiffEmbedColorProfile"];
+    pnl.tif = [
+      'tiffEncodingLabel',
+      'tiffEncoding',
+      'tiffByteOrderLabel',
+      'tiffByteOrder',
+      'tiffEmbedColorProfile'
+    ];
 
     pnl.dng = [];
 
@@ -11988,12 +12198,12 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
 
       for (var j = 0; j < parts.length; j++) {
         var part = parts[j];
-        pnl[part].visible = (fsType == ft);
+        pnl[part].visible = fsType == ft;
       }
     }
 
     var fsType = ft.fileType;
-    pnl.saveForWeb.visible = (pnl[fsType].contains("saveForWeb"));
+    pnl.saveForWeb.visible = pnl[fsType].contains('saveForWeb');
     pnl._onChange();
   };
 
@@ -12007,7 +12217,7 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
   if (false) {
     y = yofs;
     x = 300;
-    var btn = pnl.add('button', [x,y,x+50,y+22], "Test");
+    var btn = pnl.add('button', [x, y, x + 50, y + 22], 'Test');
     btn.onClick = function() {
       try {
         var pnl = this.parent;
@@ -12017,7 +12227,6 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
         mgr.validateFileSavePanel(pnl, opts);
         alert(listProps(opts));
         alert(listProps(FileSaveOptions.convert(opts)));
-
       } catch (e) {
         var msg = Stdlib.exceptionMessage(e);
         Stdlib.log(msg);
@@ -12055,27 +12264,25 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
     }
 
     var opts = new FileSaveOptions(ini);
-    var ftype = opts.fileType || opts.fileSaveType || "jpg";
+    var ftype = opts.fileType || opts.fileSaveType || 'jpg';
 
-    var ft = Stdlib.getByProperty(FileSaveOptionsTypes,
-                                  "fileType",
-                                  ftype);
+    var ft = Stdlib.getByProperty(FileSaveOptionsTypes, 'fileType', ftype);
     pnl.fileType.selection = pnl.fileType.find(ft.menu);
 
-    if (FileSaveOptionsTypes["bmp"]) {
+    if (FileSaveOptionsTypes['bmp']) {
       pnl.bmpAlphaChannels.value = toBoolean(opts.bmpAlphaChannels);
       _select(pnl.bmpDepth, opts.bmpDepth.toString(), 0);
       pnl.bmpRLECompression.value = toBoolean(opts.bmpRLECompression);
     }
 
-    if (FileSaveOptionsTypes["gif"]) {
+    if (FileSaveOptionsTypes['gif']) {
       pnl.gifTransparency.value = toBoolean(opts.gifTransparency);
       pnl.gifInterlaced.value = toBoolean(opts.gifInterlaced);
       pnl.gifColors.text = toNumber(opts.gifColors || 256);
       pnl.saveForWeb.value = toBoolean(opts.saveForWeb);
     }
 
-    if (FileSaveOptionsTypes["jpg"]) {
+    if (FileSaveOptionsTypes['jpg']) {
       _select(pnl.jpgQuality, opts.jpgQuality.toString(), 0);
       pnl.jpgEmbedColorProfile.value = toBoolean(opts.jpgEmbedColorProfile);
       _select(pnl.jpgFormat, opts.jpgFormat, 0);
@@ -12083,40 +12290,39 @@ GenericUI.prototype.createFileSavePanel = function(pnl, ini) {
       pnl.saveForWeb.value = toBoolean(opts.saveForWeb);
     }
 
-    if (FileSaveOptionsTypes["psd"]) {
+    if (FileSaveOptionsTypes['psd']) {
       pnl.psdAlphaChannels.value = toBoolean(opts.psdAlphaChannels);
       pnl.psdEmbedColorProfile.value = toBoolean(opts.psdEmbedColorProfile);
       pnl.psdLayers.value = toBoolean(opts.psdLayers);
-      pnl.psdMaximizeCompatibility.value =
-      toBoolean(opts.psdMaximizeCompatibility);
+      pnl.psdMaximizeCompatibility.value = toBoolean(opts.psdMaximizeCompatibility);
     }
-    
-    if (FileSaveOptionsTypes["eps"]) {
+
+    if (FileSaveOptionsTypes['eps']) {
       _select(pnl.epsEncoding, opts.epsEncoding, 0);
       pnl.epsEmbedColorProfile.value = toBoolean(opts.epsEmbedColorProfile);
     }
-    
-    if (FileSaveOptionsTypes["pdf"]) {
+
+    if (FileSaveOptionsTypes['pdf']) {
       pnl.pdfEmbedColorProfile.value = toBoolean(opts.pdfEmbedColorProfile);
     }
-    
-    if (FileSaveOptionsTypes["png"]) {
+
+    if (FileSaveOptionsTypes['png']) {
       pnl.pngInterlaced.value = toBoolean(opts.pngInterlaced);
       pnl.saveForWeb.value = toBoolean(opts.saveForWeb);
     }
-    
-    if (FileSaveOptionsTypes["tga"]) {
+
+    if (FileSaveOptionsTypes['tga']) {
       pnl.tgaAlphaChannels.value = toBoolean(opts.tgaAlphaChannels);
       pnl.tgaRLECompression.value = toBoolean(opts.tgaRLECompression);
     }
-    
-    if (FileSaveOptionsTypes["tif"]) {
+
+    if (FileSaveOptionsTypes['tif']) {
       _select(pnl.tiffEncoding, opts.tiffEncoding, 0);
       _select(pnl.tiffByteOrder, opts.tiffByteOrder, 0);
       pnl.tiffEmbedColorProfile.value = toBoolean(opts.tiffEmbedColorProfile);
     }
     pnl.fileType.onChange();
-  }
+  };
 
   return pnl;
 };
@@ -12148,7 +12354,7 @@ GenericUI.prototype.validateFileSavePanel = function(pnl, opts) {
   var saveOpts = new fs.optionsType();
 
   switch (fs.fileType) {
-    case "bmp": {
+    case 'bmp': {
       saveOpts.rleCompression = pnl.bmpRLECompression.value;
       saveOpts.depth = pnl.bmpDepth.selection._value;
       saveOpts.alphaChannels = pnl.bmpAlphaChannels.value;
@@ -12158,13 +12364,17 @@ GenericUI.prototype.validateFileSavePanel = function(pnl, opts) {
       opts.bmpAlphaChannels = pnl.bmpAlphaChannels.value;
       break;
     }
-    case "gif": {
+    case 'gif': {
       saveOpts.transparency = pnl.gifTransparency.value;
       saveOpts.interlaced = pnl.gifInterlaced.value;
       var colors = toNumber(pnl.gifColors.text || 256);
-      if (colors < 2)   { colors = 2; }
-      if (colors > 256) { colors = 256; }
-      saveOpts.colors = colors; 
+      if (colors < 2) {
+        colors = 2;
+      }
+      if (colors > 256) {
+        colors = 256;
+      }
+      saveOpts.colors = colors;
       saveOpts._saveForWeb = pnl.saveForWeb.value;
 
       opts.gifTransparency = pnl.gifTransparency.value;
@@ -12173,7 +12383,7 @@ GenericUI.prototype.validateFileSavePanel = function(pnl, opts) {
       opts.saveForWeb = pnl.saveForWeb.value;
       break;
     }
-    case "jpg": {
+    case 'jpg': {
       saveOpts.quality = Number(pnl.jpgQuality.selection.text);
       saveOpts.embedColorProfile = pnl.jpgEmbedColorProfile.value;
       saveOpts.formatOptions = pnl.jpgFormat.selection._value;
@@ -12187,7 +12397,7 @@ GenericUI.prototype.validateFileSavePanel = function(pnl, opts) {
       opts.saveForWeb = pnl.saveForWeb.value;
       break;
     }
-    case "psd": {
+    case 'psd': {
       saveOpts.alphaChannels = pnl.psdAlphaChannels.value;
       saveOpts.embedColorProfile = pnl.psdEmbedColorProfile.value;
       saveOpts.layers = pnl.psdLayers.value;
@@ -12199,7 +12409,7 @@ GenericUI.prototype.validateFileSavePanel = function(pnl, opts) {
       opts.psdMaximizeCompatibility = pnl.psdMaximizeCompatibility.value;
       break;
     }
-    case "eps": {
+    case 'eps': {
       saveOpts.encoding = pnl.epsEncoding.selection._value;
       saveOpts.embedColorProfile = pnl.epsEmbedColorProfile.value;
 
@@ -12207,13 +12417,13 @@ GenericUI.prototype.validateFileSavePanel = function(pnl, opts) {
       opts.epsEmbedColorProfile = pnl.epsEmbedColorProfile.value;
       break;
     }
-    case "pdf": {
+    case 'pdf': {
       saveOpts.embedColorProfile = pnl.pdfEmbedColorProfile.value;
 
       opts.pdfEmbedColorProfile = pnl.pdfEmbedColorProfile.value;
       break;
     }
-    case "png": {
+    case 'png': {
       saveOpts.interlaced = pnl.pngInterlaced.value;
       saveOpts._saveForWeb = pnl.saveForWeb.value;
 
@@ -12221,7 +12431,7 @@ GenericUI.prototype.validateFileSavePanel = function(pnl, opts) {
       opts.saveForWeb = pnl.saveForWeb.value;
       break;
     }
-    case "tga": {
+    case 'tga': {
       saveOpts.alphaChannels = pnl.tgaAlphaChannels.value;
       saveOpts.rleCompression = pnl.tgaRLECompression.value;
 
@@ -12229,7 +12439,7 @@ GenericUI.prototype.validateFileSavePanel = function(pnl, opts) {
       opts.tgaRLECompression = pnl.tgaRLECompression.value;
       break;
     }
-    case "tif": {
+    case 'tif': {
       saveOpts.byteOrder = pnl.tiffByteOrder.selection._value;
       saveOpts.imageCompression = pnl.tiffEncoding.selection._value;
       saveOpts.embedColorProfile = pnl.tiffEmbedColorProfile.value;
@@ -12240,15 +12450,13 @@ GenericUI.prototype.validateFileSavePanel = function(pnl, opts) {
       break;
     }
     default:
-      Error.runtimeError(9001, "Internal Error: Unknown file type: " +
-                         fs.fileType);
+      Error.runtimeError(9001, 'Internal Error: Unknown file type: ' + fs.fileType);
   }
 
   opts._saveOpts = saveOpts;
 
   return;
 };
-
 
 //================================== exec ==================================
 //
@@ -12283,7 +12491,6 @@ GenericUI.prototype.runUI = function(ovOpts, doc) {
   if (toBoolean(ini.noUI)) {
     // if we don't want a UI, just use the ini object
     opts = ini;
-
   } else {
     // create window
     win = self.createWindow(ini, doc);
@@ -12301,7 +12508,6 @@ GenericUI.prototype.runUI = function(ovOpts, doc) {
   return opts;
 };
 
-
 GenericUI.prototype.exec = function(arg1, arg2) {
   var self = this;
 
@@ -12310,7 +12516,8 @@ GenericUI.prototype.exec = function(arg1, arg2) {
 
   // either or both a document and options may be specified or neither
   if (arg1 || arg2) {
-    if (!arg1) {  // if only arg2 is set, swap the args
+    if (!arg1) {
+      // if only arg2 is set, swap the args
       arg1 = arg2;
       arg2 = undefined;
     }
@@ -12320,14 +12527,13 @@ GenericUI.prototype.exec = function(arg1, arg2) {
     var dbgLevel = $.level;
     $.level = 0;
     try {
-      if (arg1.typename == "Document") {
+      if (arg1.typename == 'Document') {
         doc = arg1;
         ovOpts = arg2;
-      } else if (arg2 && arg2.typename == "Document") {
+      } else if (arg2 && arg2.typename == 'Document') {
         doc = arg2;
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     $.level = dbgLevel;
   }
 
@@ -12347,14 +12553,13 @@ GenericUI.prototype.runProcess = function(opts, doc) {
     }
 
     result = self.process(opts, doc);
-
-  } else if (self.win && self.win.canceled) { // if not, we just cancel out...
+  } else if (self.win && self.win.canceled) {
+    // if not, we just cancel out...
     self.cancel(doc);
   }
 
   return result;
 };
-
 
 //
 // the run method 'show's the window. If it ran successfully, the options
@@ -12374,13 +12579,15 @@ GenericUI.prototype.run = function(win) {
       self.winX = win.bounds.x;
       self.winY = win.bounds.y;
 
-      if (x == 0 || x == 2) {  // the window was closed or canceled
-        win.canceled = true;   // treat it like a 'cancel'
+      if (x == 0 || x == 2) {
+        // the window was closed or canceled
+        win.canceled = true; // treat it like a 'cancel'
         win.opts = undefined;
         done = true;
       } else if (x == 1) {
         done = true;
-      } else if (x == 4) {     // reset window
+      } else if (x == 4) {
+        // reset window
         win = self.createWindow(win.ini, win.doc);
       }
       self.runCode = x;
@@ -12394,24 +12601,20 @@ GenericUI.prototype._checkIniArgs = function(arg1, arg2, xmlMode) {
   var obj = {
     file: undefined,
     opts: undefined,
-    xml: (xmlMode == undefined) ? self.xmlEnabled : xmlMode
+    xml: xmlMode == undefined ? self.xmlEnabled : xmlMode
   };
 
   if (arg1) {
-    if (!obj.file && ((arg1 instanceof File) ||
-                      (arg1.constructor == String))) {
+    if (!obj.file && (arg1 instanceof File || arg1.constructor == String)) {
       obj.file = GenericUI.iniFileToFile(arg1);
-
     } else {
       obj.opts = arg1;
     }
   }
 
   if (arg2) {
-    if (!obj.file && ((arg2 instanceof File) ||
-                      (arg2.constructor == String))) {
+    if (!obj.file && (arg2 instanceof File || arg2.constructor == String)) {
       obj.file = GenericUI.iniFileToFile(arg2);
-
     } else if (!obj.opts) {
       obj.opts = arg2;
     }
@@ -12427,7 +12630,7 @@ GenericUI.prototype.updateIniFile = function(arg1, arg2, xmlMode) {
   var xml = args.xml;
 
   if (!file) {
-    Error.runtimeError(9001, "Internal Error: No valid settings file specified for update");
+    Error.runtimeError(9001, 'Internal Error: No valid settings file specified for update');
   }
 
   GenericUI.updateIni(file, opts, xml);
@@ -12440,8 +12643,7 @@ GenericUI.prototype.writeIniFile = function(arg1, arg2, xmlMode) {
   var xml = args.xml;
 
   if (!file) {
-    Error.runtimeError(9001, "Internal Error: No valid settings " +
-                       "file specified for write");
+    Error.runtimeError(9001, 'Internal Error: No valid settings ' + 'file specified for write');
   }
   GenericUI.writeIni(file, opts, xml);
 };
@@ -12453,14 +12655,13 @@ GenericUI.prototype.readIniFile = function(arg1, arg2, xmlMode) {
   var xml = args.xml;
 
   if (!file) {
-    Error.runtimeError(9001, "Internal Error: No valid settings " +
-                       "file specified for read");
+    Error.runtimeError(9001, 'Internal Error: No valid settings ' + 'file specified for read');
   }
 
   var ini = GenericUI.readIni(file, opts, xml);
   file = new File(file);
-  if (file.open("r", "TEXT", "????")) {
-    file.lineFeed = "unix";
+  if (file.open('r', 'TEXT', '????')) {
+    file.lineFeed = 'unix';
     file.encoding = GenericUI.ENCODING;
     self.iniContents = file.read();
     file.close();
@@ -12479,8 +12680,8 @@ GenericUI.prototype.errorPrompt = function(str) {
   return GenericUI.errorPrompt(str);
 };
 GenericUI.errorPrompt = function(str) {
-  return confirm(str + "\r\rDo you wish to continue?");
-//                  false, "Input Validation Error");
+  return confirm(str + '\r\rDo you wish to continue?');
+  //                  false, "Input Validation Error");
 };
 
 //
@@ -12503,7 +12704,7 @@ GenericUI.validate = function() {
   try {
     var res = mgr.validatePanel(win.appPnl, win.ini);
 
-    if (typeof(res) == 'boolean') {
+    if (typeof res == 'boolean') {
       return res;
     }
     win.opts = res;
@@ -12511,7 +12712,6 @@ GenericUI.validate = function() {
       win.close(1);
     }
     return true;
-
   } catch (e) {
     var msg = Stdlib.exceptionMessage(e);
     Stdlib.log(msg);
@@ -12546,12 +12746,11 @@ GenericUI.iniFileToFile = function(iniFile) {
     // This is not a partial/relative path
     if (c == '/' || c == '~' || iniFile.charAt(1) == ':') {
       iniFile = new File(iniFile);
-
     } else {
       var prefs = GenericUI.preferencesFolder;
 
       // if the path starts with 'xtools/' strip it off
-      var sub = "xtools/";
+      var sub = 'xtools/';
       if (iniFile.startsWith(sub)) {
         iniFile = iniFile.substr(sub.length);
       }
@@ -12586,7 +12785,7 @@ GenericUI.iniFromString = function(str, ini) {
     }
     var ar = rexp.exec(line);
     if (!ar) {
-      alert("Bad line in config: \"" + line + "\"");
+      alert('Bad line in config: "' + line + '"');
       continue;
       //return undefined;
     }
@@ -12617,7 +12816,7 @@ GenericUI.readIni = function(iniFile, ini) {
   var file = GenericUI.iniFileToFile(iniFile);
 
   if (!file) {
-    Error.runtimeError(9001, Error("Bad ini file specified: \"" + iniFile + "\"."));
+    Error.runtimeError(9001, Error('Bad ini file specified: "' + iniFile + '".'));
   }
 
   if (!file.exists) {
@@ -12626,8 +12825,8 @@ GenericUI.readIni = function(iniFile, ini) {
     //
   }
 
-  if (file.exists && file.open("r", "TEXT", "????")) {
-    file.lineFeed = "unix";
+  if (file.exists && file.open('r', 'TEXT', '????')) {
+    file.lineFeed = 'unix';
     file.encoding = GenericUI.ENCODING;
     var str = file.read();
     ini = GenericUI.iniFromString(str, ini);
@@ -12643,13 +12842,15 @@ GenericUI.readIni = function(iniFile, ini) {
 GenericUI.iniToString = function(ini) {
   var str = '';
   for (var idx in ini) {
-    if (idx.charAt(0) == '_') {         // private stuff
+    if (idx.charAt(0) == '_') {
+      // private stuff
       continue;
     }
     if (idx == 'typename') {
       continue;
     }
-    if (idx == "noUI") {                // GenericUI property
+    if (idx == 'noUI') {
+      // GenericUI property
       continue;
     }
     var val = ini[idx];
@@ -12658,11 +12859,13 @@ GenericUI.iniToString = function(ini) {
       continue;
     }
 
-    if (val.constructor == String ||
-        val.constructor == Number ||
-        val.constructor == Boolean ||
-        typeof(val) == "object") {
-      str += (idx + ": " + val.toString() + "\n");
+    if (
+      val.constructor == String ||
+      val.constructor == Number ||
+      val.constructor == Boolean ||
+      typeof val == 'object'
+    ) {
+      str += idx + ': ' + val.toString() + '\n';
     }
   }
   return str;
@@ -12675,11 +12878,11 @@ GenericUI.overwriteIni = function(iniFile, ini) {
   var file = GenericUI.iniFileToFile(iniFile);
 
   if (!file) {
-    Error.runtimeError(9001, Error("Bad ini file specified: \"" + iniFile + "\"."));
+    Error.runtimeError(9001, Error('Bad ini file specified: "' + iniFile + '".'));
   }
 
-  if (file.open("w", "TEXT", "????")) {
-    file.lineFeed = "unix";
+  if (file.open('w', 'TEXT', '????')) {
+    file.lineFeed = 'unix';
     file.encoding = GenericUI.ENCODING;
     var str = GenericUI.iniToString(ini);
     file.write(str);
@@ -12693,7 +12896,7 @@ GenericUI.iniToDescriptor = function(ini, desc) {
     desc = new ActionDescriptor();
   }
   var str = GenericUI.iniToString(ini);
-  desc.putString(sTID("INI Data"), str);
+  desc.putString(sTID('INI Data'), str);
   return desc;
 };
 GenericUI.iniFromDescriptor = function(desc) {
@@ -12701,8 +12904,8 @@ GenericUI.iniFromDescriptor = function(desc) {
   if (!desc || desc.count == 0) {
     return ini;
   }
-  if (desc.hasString(sTID("INI Data"))) {
-    var str = desc.getString(sTID("INI Data"));
+  if (desc.hasString(sTID('INI Data'))) {
+    var str = desc.getString(sTID('INI Data'));
     ini = GenericUI.iniFromString(str);
   }
   return ini;
@@ -12723,33 +12926,36 @@ GenericUI.updateIni = function(iniFile, ini) {
   var str = '';
 
   if (update) {
-    file.open("r", "TEXT", "????");
+    file.open('r', 'TEXT', '????');
     file.encoding = GenericUI.ENCODING;
-    file.lineFeed = "unix";
+    file.lineFeed = 'unix';
     str = file.read();
     file.close();
 
     for (var idx in ini) {
-      if (idx.charAt(0) == '_') {         // private stuff
+      if (idx.charAt(0) == '_') {
+        // private stuff
         continue;
       }
-      if (idx == "noUI") {
+      if (idx == 'noUI') {
         continue;
       }
-      if (idx == "typename") {
+      if (idx == 'typename') {
         continue;
       }
 
       var val = ini[idx];
 
-      if (typeof(val) == "undefined") {
+      if (typeof val == 'undefined') {
         val = '';
       }
 
-      if (typeof val == "string" ||
-          typeof val == "number" ||
-          typeof val == "boolean" ||
-          typeof val == "object") {
+      if (
+        typeof val == 'string' ||
+        typeof val == 'number' ||
+        typeof val == 'boolean' ||
+        typeof val == 'object'
+      ) {
         idx += ':';
         var re = RegExp('^' + idx, 'm');
 
@@ -12764,27 +12970,30 @@ GenericUI.updateIni = function(iniFile, ini) {
   } else {
     // write out a new ini file
     for (var idx in ini) {
-      if (idx.charAt(0) == '_') {         // private stuff
+      if (idx.charAt(0) == '_') {
+        // private stuff
         continue;
       }
-      if (idx == "noUI") {
+      if (idx == 'noUI') {
         continue;
       }
       var val = ini[idx];
 
-      if (typeof val == "string" ||
-          typeof val == "number" ||
-          typeof val == "boolean" ||
-          typeof val == "object") {
-        str += (idx + ": " + val.toString() + "\n");
+      if (
+        typeof val == 'string' ||
+        typeof val == 'number' ||
+        typeof val == 'boolean' ||
+        typeof val == 'object'
+      ) {
+        str += idx + ': ' + val.toString() + '\n';
       }
     }
   }
 
   if (str) {
-    file.open("w", "TEXT", "????");
+    file.open('w', 'TEXT', '????');
     file.encoding = GenericUI.ENCODING;
-    file.lineFeed = "unix";
+    file.lineFeed = 'unix';
     file.write(str);
     file.close();
   }
@@ -12807,8 +13016,8 @@ GenericUI._widgetMap = {
   progressbar: 'value',
   radiobutton: 'value',
   scrollbar: 'value',
-  slider:  'value',
-  statictext: 'text',
+  slider: 'value',
+  statictext: 'text'
 };
 //
 // These next two need to be tweaked for dropdownlist and listbox
@@ -12913,7 +13122,6 @@ GenericUI.setMenuSelection = function(menu, txt, def) {
       var n = toNumber(def);
       if (!isNaN(n)) {
         it = def;
-
       } else {
         it = menu.find(def);
       }
@@ -12937,8 +13145,7 @@ GenericUI.setMenuSelection = function(menu, txt, def) {
 //   onCancel  This method will be called when the Cancel button is pressed.
 //             This method should return 'true' to close the progress window
 //
-GenericUI.createProgressPalette = function(title, min, max,
-                                           parent, useCancel, msg) {
+GenericUI.createProgressPalette = function(title, min, max, parent, useCancel, msg) {
   var win = new Window('palette', title);
   win.bar = win.add('progressbar', undefined, min, max);
   if (msg) {
@@ -12962,7 +13169,7 @@ GenericUI.createProgressPalette = function(title, min, max,
   if (useCancel) {
     win.onCancel = function() {
       this.isDone = true;
-      return true;  // return 'true' to close the window
+      return true; // return 'true' to close the window
     };
 
     win.cancel = win.add('button', undefined, 'Cancel');
@@ -13002,9 +13209,9 @@ GenericUI.createProgressPalette = function(title, min, max,
     if (val != undefined) {
       win.bar.value = val;
     }
-//     else {
-//       win.bar.value++;
-//     }
+    //     else {
+    //       win.bar.value++;
+    //     }
 
     if (win.recenter) {
       win.center(win.parentWin);
@@ -13024,7 +13231,7 @@ GenericUI.createProgressPalette = function(title, min, max,
 // might need something like this later...
 GenericUI.confirm = function(msg) {
   var win = new Window('palette', 'Script Alert');
-  win.msg = win.add('statictext', undefined, msg, {multiline: true});
+  win.msg = win.add('statictext', undefined, msg, { multiline: true });
 
   win._state = false;
   win.ok = win.add('button', undefined, 'Yes');
@@ -13043,19 +13250,19 @@ GenericUI.confirm = function(msg) {
 GenericUI.alert = function(msg, size, parent, showAlertText) {
   // alert(msg); return;
 
-  var props = {minimize: false, maximize: false};
+  var props = { minimize: false, maximize: false };
   var win = new Window('dialog', 'Script Alert', undefined, props);
-  win.orientation = "column";
+  win.orientation = 'column';
 
   if (showAlertText) {
-    win.alertTitle = win.add('statictext', undefined, "ALERT");
+    win.alertTitle = win.add('statictext', undefined, 'ALERT');
 
     // set ALERT to red
     var gfx = win.alertTitle.graphics;
-    gfx.foregroundColor = gfx.newPen(gfx.BrushType.SOLID_COLOR, [1,0,0], 1);
+    gfx.foregroundColor = gfx.newPen(gfx.BrushType.SOLID_COLOR, [1, 0, 0], 1);
   }
 
-  var tprops = {multiline: true, scrolling: true};
+  var tprops = { multiline: true, scrolling: true };
   if (!size) {
     size = [GenericUI.alert.DEFAULT_WIDTH, GenericUI.alert.DEFAULT_HEIGHT];
     tprops.scrolling = false;
@@ -13087,29 +13294,47 @@ GenericOptions = function(obj) {
 };
 
 function toBoolean(s) {
-  if (s == undefined) { return false; }
-  if (s.constructor == Boolean) { return s.valueOf(); }
-  try { if (s instanceof XML) s = s.toString(); } catch (e) {}
-  if (s.constructor == String)  { return s.toLowerCase() == "true"; }
+  if (s == undefined) {
+    return false;
+  }
+  if (s.constructor == Boolean) {
+    return s.valueOf();
+  }
+  try {
+    if (s instanceof XML) s = s.toString();
+  } catch (e) {}
+  if (s.constructor == String) {
+    return s.toLowerCase() == 'true';
+  }
   return Boolean(s);
-};
+}
 
 function toNumber(s, def) {
-  if (s == undefined) { return NaN; }
-  try { if (s instanceof XML) s = s.toString(); } catch (e) {}
-  if (s.constructor == String && s.length == 0) { return NaN; }
-  if (s.constructor == Number) { return s.valueOf(); }
+  if (s == undefined) {
+    return NaN;
+  }
+  try {
+    if (s instanceof XML) s = s.toString();
+  } catch (e) {}
+  if (s.constructor == String && s.length == 0) {
+    return NaN;
+  }
+  if (s.constructor == Number) {
+    return s.valueOf();
+  }
   return Number(s.toString());
-};
+}
 
 function toFont(fs) {
-  if (fs.typename == "TextFont") { return fs.postScriptName; }
+  if (fs.typename == 'TextFont') {
+    return fs.postScriptName;
+  }
 
   var str = fs.toString();
-  var f = Stdlib.determineFont(str);  // first, check by PS name
+  var f = Stdlib.determineFont(str); // first, check by PS name
 
-  return (f ? f.postScriptName : undefined);
-};
+  return f ? f.postScriptName : undefined;
+}
 
 GenericOptions.copyFromTo = function(from, to) {
   if (!from || !to) {
@@ -13118,7 +13343,7 @@ GenericOptions.copyFromTo = function(from, to) {
   for (var idx in from) {
     var v = from[idx];
     if (typeof v != 'function') {
-        to[idx] = v;
+      to[idx] = v;
     }
   }
 };
@@ -13181,718 +13406,641 @@ GenericOptions.prototype.getObject = function(k, def) {
   }
   var os = self[k];
   var obj = undefined;
-  try { eval('obj = ' + os); } finally {}
+  try {
+    eval('obj = ' + os);
+  } finally {
+  }
   return obj;
 };
 
 if (!String.prototype.contains) {
+  String.prototype.contains = function(sub) {
+    return this.indexOf(sub) != -1;
+  };
 
-String.prototype.contains = function(sub) {
-  return this.indexOf(sub) != -1;
-};
+  String.prototype.containsWord = function(str) {
+    return this.match(new RegExp('\\b' + str + '\\b')) != null;
+  };
 
-String.prototype.containsWord = function(str) {
-  return this.match(new RegExp("\\b" + str + "\\b")) != null;
-};
+  String.prototype.endsWith = function(sub) {
+    return this.length >= sub.length && this.substr(this.length - sub.length) == sub;
+  };
 
-String.prototype.endsWith = function(sub) {
-  return this.length >= sub.length &&
-    this.substr(this.length - sub.length) == sub;
-};
+  String.prototype.reverse = function() {
+    var ar = this.split('');
+    ar.reverse();
+    return ar.join('');
+  };
 
-String.prototype.reverse = function() {
-  var ar = this.split('');
-  ar.reverse();
-  return ar.join('');
-};
+  String.prototype.startsWith = function(sub) {
+    return this.indexOf(sub) == 0;
+  };
 
-String.prototype.startsWith = function(sub) {
-  return this.indexOf(sub) == 0;
-};
+  String.prototype.trim = function() {
+    return this.replace(/^[\s]+|[\s]+$/g, '');
+  };
+  String.prototype.ltrim = function() {
+    return this.replace(/^[\s]+/g, '');
+  };
+  String.prototype.rtrim = function() {
+    return this.replace(/[\s]+$/g, '');
+  };
+} // String.prototype.contains.
 
-String.prototype.trim = function() {
-  return this.replace(/^[\s]+|[\s]+$/g, '');
-};
-String.prototype.ltrim = function() {
-  return this.replace(/^[\s]+/g, '');
-};
-String.prototype.rtrim = function() {
-  return this.replace(/[\s]+$/g, '');
-};
-
-}  // String.prototype.contains.
-
-// see SampleUI for an example of how to use this framework.
-
-"GenericUI.jsx";
-
-// EOF
-
-
-"my_include.js";
+'GenericUI.jsx';
 
 //
-//   LabelPlus_Ps_Script.jsx
-//   This is a Input Text Tool for LabelPlus Text File.
-// 
-// Copyright 2015, Noodlefighter
-// Released under GPL License.
+// Action library
 //
-// License: http://noodlefighter.com/label_plus/license
-//
-//@show include
+MyAction = function() {};
 
-//
-// 动作库
-// 
-MyAction = function() { }
-
-// 取消选择
+// Cancel selection
 MyAction.selectNone = function() {
+  var desc1 = new ActionDescriptor();
+  var ref1 = new ActionReference();
+  try {
+    ref1.putProperty(cTID('Chnl'), sTID('selection'));
+    desc1.putReference(cTID('null'), ref1);
+    desc1.putEnumerated(cTID('T   '), cTID('Ordn'), cTID('None'));
+    executeAction(sTID('set'), desc1, DialogModes.NO);
+  } catch (e) {}
+};
+
+// Invert Selection
+MyAction.selectInverse = function() {
+  try {
+    executeAction(cTID('Invs'), undefined, DialogModes.NO);
+  } catch (e) {}
+};
+
+// Selection shrinkage (pixels)
+MyAction.selectContract = function(pxl) {
+  var desc1 = new ActionDescriptor();
+  try {
+    desc1.putUnitDouble(cTID('By  '), cTID('#Pxl'), pxl);
+    executeAction(cTID('Cntc'), desc1, DialogModes.NO);
+  } catch (e) {}
+};
+
+// Selection extension (pixels)
+MyAction.selectExpand = function(pxl) {
+  var desc1 = new ActionDescriptor();
+  try {
+    desc1.putUnitDouble(cTID('By  '), cTID('#Pxl'), pxl);
+    executeAction(cTID('Expn'), desc1, DialogModes.NO);
+  } catch (e) {}
+};
+
+// magic wand (x, y, tolerance, sample all layers, anti-aliasing, newly selected region mode string)
+// The newly selected area mode string can be:
+// 'setd' new area
+// 'addTo' add
+// 'subtractFrom' is removed
+// 'interfaceWhite' intersection
+MyAction.magicWand = function(x, y, tolerance, merged, antiAlias, newAreaModeStr) {
+  try {
+    if (x === undefined || y === undefined) {
+      x = 0;
+      y = 0;
+    }
+    if (tolerance === undefined) tolerance = 32;
+    if (merged === undefined) merged = false;
+    if (antiAlias === undefined) antiAlias = true;
+    if (newAreaModeStr === undefined || newAreaModeStr === '') newAreaModeStr = 'setd';
+
     var desc1 = new ActionDescriptor();
     var ref1 = new ActionReference();
-    try{
-      ref1.putProperty(cTID('Chnl'), sTID("selection"));
-      desc1.putReference(cTID('null'), ref1);
-      desc1.putEnumerated(cTID('T   '), cTID('Ordn'), cTID('None'));
-      executeAction(sTID('set'), desc1, DialogModes.NO);
-    }
-    catch(e){}
-};    
-
-// 反向选择
-MyAction.selectInverse = function() { 
-    try{
-    executeAction(cTID('Invs'), undefined, DialogModes.NO);
-    }
-    catch(e){}
-};  
-
-// 选区收缩(像素)
-MyAction.selectContract = function(pxl) { 
-    var desc1 = new ActionDescriptor();
-    try{  
-      desc1.putUnitDouble(cTID('By  '), cTID('#Pxl'), pxl);
-      executeAction(cTID('Cntc'), desc1, DialogModes.NO);
-    }
-    catch(e){}
+    ref1.putProperty(cTID('Chnl'), sTID('selection'));
+    desc1.putReference(cTID('null'), ref1);
+    var desc2 = new ActionDescriptor();
+    desc2.putUnitDouble(cTID('Hrzn'), cTID('#Pxl'), x);
+    desc2.putUnitDouble(cTID('Vrtc'), cTID('#Pxl'), y);
+    desc1.putObject(cTID('T   '), cTID('Pnt '), desc2);
+    desc1.putInteger(cTID('Tlrn'), tolerance);
+    desc1.putBoolean(cTID('Mrgd'), merged);
+    desc1.putBoolean(cTID('AntA'), antiAlias);
+    executeAction(sTID(newAreaModeStr), desc1, DialogModes.NO);
+  } catch (e) {}
 };
 
-// 选区扩展(像素)
-MyAction.selectExpand = function(pxl) {  
+// New layer
+MyAction.newLyr = function() {
+  try {
     var desc1 = new ActionDescriptor();
-    try{
-      desc1.putUnitDouble(cTID('By  '), cTID('#Pxl'), pxl);
-      executeAction(cTID('Expn'), desc1, DialogModes.NO);
-    }
-    catch(e){}
-};  
-
-// 魔棒(x, y, 容差, 采样所有图层, 抗锯齿, 新选区域方式字符串)
-// 新选区域方式字符串 可以为:
-// 'setd' 新建区域
-// 'addTo'    添加
-// 'subtractFrom' 移出
-// 'interfaceWhite'  交集
-MyAction.magicWand = function(x, y, tolerance, merged, antiAlias, newAreaModeStr) {
-    try{
-      if(x == undefined || y == undefined){
-        x = 0;
-        y = 0;      
-      }
-      if(tolerance == undefined) 
-          tolerance = 32;
-      if(merged == undefined) 
-          merged = false;
-      if(antiAlias == undefined) 
-          antiAlias = true;        
-      if(newAreaModeStr == undefined || newAreaModeStr == '')
-          newAreaModeStr = 'setd';
-         
-      var desc1 = new ActionDescriptor();
-      var ref1 = new ActionReference();
-      ref1.putProperty(cTID('Chnl'), sTID("selection"));
-      desc1.putReference(cTID('null'), ref1);
-      var desc2 = new ActionDescriptor();
-      desc2.putUnitDouble(cTID('Hrzn'), cTID('#Pxl'), x);
-      desc2.putUnitDouble(cTID('Vrtc'), cTID('#Pxl'), y);
-      desc1.putObject(cTID('T   '), cTID('Pnt '), desc2);
-      desc1.putInteger(cTID('Tlrn'), tolerance);
-      desc1.putBoolean(cTID('Mrgd'), merged);
-      desc1.putBoolean(cTID('AntA'), antiAlias);
-      executeAction(sTID(newAreaModeStr), desc1, DialogModes.NO);
-    }
-    catch(e){}
-  
+    var ref1 = new ActionReference();
+    ref1.putClass(cTID('Lyr '));
+    desc1.putReference(cTID('null'), ref1);
+    executeAction(cTID('Mk  '), desc1, DialogModes.NO);
+  } catch (e) {}
 };
-
-// 新建图层
-MyAction.newLyr = function() {     
-    try{
-        var desc1 = new ActionDescriptor();
-        var ref1 = new ActionReference();
-        ref1.putClass(cTID('Lyr '));
-        desc1.putReference(cTID('null'), ref1);
-        executeAction(cTID('Mk  '), desc1, DialogModes.NO);   
-    }
-    catch(e){}
-}
-// 删除当前图层
+// Delete current layer
 MyAction.delLyr = function() {
-    try{
-        var desc1 = new ActionDescriptor();
-        var ref1 = new ActionReference();
-        ref1.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
-        desc1.putReference(cTID('null'), ref1);
-        executeAction(cTID('Dlt '), desc1, DialogModes.NO);        
-    }
-    catch(e){}
-}
-
-// 填充(使用什么填充, 透明度)
-// use可以是:
-// 'FrgC' 前景色
-// 'BckC' 背景色
-// 'Blck' 黑色
-// 'Gry ' 灰色  
-// 'Wht ' 白色
-MyAction.fill = function(use, opct) { 
-    try{
-        var desc1 = new ActionDescriptor();
-        desc1.putEnumerated(cTID('Usng'), cTID('FlCn'), cTID(use));
-        desc1.putUnitDouble(cTID('Opct'), cTID('#Prc'), opct);
-        desc1.putEnumerated(cTID('Md  '), cTID('BlnM'), cTID('Nrml'));
-        executeAction(cTID('Fl  '), desc1, DialogModes.NO);
-    }
-    catch(e){}
+  try {
+    var desc1 = new ActionDescriptor();
+    var ref1 = new ActionReference();
+    ref1.putEnumerated(cTID('Lyr '), cTID('Ordn'), cTID('Trgt'));
+    desc1.putReference(cTID('null'), ref1);
+    executeAction(cTID('Dlt '), desc1, DialogModes.NO);
+  } catch (e) {}
 };
 
-// 对话框涂白动作(标签数据, 图像宽度, 图像高度, 魔棒容差, 收缩保护像素)
+// Fill (what pad is used, transparency)
+// use can be:
+// 'FrgC' foreground
+// 'BckC' background color
+// 'Blck' black
+// 'Gry ' Gray
+// 'Wht ' White
+MyAction.fill = function(use, opct) {
+  try {
+    var desc1 = new ActionDescriptor();
+    desc1.putEnumerated(cTID('Usng'), cTID('FlCn'), cTID(use));
+    desc1.putUnitDouble(cTID('Opct'), cTID('#Prc'), opct);
+    desc1.putEnumerated(cTID('Md  '), cTID('BlnM'), cTID('Nrml'));
+    executeAction(cTID('Fl  '), desc1, DialogModes.NO);
+  } catch (e) {}
+};
+
+// Dialog whitewash action (label data, image width, image height, magic wand tolerance, shrink protection pixels)
 MyAction.lp_dialogClear = function(labelArr, imgWidht, imgHeight, tolerance, contract) {
+  // Parameter check
+  if (labelArr.length === 0) {
+    return;
+  }
 
-    // 参数检查
-    if (labelArr.length == 0) {
-      return;
-    }
+  MyAction.selectNone();
 
-    MyAction.selectNone();
-    
-    // 单位转换
-    imgWidht.convert("px");
-    imgHeight.convert("px");
-    
-    // 选中所有框内的空白区域
-    for(var i=0; i<labelArr.length; i++){
-        var x = (labelArr[i].x) * imgWidht;
-        var y = (labelArr[i].y) * imgHeight;
-        
-        MyAction.magicWand(x, y, tolerance, true, true, 'addTo');
-    }     
-    
-    // 在新建的辅助图层中填充出空白区域
-    MyAction.newLyr();
-    MyAction.fill('Blck', 100);    
-    
-    // 四个角使用魔棒 再反选 保护性收缩
-    MyAction.selectNone();
-    MyAction.magicWand(0                , 0                  , tolerance, false, true, 'addTo');
-    MyAction.magicWand(imgWidht-1 , 0                  , tolerance, false, true, 'addTo');
-    MyAction.magicWand(0                , imgHeight-1  , tolerance, false, true, 'addTo');
-    MyAction.magicWand(imgWidht-1 , imgHeight-1  , tolerance, false, true, 'addTo');
-    MyAction.selectInverse();
-    MyAction.selectContract(contract);
-    
-    // 删除辅助图层 建立涂白图层 并填充背景色
-    MyAction.delLyr();
-    MyAction.newLyr();
-    MyAction.fill('BckC', 100);
-    
-    MyAction.selectNone();
-    
+  // Unit conversion
+  imgWidht.convert('px');
+  imgHeight.convert('px');
+
+  // Check all blank areas in the box
+  for (var i = 0; i < labelArr.length; i++) {
+    var x = labelArr[i].x * imgWidht;
+    var y = labelArr[i].y * imgHeight;
+
+    MyAction.magicWand(x, y, tolerance, true, true, 'addTo');
+  }
+
+  // Fill in a blank area in the newly created auxiliary layer
+  MyAction.newLyr();
+  MyAction.fill('Blck', 100);
+
+  // Use the magic wand at the four corners and then reverse the selection of protective shrinkage
+  MyAction.selectNone();
+  MyAction.magicWand(0, 0, tolerance, false, true, 'addTo');
+  MyAction.magicWand(imgWidht - 1, 0, tolerance, false, true, 'addTo');
+  MyAction.magicWand(0, imgHeight - 1, tolerance, false, true, 'addTo');
+  MyAction.magicWand(imgWidht - 1, imgHeight - 1, tolerance, false, true, 'addTo');
+  MyAction.selectInverse();
+  MyAction.selectContract(contract);
+
+  // Delete the auxiliary layer Create a white layer and fill the background color
+  MyAction.delLyr();
+  MyAction.newLyr();
+  MyAction.fill('BckC', 100);
+
+  MyAction.selectNone();
 };
 
-// TEST
-//MyAction.lp_dialogClear(0, 1715, 2500, 16, 1);
-
-//MyAction.selectNone();
-//MyAction.selectInverse();
-//MyAction.selectContract(5);
-//MyAction.selectExpand(5);
-//MyAction.magicWand(); // x, y, tolerance, merged, antiAlias, newAreaModeStr
-//MyAction.newLyr()
-//MyAction.delLyr();
-//MyAction.fill('Blck', 50);
-
-"my_action.js";
+'my_action.js';
 
 //
-//   LabelPlus_Ps_Script.jsx
-//   This is a Input Text Tool for LabelPlus Text File.
-// 
-// Copyright 2015, Noodlefighter
-// Released under GPL License.
-//
-// License: http://noodlefighter.com/label_plus/license
+//   This is a Input Text Tool for Souka Text File.
 //
 //@show include
 //
 
-// LabelPlus专用格式的TextReader
-LabelPlusTextReader = function(path) {  
+// Souka special format TextReader
+SoukaTextReader = function(path) {
   var self = this;
-  
-  if(!path){    
-    throw "LabelPlusTextReader no filename";
+
+  if (!path) {
+    throw new Error("SoukaTextReader no filename");
   }
-  
-  var f = new File(path);  
-  if(!f || !f.exists){    
-    throw "LabelPlusTextReader file not exists";
-  } 
-  
-  // 打开
-  f.open("r");  
-  
-  // json格式读取
-  if(path.substring(path.lastIndexOf("."), path.length) == '.json'){  
-    f.open("r", "TEXT", "????");
-    f.lineFeed = "unix";
-    f.encoding = 'UTF-8';    
-    var json = f.read();
+
+  var file = new File(path);
+  if (!file || !file.exists) {
+    throw new Error("SoukaTextReader file not exists");
+  }
+
+  // turn on
+  file.open("r");
+
+  // Json format read
+  if (path.substring(path.lastIndexOf("."), path.length) === '.json') {
+    file.open("r", "TEXT", "????");
+    file.lineFeed = "unix";
+    file.encoding = 'UTF-8';
+    var json = file.read();
     var data = (new Function('return ' + json))();
-    f.close();
+    file.close();
     return data;
   }
-  
-  // 分行读取
+
+  // Branch reading
   var state = 'start'; //'start','filehead','context'
   var notDealStr;
   var notDealLabelheadMsg;
   var nowFilename;
-  var labelData = new Array();
-  var filenameList = new Array();
+  var labelData = {};
+  var filenameList = [];
   var groupData;
-  
-  for(var i=0; !f.eof; i++) {
-    var lineStr = f.readln();
-    var lineMsg = LabelPlusTextReader.judgeLineType(lineStr);
-    switch (lineMsg.Type){
+
+  for (var i = 0; !file.eof; i++) {
+    var lineStr = file.readln();
+    var lineMsg = SoukaTextReader.judgeLineType(lineStr);
+    switch (lineMsg.Type) {
       case 'filehead':
-        if(state == 'start'){
-          //处理start blocks
-          var result = LabelPlusTextReader.readStartBlocks(notDealStr);
-          if(!result)
-              throw "readStartBlocks fail";
-          groupData = result.Groups;        
+        if (state == 'start') {
+          //Handling start blocks
+          var result = SoukaTextReader.readStartBlocks(notDealStr);
+          if (!result)
+            throw new Error("readStartBlocks fail");
+          groupData = result.Groups;
+        } else if (state === 'filehead') {} else if (state === 'context') {
+          //Save label
+          labelData[nowFilename].push({
+            LabelheadValue: notDealLabelheadMsg.Values,
+            LabelString: notDealStr.trim()
+          });
         }
-        else if(state == 'filehead'){        
-        }
-        else if(state == 'context'){
-          //保存label
-          labelData[nowFilename].push(
-              {
-              LabelheadValue : notDealLabelheadMsg.Values,
-              LabelString : notDealStr.trim() }
-          );        
-        }    
-      
-        //新建文件项
-        labelData[lineMsg.Title] = new Array();
+
+        //New file item
+        labelData[lineMsg.Title] = [];
         filenameList.push(lineMsg.Title);
-        nowFilename = lineMsg.Title;    
+        nowFilename = lineMsg.Title;
         notDealStr = "";
-        state = 'filehead';      
+        state = 'filehead';
         break;
-        
+
       case 'labelhead':
-        if(state == 'start'){   //start-labelhead 不存在
-              throw "start-filehead";
-              break;        
+        if (state === 'start') { //start-labelhead does not exist
+          throw new Error("start-filehead");
+        } else if (state === 'filehead') {
+          // Do nothing
+        } else if (state === 'context') {
+          labelData[nowFilename].push({
+            LabelheadValue: notDealLabelheadMsg.Values,
+            LabelString: notDealStr.trim()
+          });
         }
-        else if(state == 'filehead'){
-        }
-        else if(state == 'context'){
-          labelData[nowFilename].push(
-              {
-              LabelheadValue : notDealLabelheadMsg.Values,
-              LabelString : notDealStr.trim() }
-          );        
-        }    
-        
+
         notDealStr = "";
         notDealLabelheadMsg = lineMsg;
         state = 'context';
         break;
-        
+
       case 'unknown':
         notDealStr += "\r" + lineStr;
-        break; 
-      }
+        break;
+      default:
+        console.error('Uknown type', lineMsg.Type)
+        break;
+    }
   }
-  
-  if(state == 'context' && lineMsg.Type == 'unknown')
-    labelData[nowFilename].push(
-      {
-	  LabelheadValue : notDealLabelheadMsg.Values,
-	  LabelString : notDealStr.trim() 
-      }
-    );
-  
-  // 成员变量
-  self.Path = path;      
+
+  if (state === 'context' && lineMsg.Type === 'unknown') {
+    labelData[nowFilename].push({
+      LabelheadValue: notDealLabelheadMsg.Values,
+      LabelString: notDealStr.trim()
+    });
+  }
+
+  // Member variables
+  self.Path = path;
   self.ImageList = filenameList;
   self.LabelData = labelData;
   self.GroupData = groupData;
-  
+
   return self;
 };
 
 //
-// 判断字符串行类型 'filehead','labelhead','unknown'
+// Judge string type 'filehead','labelhead','unknown'
 //
-LabelPlusTextReader.judgeLineType = function(str) {
+SoukaTextReader.judgeLineType = function(str) {
   var myType = 'unknown';
   var myTitle;
   var myValues;
-  
+
   str = str.trim();
   var fileheadRegExp = />{6,}\[.+\]<{6,}/g;
   var labelheadRegExp = /-{6,}\[\d+\]-{6,}\[.+\]/g;
-  
+
   var fileheadStrArr = fileheadRegExp.exec(str);
   var labelheadStrArr = labelheadRegExp.exec(str);
-  if(fileheadStrArr &&  fileheadStrArr.length != 0) {
+  if (fileheadStrArr && fileheadStrArr.length != 0) {
     myType = 'filehead';
-    var s = fileheadStrArr[0];
-    myTitle = s.substring(s.indexOf("[")+1, s.indexOf("]"));       
-  }   
-  else if(labelheadStrArr && labelheadStrArr.length !=0) {
+    var filehead = fileheadStrArr[0];
+    myTitle = filehead.substring(filehead.indexOf("[") + 1, filehead.indexOf("]"));
+  } else if (labelheadStrArr && labelheadStrArr.length != 0) {
     myType = 'labelhead';
-    var s = labelheadStrArr[0];
-    myTitle = s.substring(s.indexOf("[")+1, s.indexOf("]"));
-    valuesStr = s.substring(s.lastIndexOf("[")+1, s.lastIndexOf("]"))
-    myValues = valuesStr.split(",");    
+    var labelhead = labelheadStrArr[0];
+    myTitle = labelhead.substring(labelhead.indexOf("[") + 1, labelhead.indexOf("]"));
+    var valuesStr = labelhead.substring(labelhead.lastIndexOf("[") + 1, labelhead.lastIndexOf("]"))
+    myValues = valuesStr.split(",");
   }
-  
-  return {    
-    Type : myType,
-    Title : myTitle,
-    Values : myValues,
+
+  return {
+    Type: myType,
+    Title: myTitle,
+    Values: myValues,
   };
 };
 
-LabelPlusTextReader.readStartBlocks = function(str) {
-var blocks = str.split ("-");
-    if(blocks.length < 3)
-        throw "Start blocks error!";
-    
-    //block1 文件头
-    var filehead = blocks[0].split(",");
-    if(filehead.length < 2)
-        throw "filehead error!";
-    var first_version = parseInt(filehead[0]);
-    var last_version = parseInt(filehead[1]);
-    
-    //block2 分组信息
-    var groups = blocks[1].split("\r");    
-    for(var i=0; i<groups.length; i++)
-        groups[i] = groups[i].trim();   
-    
-    //block末
-    var comment = blocks[blocks.length - 1];
-     
-    return {
-        FirstVer : first_version,
-        LastVer : last_version,
-        Groups : groups,
-        Comment : comment,
-    };
+SoukaTextReader.readStartBlocks = function(str) {
+  var blocks = str.split("-");
+  if (blocks.length < 3)
+    throw new Error("Start blocks error!");
+
+  //Block1 file header
+  var filehead = blocks[0].split(",");
+  if (filehead.length < 2)
+    throw new Error("filehead error!");
+  var first_version = parseInt(filehead[0]);
+  var last_version = parseInt(filehead[1]);
+
+  //Block2 group information
+  var groups = blocks[1].split("\r");
+  for (var i = 0; i < groups.length; i++)
+    groups[i] = groups[i].trim();
+
+  //End of block
+  var comment = blocks[blocks.length - 1];
+
+  return {
+    FirstVer: first_version,
+    LastVer: last_version,
+    Groups: groups,
+    Comment: comment,
+  };
 };
 
-"labelplus_text_reader.js";
+"text_reader.js";
 
-//
-//   LabelPlus_Ps_Script.jsx
-//   This is a Input Text Tool for LabelPlus Text File.
-// 
-// Copyright 2015, Noodlefighter
-// Released under GPL License.
-//
-// License: http://noodlefighter.com/label_plus/license
-//
- 
 // Function written by Luca Hofmann
 // http://stackoverflow.com/questions/20575016/photoshop-cs3-scripting-font-names
 //
 function getInternalFontName(pFontName) {
-    for (var i = 0; i < app.fonts.length; i++) {
-       if (pFontName == app.fonts[i].postScriptName) {
-           return pFontName; // already is an internal font name.
-       }
-       if (pFontName == app.fonts[i].name) {
-           return app.fonts[i].postScriptName; // found an internal name.
-       }
-   }   
-   return null;
-}  
+  for (var i = 0; i < app.fonts.length; i++) {
+    if (pFontName === app.fonts[i].postScriptName) {
+      return pFontName;
+    }
+    if (pFontName === app.fonts[i].name) {
+      return app.fonts[i].postScriptName;
+    }
+  }
+  return null;
+}
 
-// TEST
-//var internalFontName = getInternalFontName("Trebuchet MS Bold");   
+const _MY_VER = "0.0.1"; 
 
-"get_internal_font_name.js";
+const _MY_APPNAME = "Souka Inputer";
+const _MY_TIP_TITLE = "Nota";
+const _MY_TIP_TEXT =  "Ayuda: [Pronto]";
 
-//
+const _MY_STRING_BUTTON_RUN = "Iniciar";
+const _MY_STRING_BUTTON_CANCEL = "Cancelar";
+const _MY_STRING_BUTTON_LOAD = "Cargar";
+const _MY_STRING_BUTTON_SAVE = "Guardar";
+const _MY_STRING_BUTTON_RESET = "Reiniciar";
 
-// ======================================== Gobal Const 
-// Version
-const _MY_VER = "1.2.2"; 
-
-// String Const
-// String Const
-const _MY_APPNAME = "LabelPlus Inputer";
-const _MY_TIP_TITLE = "Note";
-const _MY_TIP_TEXT =  "Help: http://noodlefighter.com/label_plus/";
-
-const _MY_STRING_BUTTON_RUN = "Run";
-const _MY_STRING_BUTTON_CANCEL = "Cancel";
-const _MY_STRING_BUTTON_LOAD = "Load";
-const _MY_STRING_BUTTON_SAVE = "Save";
-const _MY_STRING_BUTTON_RESET = "Reset";
-
-const _MT_STRING_LABEL_TIP_FILE =              "> File / Preprocessing";
-const _MT_STRING_LABEL_TIP_INPUTITEM    = "> Input Item";
+const _MT_STRING_LABEL_TIP_FILE = "> Archivo / Preprocesamiento";
+const _MT_STRING_LABEL_TIP_INPUTITEM = "> Input Item";
 const _MT_STRING_LABEL_TIP_STYLE_AUTO = "> Format / Automation";
 
-const _MT_STRING_LABEL_TEXTFILE = "LabelPlus Text:";
-const _MT_STRING_LABEL_SOURCE = "Image Source:";
-const _MT_STRING_LABEL_TARGET = "Output PSD:";
-const _MT_STRING_LABEL_FONT = "Font:";
-const _MT_STRING_LABEL_SETTING = "Setting";
-const _MT_STRING_LABEL_SELECTIMAGE = "Select Image";
-const _MT_STRING_LABEL_SELECTGROUP = "Select Group";
+const _MT_STRING_LABEL_TEXTFILE = "Souka Text:";
+const _MT_STRING_LABEL_SOURCE = "Origen de Imágenes:";
+const _MT_STRING_LABEL_TARGET = "Destino de PSD:";
+const _MT_STRING_LABEL_FONT = "Fuente:";
+const _MT_STRING_LABEL_SETTING = "Configuración";
+const _MT_STRING_LABEL_SELECTIMAGE = "Seleccionar Imagen";
+const _MT_STRING_LABEL_SELECTGROUP = "Seleccionar Grupo";
 
 
-const _MT_STRING_CHECKBOX_OUTPUTLABELNUMBER = "Output Label Number";
-const _MT_STRING_CHECKBOX_TEXTREPLACE = "Text Replace(e.g. \"A->B|C->D\")";
-const _MT_STRING_CHECKBOX_OUTPUTNOSIGNPSD = "Output no label file";
-const _MT_STRING_CHECKBOX_IGNOREIMGFILENAME = "Ignore filename in LabelPlus Text";
-const _MT_STRING_CHECKBOX_SETSOURCETYPE = "Replace file extension";
-const _MT_STRING_CHECKBOX_RUNACTION = "Execute actions named of group name;\"_start\" after open, \"_end\" before close";
-const _MT_STRING_CHECKBOX_NOTCLOSE = "Do not close the file";
-const _MT_STRING_CHECKBOX_SETFONT = "Set default font";
-const _MT_STRING_CHECKBOX_OUTPUTHORIZONTALTEXT = "Output horizontal text";
-const _MT_STRING_CHECKBOX_LAYERNOTGROUP = "Layer not grouping";
-const _MT_STRING_CHECKBOX_OVERLAY = "Execute \"Text Overlay\" on specified group";
+const _MT_STRING_CHECKBOX_OUTPUTLABELNUMBER = "Número de etiqueta de salida";
+const _MT_STRING_CHECKBOX_TEXTREPLACE = "Reemplazar texto (ejemplo \"A->B|C->D\")";
+const _MT_STRING_CHECKBOX_OUTPUTNOSIGNPSD = "Salida sin archivo de etiqueta";
+const _MT_STRING_CHECKBOX_IGNOREIMGFILENAME = "Ignorar el nombre del archivo en Souka Text";
+const _MT_STRING_CHECKBOX_SETSOURCETYPE = "Reemplazar extensión de archivo";
+const _MT_STRING_CHECKBOX_RUNACTION = "Ejecutar acciones nombradas del nombre del grupo;\"_start\" después de abrir, \"_end\" antes de cerrar";
+const _MT_STRING_CHECKBOX_NOTCLOSE = "No cerrar el archivo";
+const _MT_STRING_CHECKBOX_SETFONT = "Establecer fuente predeterminada";
+const _MT_STRING_CHECKBOX_OUTPUTHORIZONTALTEXT = "Usar texto horizontal";
+const _MT_STRING_CHECKBOX_LAYERNOTGROUP = "No agrupar capas";
+const _MT_STRING_CHECKBOX_OVERLAY = "Ejecute \"Superposición de texto\" en el grupo especificado";
 
-const _MY_STRING_COMPLETE = "Export completed!";
+const _MY_STRING_COMPLETE = "¡Exportación completada!";
 
-const _MT_ERROR_NOTFOUNDSOURCE = "Image Source Folder Not Found!";
-const _MT_ERROR_NOTFOUNDTARGET = "Output PSD Folder Not Found!";
-const _MT_ERROR_NOTFOUNLABELTEXT = "LabelPlus Text File Not Found!";
-const _MT_ERROR_CANNOTBUILDNEWFOLDER = "Could not build new folder";
-const _MT_ERROR_READLABELTEXTFILEFAILL = "Fail To Load LabelPlus Text File";
+const _MT_ERROR_NOTFOUNDSOURCE = "¡Carpeta de origen de imagen no encontrada!";
+const _MT_ERROR_NOTFOUNDTARGET = "¡Carpeta PSD de salida no encontrada!";
+const _MT_ERROR_NOTFOUNLABELTEXT = "¡No se encontró el archivo de texto de Souka!";
+const _MT_ERROR_CANNOTBUILDNEWFOLDER = "No se pudo construir una nueva carpeta";
+const _MT_ERROR_READLABELTEXTFILEFAILL = "Error al cargar el archivo de texto de Souka";
 const _MT_ERROR_NOTCHOOSEIMAGE = "Please select more than one image";
 const _MT_ERROR_NOTCHOOSEGROUP = "Please select more than one group";
-//-include "global_const_zh.js"
-
 
 // Operating System related
-var dirSeparator = $.os.search(/windows/i) === -1 ? '/': '\\';
+var dirSeparator = $.os.search(/windows/i) === -1 ? '/' : '\\';
 
-scriptPath = function () {
-  new String (fileName);
+scriptPath = function() {
+  new String(fileName);
 
   fileName = $.fileName;
   return fileName;
-}
-
-//
-// 初始设置
-//
-LabelPlusInputOptions = function(obj) {
-  var self = this;  
- 
-  Stdlib.copyFromTo(obj, self);  
 };
-LabelPlusInputOptions.prototype.typename = "LabelPlusInputOptions";
-LabelPlusInputOptions.LOG_FILE = Stdlib.PREFERENCES_FOLDER + "/LabelPlusInput.log";
 
 //
-// 用户UI
+// Default setting
 //
-LabelPlusInput = function() {
+SoukaInputOptions = function(obj) {
+  var self = this;
+
+  Stdlib.copyFromTo(obj, self);
+};
+SoukaInputOptions.prototype.typename = 'SoukaInputOptions';
+SoukaInputOptions.LOG_FILE = Stdlib.PREFERENCES_FOLDER + '/SoukaInput.log';
+
+//
+// User UI
+//
+SoukaInput = function() {
   var self = this;
 
   self.saveIni = false;
   self.hasBorder = true;
-  self.optionsClass = LabelPlusInputOptions;
-  self.settingsPanel = false; //有自己创建的设置面板
-  
-  self.winRect = {          // the size of our window
+  self.optionsClass = SoukaInputOptions;
+  self.settingsPanel = false; //Have a settings panel that you created yourself
+
+  self.winRect = {
+    // the size of our window
     x: 200,
     y: 200,
     w: 875,
     h: 650
-  };  
-  
-  self.title = _MY_APPNAME + " " + _MY_VER;	// our window title
+  };
+
+  self.title = _MY_APPNAME + ' ' + _MY_VER; // our window title
   self.notesSize = 75;
   self.notesTxt = _MY_TIP_TITLE;
   self.documentation = _MY_TIP_TEXT;
-  
+
   self.processTxt = _MY_STRING_BUTTON_RUN;
   self.cancelTxt = _MY_STRING_BUTTON_CANCEL;
-  
 };
 
-LabelPlusInput.prototype = new GenericUI();
-LabelPlusInput.prototype.typename = "LabelPlusInput";
+SoukaInput.prototype = new GenericUI();
+SoukaInput.prototype.typename = 'SoukaInput';
 
 //
-// 用户界面构建
+// User interface construction
 //
-LabelPlusInput.prototype.createPanel = function(pnl, ini) {
+SoukaInput.prototype.createPanel = function(pnl, ini) {
   var self = this;
-  var opts = new LabelPlusInputOptions(ini);// default values
+  var opts = new SoukaInputOptions(ini); // default values
 
   // window's location
-  self.moveWindow(100, 100);   
-  
+  self.moveWindow(100, 100);
+
   var xOfs = 10;
   var yOfs = 10;
   var xx = xOfs;
-  var yy = yOfs;  
-  
-  //------------------自己创建的配置面板------------------  
-  
-  pnl.settingsPnl = pnl.add('panel', 
-    [xOfs,yy,pnl.size.width-xOfs,yy+60]);   
-    
-  LabelPlusInput.createSettingsPanel(pnl.settingsPnl, ini);     
-  
+  var yy = yOfs;
+
+  //------------------Self-created configuration panel------------------
+
+  pnl.settingsPnl = pnl.add('panel', [xOfs, yy, pnl.size.width - xOfs, yy + 60]);
+
+  SoukaInput.createSettingsPanel(pnl.settingsPnl, ini);
+
   xx = xOfs;
-  yy += 75;  
-  yOfs = yy; 
-  //------------------LabelPlus文件区------------------
-  
-  // LabelPlus文本文件输入
-  pnl.lpTextFileLabel = pnl.add('statictext', [xx,yy,xx+120,yy+20],
-                            _MT_STRING_LABEL_TEXTFILE);
+  yy += 75;
+  yOfs = yy;
+  //------------------Souka file area------------------
+
+  // Souka text file input
+  pnl.lpTextFileLabel = pnl.add(
+    'statictext',
+    [xx, yy, xx + 120, yy + 20],
+    _MT_STRING_LABEL_TEXTFILE
+  );
   xx += 120;
-  pnl.lpTextFileTextBox = pnl.add('edittext', [xx,yy,xx+170,yy+20], '');
+  pnl.lpTextFileTextBox = pnl.add('edittext', [xx, yy, xx + 170, yy + 20], '');
   pnl.lpTextFileTextBox.enabled = false;
   xx += 175;
-  pnl.lpTextFileBrowseButton = pnl.add('button', [xx,yy,xx+30,yy+20], '...');
-  
+  pnl.lpTextFileBrowseButton = pnl.add('button', [xx, yy, xx + 30, yy + 20], '...');
+
   pnl.lpTextFileBrowseButton.onClick = function() {
     try {
       var pnl = this.parent;
-      var fmask =  "*.txt;*.json";
+      var fmask = '*.txt;*.json';
       var f = File.openDialog(_MT_STRING_LABEL_TEXTFILE, fmask);
-       
+
       if (f && f.exists) {
         pnl.lpTextFileTextBox.text = f.toUIString();
-        
-		//图源、输出文件夹赋上目录
-        var fl = new Folder(f.path);		
+
+        // Map source and output folder are assigned to the directory
+        var fl = new Folder(f.path);
         pnl.sourceTextBox.text = fl.toUIString();
         pnl.targetTextBox.text = fl.toUIString() + dirSeparator + 'output';
-        
+      } else {
+        return; //Cancel
       }
-      else{        
-        return;        //取消
-      }
-      
+
       pnl.chooseImageListBox.removeAll();
       pnl.chooseGroupListBox.removeAll();
-      
-      // 读取LabelPlus文件
+
+      // Read the Souka file
       var labelFile;
-      try{
-        labelFile = new LabelPlusTextReader(pnl.lpTextFileTextBox.text);        
-      }
-      catch(err){        
+      try {
+        labelFile = new SoukaTextReader(pnl.lpTextFileTextBox.text);
+      } catch (err) {
         alert(err);
         return;
-      } 
-    
-      // 填充图片选择列表
+      }
+
+      // Fill image selection list
       var arr = labelFile.ImageList;
-      if(arr){
-        for(var i=0; i<arr.length ;i++){
-          pnl.chooseImageListBox[i] = pnl.chooseImageListBox.add('item', arr[i], i);      
+      if (arr) {
+        for (var i = 0; i < arr.length; i++) {
+          pnl.chooseImageListBox[i] = pnl.chooseImageListBox.add('item', arr[i], i);
           pnl.chooseImageListBox[i].selected = true;
         }
       }
-    
-      // 填充分组选择列表    
+
+      // Populate the group selection list
       var arr = labelFile.GroupData;
-      if(arr){
-        for(var i=0; i<arr.length ;i++){
-          if(arr[i] == "")
-            continue;
+      if (arr) {
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i] == '') continue;
           pnl.chooseGroupListBox[i] = pnl.chooseGroupListBox.add('item', arr[i], i);
           pnl.chooseGroupListBox[i].selected = true;
 
-          // 涂白 指定分组文本框若空 填第一个分组
-          if (pnl.overlayGroupTextBox.text == "") {
-			pnl.overlayGroupTextBox.text = arr[i];
+          // Paint white Specify the group text box to fill in the first group
+          if (pnl.overlayGroupTextBox.text == '') {
+            pnl.overlayGroupTextBox.text = arr[i];
           }
-        }            
-      }      
-      
-      pnl.labelFile = labelFile;  //返回LabelPlusTextReader对象
-      
+        }
+      }
+
+      pnl.labelFile = labelFile; //Return to the SoukaTextReader object
     } catch (e) {
       alert(Stdlib.exceptionMessage(e));
     }
   };
 
-
-  //------------------图片选择区------------------
-  yy = yOfs +35;  
-  xx = xOfs;  
-
-  // 选择需要导入的图片
-  pnl.chooseImageLabel =  pnl.add('statictext', [xx,yy,xx+150,yy+22],
-                                           _MT_STRING_LABEL_SELECTIMAGE );
-  yy += 20;
-  pnl.chooseImageListBox = pnl.add('listbox', [xx,yy,xx+150,yy+285], [] ,{multiselect:true});
-
-  //------------------分组选择区------------------
-  yy = yOfs +35;  
-  xOfs += 170;  
+  //------------------Picture selection area------------------
+  yy = yOfs + 35;
   xx = xOfs;
-  
-  //选择需要导入的分组
-  pnl.chooseGroupLabel =  pnl.add('statictext', [xx,yy,xx+150,yy+22],
-                                           _MT_STRING_LABEL_SELECTGROUP );
-  yy += 20;
-  pnl.chooseGroupListBox =  pnl.add('listbox', [xx,yy,xx+150,yy+285], [] ,{multiselect:true});
 
-  //------------------设置区------------------
+  // Select the image you want to import
+  pnl.chooseImageLabel = pnl.add(
+    'statictext',
+    [xx, yy, xx + 150, yy + 22],
+    _MT_STRING_LABEL_SELECTIMAGE
+  );
+  yy += 20;
+  pnl.chooseImageListBox = pnl.add('listbox', [xx, yy, xx + 150, yy + 285], [], {
+    multiselect: true
+  });
+
+  //------------------Group selection area------------------
+  yy = yOfs + 35;
+  xOfs += 170;
+  xx = xOfs;
+
+  //Select the group you want to import
+  pnl.chooseGroupLabel = pnl.add(
+    'statictext',
+    [xx, yy, xx + 150, yy + 22],
+    _MT_STRING_LABEL_SELECTGROUP
+  );
+  yy += 20;
+  pnl.chooseGroupListBox = pnl.add('listbox', [xx, yy, xx + 150, yy + 285], [], {
+    multiselect: true
+  });
+
+  //------------------Setting area------------------
   yy = yOfs;
-  xOfs = 10 +  345;  
+  xOfs = 10 + 345;
   xx = xOfs;
-  
-  // >>>>>文件 预处理
-  pnl.add('statictext', [xx,yy,xx+120,yy+20],
-                            _MT_STRING_LABEL_TIP_FILE);
-  yy += 20;  
-  // 图源文件夹 
-  pnl.sourceLabel = pnl.add('statictext', [xx,yy,xx+120,yy+20],
-                            _MT_STRING_LABEL_SOURCE);
+
+  // >>>>>File preprocessing
+  pnl.add('statictext', [xx, yy, xx + 120, yy + 20], _MT_STRING_LABEL_TIP_FILE);
+  yy += 20;
+  // Map source folder
+  pnl.sourceLabel = pnl.add('statictext', [xx, yy, xx + 120, yy + 20], _MT_STRING_LABEL_SOURCE);
   xx += 120;
-  pnl.sourceTextBox = pnl.add('edittext', [xx,yy,xx+300,yy+20], '');
+  pnl.sourceTextBox = pnl.add('edittext', [xx, yy, xx + 300, yy + 20], '');
   xx += 305;
-  pnl.sourceBrowse = pnl.add('button', [xx,yy,xx+30,yy+20], '...');
+  pnl.sourceBrowse = pnl.add('button', [xx, yy, xx + 30, yy + 20], '...');
 
   pnl.sourceBrowse.onClick = function() {
     try {
       var pnl = this.parent;
-      var def = (pnl.sourceTextBox.text ?
-                 new Folder(pnl.sourceTextBox.text) : Folder.desktop);
-      var f = Folder.selectDialog(_MT_STRING_LABEL_SOURCE , def);
+      var def = pnl.sourceTextBox.text ? new Folder(pnl.sourceTextBox.text) : Folder.desktop;
+      var f = Folder.selectDialog(_MT_STRING_LABEL_SOURCE, def);
 
       if (f) {
         pnl.sourceTextBox.text = f.toUIString();
@@ -13908,13 +14056,12 @@ LabelPlusInput.prototype.createPanel = function(pnl, ini) {
   xx = xOfs;
   yy += 25;
 
-  // 输出目录
-  pnl.targetLabel = pnl.add('statictext', [xx,yy,xx+120,yy+20],
-                            _MT_STRING_LABEL_TARGET );
+  // Output directory
+  pnl.targetLabel = pnl.add('statictext', [xx, yy, xx + 120, yy + 20], _MT_STRING_LABEL_TARGET);
   xx += 120;
-  pnl.targetTextBox = pnl.add('edittext', [xx,yy,xx+300,yy+20], '');  
+  pnl.targetTextBox = pnl.add('edittext', [xx, yy, xx + 300, yy + 20], '');
   xx += 305;
-  pnl.targetBrowse = pnl.add('button', [xx,yy,xx+30,yy+20], '...');
+  pnl.targetBrowse = pnl.add('button', [xx, yy, xx + 30, yy + 20], '...');
 
   pnl.targetBrowse.onClick = function() {
     try {
@@ -13928,7 +14075,7 @@ LabelPlusInput.prototype.createPanel = function(pnl, ini) {
           def = Folder.desktop;
         }
       }
-      var f = Stdlib.selectFolder(_MT_STRING_LABEL_TARGET , def);
+      var f = Stdlib.selectFolder(_MT_STRING_LABEL_TARGET, def);
 
       if (f) {
         pnl.targetTextBox.text = f.toUIString();
@@ -13941,261 +14088,295 @@ LabelPlusInput.prototype.createPanel = function(pnl, ini) {
   xx = xOfs;
   yy += 25;
 
-  // 无视LabelPlus文本中的图源文件名
-  pnl.ignoreImgFileNameCheckBox = pnl.add('checkbox', [xx,yy,xx+250,yy+22],
-                                          _MT_STRING_CHECKBOX_IGNOREIMGFILENAME);
-  pnl.ignoreImgFileNameCheckBox.onClick = function () {
-  	pnl.setSourceFileTypeCheckBox.value = false;	// 与指定图源互斥
-  	pnl.ignoreImgFileNameTestButton.enabled = pnl.ignoreImgFileNameCheckBox.value;
-  }
+  // Ignore the source file name in Souka text
+  pnl.ignoreImgFileNameCheckBox = pnl.add(
+    'checkbox',
+    [xx, yy, xx + 250, yy + 22],
+    _MT_STRING_CHECKBOX_IGNOREIMGFILENAME
+  );
+  pnl.ignoreImgFileNameCheckBox.onClick = function() {
+    pnl.setSourceFileTypeCheckBox.value = false; // Mutually exclusive with the specified source
+    pnl.ignoreImgFileNameTestButton.enabled = pnl.ignoreImgFileNameCheckBox.value;
+  };
   xx += 260;
-  pnl.ignoreImgFileNameTestButton = pnl.add('button',  [xx,yy,xx+80,yy+18], 'preview');
-  pnl.ignoreImgFileNameTestButton.enabled = false;	
- 
-  // 预览无视文件名效果
+  pnl.ignoreImgFileNameTestButton = pnl.add('button', [xx, yy, xx + 80, yy + 18], 'preview');
+  pnl.ignoreImgFileNameTestButton.enabled = false;
+
+  // Preview ignore file name effect
   pnl.ignoreImgFileNameTestButton.onClick = function() {
-	var originFileNameList = LabelPlusInput.getFilesListOfPath(pnl.sourceTextBox.text); 
-  	var selectedImgFileNameList = LabelPlusInput.getSelectedItemsText(pnl.chooseImageListBox);
+    var originFileNameList = SoukaInput.getFilesListOfPath(pnl.sourceTextBox.text);
+    var selectedImgFileNameList = SoukaInput.getSelectedItemsText(pnl.chooseImageListBox);
 
-  	var preview_list_string = '';
-  	for (var i = 0; i < selectedImgFileNameList.length; i++) {
-  		if (i >= 10) {
-  			break;
-  		}
-  		if (!originFileNameList[i]) {
-  			break;
-  		}
-  		preview_list_string = preview_list_string + selectedImgFileNameList[i].text + " -> " 
-  		                    + originFileNameList[selectedImgFileNameList[i].index] + "\n";
-  	}
-  	alert(preview_list_string);
-  }
+    var preview_list_string = '';
+    for (var i = 0; i < selectedImgFileNameList.length; i++) {
+      if (i >= 10) {
+        break;
+      }
+      if (!originFileNameList[i]) {
+        break;
+      }
+      preview_list_string =
+        preview_list_string +
+        selectedImgFileNameList[i].text +
+        ' -> ' +
+        originFileNameList[selectedImgFileNameList[i].index] +
+        '\n';
+    }
+    alert(preview_list_string);
+  };
 
   xx = xOfs;
-  yy += 20;  
+  yy += 20;
 
-  // 使用指定类型图源
-  pnl.setSourceFileTypeCheckBox = pnl.add('checkbox', [xx,yy,xx+250,yy+22],
-                                          _MT_STRING_CHECKBOX_SETSOURCETYPE  );
+  // Use the specified type map source
+  pnl.setSourceFileTypeCheckBox = pnl.add(
+    'checkbox',
+    [xx, yy, xx + 250, yy + 22],
+    _MT_STRING_CHECKBOX_SETSOURCETYPE
+  );
   pnl.setSourceFileTypeCheckBox.onClick = function() {
-  	pnl.ignoreImgFileNameCheckBox.value = false;	//与无视图源文件名互斥
+    pnl.ignoreImgFileNameCheckBox.value = false; //Mutually exclusive with no view source file name
     pnl.setSourceFileTypeList.enabled = pnl.setSourceFileTypeCheckBox.value;
-  }  
+  };
   xx += 260;
-  var setSourceFileTypeListItems = [".psd", ".png", ".jpg", "jpeg", ".tif", ".tiff"];
-  pnl.setSourceFileTypeList = pnl.add('dropdownlist', [xx,yy,xx+70,yy+22],
-                                   setSourceFileTypeListItems);  
-  pnl.setSourceFileTypeList.selection = pnl.setSourceFileTypeList.find(".psd");
+  var setSourceFileTypeListItems = ['.psd', '.png', '.jpg', 'jpeg', '.tif', '.tiff'];
+  pnl.setSourceFileTypeList = pnl.add(
+    'dropdownlist',
+    [xx, yy, xx + 70, yy + 22],
+    setSourceFileTypeListItems
+  );
+  pnl.setSourceFileTypeList.selection = pnl.setSourceFileTypeList.find('.psd');
   pnl.setSourceFileTypeList.enabled = false;
-  
-  xx = xOfs;
-  yy += 20;  
 
-  // 处理无标号文档
-  pnl.outputNoSignPsdCheckBox = pnl.add('checkbox', [xx,yy,xx+250,yy+22],
-                                          _MT_STRING_CHECKBOX_OUTPUTNOSIGNPSD  );
   xx = xOfs;
-  yy += 20;  
+  yy += 20;
 
-  // 导入后不关闭文档
-  pnl.notCloseCheckBox = pnl.add('checkbox', [xx,yy,xx+250,yy+22],
-                                           _MT_STRING_CHECKBOX_NOTCLOSE );
+  // Handling unlabeled documents
+  pnl.outputNoSignPsdCheckBox = pnl.add(
+    'checkbox',
+    [xx, yy, xx + 250, yy + 22],
+    _MT_STRING_CHECKBOX_OUTPUTNOSIGNPSD
+  );
   xx = xOfs;
-  yy += 20;  
-  
-  // 文本替换(例:"A->B|C->D")
-  pnl.textReplaceCheckBox = pnl.add('checkbox', [xx,yy,xx+250,yy+22],
-                                          _MT_STRING_CHECKBOX_TEXTREPLACE);
+  yy += 20;
+
+  // Do not close the document after import
+  pnl.notCloseCheckBox = pnl.add(
+    'checkbox',
+    [xx, yy, xx + 250, yy + 22],
+    _MT_STRING_CHECKBOX_NOTCLOSE
+  );
+  xx = xOfs;
+  yy += 20;
+
+  // Text replacement (example: "A->B|C->D")
+  pnl.textReplaceCheckBox = pnl.add(
+    'checkbox',
+    [xx, yy, xx + 250, yy + 22],
+    _MT_STRING_CHECKBOX_TEXTREPLACE
+  );
   pnl.textReplaceCheckBox.onClick = function() {
     pnl.textReplaceTextBox.enabled = pnl.textReplaceCheckBox.value;
   };
   xx += 260;
-  pnl.textReplaceTextBox = pnl.add('edittext', [xx,yy,xx+180,yy+20]);  
-  pnl.textReplaceTextBox.text = "！？->!?|...->…";
+  pnl.textReplaceTextBox = pnl.add('edittext', [xx, yy, xx + 180, yy + 20]);
+  pnl.textReplaceTextBox.text = '！？->!?|...->…';
   pnl.textReplaceTextBox.enabled = false;
   xx = xOfs;
-  yy += 20;  
-  
+  yy += 20;
 
-  // >>>>>导入项目
+  // >>>>>Import project
   yy += 10;
-  pnl.add('statictext', [xx,yy,xx+120,yy+20],
-                            _MT_STRING_LABEL_TIP_INPUTITEM);
-  yy += 20;  
+  pnl.add('statictext', [xx, yy, xx + 120, yy + 20], _MT_STRING_LABEL_TIP_INPUTITEM);
+  yy += 20;
 
-  // 导出标号选项
-  pnl.outputLabelNumberCheckBox = pnl.add('checkbox', [xx,yy,xx+250,yy+22],
-                                           _MT_STRING_CHECKBOX_OUTPUTLABELNUMBER);
+  // Export label option
+  pnl.outputLabelNumberCheckBox = pnl.add(
+    'checkbox',
+    [xx, yy, xx + 250, yy + 22],
+    _MT_STRING_CHECKBOX_OUTPUTLABELNUMBER
+  );
   xx = xOfs;
-  yy += 20;  
-    
-  // 不对图层进行分组
-  pnl.layerNotGroupCheckBox = pnl.add('checkbox', [xx,yy,xx+250,yy+22],
-                                           _MT_STRING_CHECKBOX_LAYERNOTGROUP);
-  yy += 20;  
-  
-  // >>>>>格式 / 自动化
+  yy += 20;
+
+  // Do not group layers
+  pnl.layerNotGroupCheckBox = pnl.add(
+    'checkbox',
+    [xx, yy, xx + 250, yy + 22],
+    _MT_STRING_CHECKBOX_LAYERNOTGROUP
+  );
+  yy += 20;
+
+  // >>>>>Format / Automation
   yy += 10;
-  pnl.add('statictext', [xx,yy,xx+120,yy+20],
-                            _MT_STRING_LABEL_TIP_STYLE_AUTO);
-  yy += 20;  
-  
-  // 使用自定义字体设置
-  pnl.setFontCheckBox = pnl.add('checkbox', [xx,yy,xx+250,yy+22],
-                                           _MT_STRING_CHECKBOX_SETFONT);  
+  pnl.add('statictext', [xx, yy, xx + 120, yy + 20], _MT_STRING_LABEL_TIP_STYLE_AUTO);
+  yy += 20;
+
+  // Use custom font settings
+  pnl.setFontCheckBox = pnl.add(
+    'checkbox',
+    [xx, yy, xx + 250, yy + 22],
+    _MT_STRING_CHECKBOX_SETFONT
+  );
   pnl.setFontCheckBox.onClick = function() {
     var value = pnl.setFontCheckBox.value;
     pnl.font.family.enabled = value;
     pnl.font.style.enabled = value;
     pnl.font.fontSize.enabled = value;
-  }    
+  };
   xx = xOfs;
-  yy += 20;  
-  // 字体
-  pnl.font = pnl.add('group', [xx,yy,xx+400,yy+40]);
+  yy += 20;
+  // ont
+  pnl.font = pnl.add('group', [xx, yy, xx + 400, yy + 40]);
   self.createFontPanel(pnl.font, ini);
-  pnl.font.label.text = _MT_STRING_LABEL_FONT;  
+  pnl.font.label.text = _MT_STRING_LABEL_FONT;
   pnl.font.family.enabled = false;
   pnl.font.style.enabled = false;
   pnl.font.fontSize.enabled = false;
-  pnl.font.family.selection = pnl.font.family.find("SimSun");
-  
-  xx = xOfs;
-  yy += 20;  
+  pnl.font.family.selection = pnl.font.family.find('SimSun');
 
-  // 输出横排文字
-  pnl.outputHorizontalCheckBox = pnl.add('checkbox', [xx,yy,xx+250,yy+22],
-                                           _MT_STRING_CHECKBOX_OUTPUTHORIZONTALTEXT);
   xx = xOfs;
-  yy += 20;  
-      
-  // 执行动作GroupN
-  pnl.runActionGroupCheckBox = pnl.add('checkbox', [xx,yy,xx+500,yy+22],
-                                           _MT_STRING_CHECKBOX_RUNACTION );
+  yy += 20;
+
+  // Output horizontal text
+  pnl.outputHorizontalCheckBox = pnl.add(
+    'checkbox',
+    [xx, yy, xx + 250, yy + 22],
+    _MT_STRING_CHECKBOX_OUTPUTHORIZONTALTEXT
+  );
+  xx = xOfs;
+  yy += 20;
+
+  // Execute action GroupN
+  pnl.runActionGroupCheckBox = pnl.add(
+    'checkbox',
+    [xx, yy, xx + 500, yy + 22],
+    _MT_STRING_CHECKBOX_RUNACTION
+  );
   pnl.runActionGroupCheckBox.onClick = function() {
     pnl.runActionGroupList.enabled = pnl.runActionGroupCheckBox.value;
-  }                                             
+  };
   xx = xOfs + 30;
-  yy += 20;  
-  var ary = Stdlib.getActionSets();  
-  pnl.runActionGroupList = pnl.add('dropdownlist', [xx,yy,xx+180,yy+22], ary);  
-  pnl.runActionGroupList.selection = pnl.runActionGroupList.find("LabelPlusAction");
-  if (pnl.runActionGroupList.selection == undefined)
-  {
+  yy += 20;
+  var ary = Stdlib.getActionSets();
+  pnl.runActionGroupList = pnl.add('dropdownlist', [xx, yy, xx + 180, yy + 22], ary);
+  pnl.runActionGroupList.selection = pnl.runActionGroupList.find('SoukaAction');
+  if (pnl.runActionGroupList.selection == undefined) {
     pnl.runActionGroupList.selection = pnl.runActionGroupList[0];
   }
   pnl.runActionGroupList.enabled = false;
-  
-  xx = xOfs;
-  yy += 20;  
 
-  // 涂白功能选项
-  pnl.overlayCheckBox = pnl.add('checkbox', [xx,yy,xx+300,yy+22],
-                                           _MT_STRING_CHECKBOX_OVERLAY );
+  xx = xOfs;
+  yy += 20;
+
+  // Whitening option
+  pnl.overlayCheckBox = pnl.add(
+    'checkbox',
+    [xx, yy, xx + 300, yy + 22],
+    _MT_STRING_CHECKBOX_OVERLAY
+  );
   pnl.overlayCheckBox.onClick = function() {
-    pnl.overlayGroupTextBox.enabled = pnl.overlayCheckBox.value; 
-  }
+    pnl.overlayGroupTextBox.enabled = pnl.overlayCheckBox.value;
+  };
   xx += 300;
 
-  pnl.overlayGroupTextBox = pnl.add('edittext', [xx,yy,xx+180,yy+20]);    
+  pnl.overlayGroupTextBox = pnl.add('edittext', [xx, yy, xx + 180, yy + 20]);
   pnl.overlayGroupTextBox.enabled = false;
 
-  //------------------读取配置区------------------
-  if (ini) {   // if there was an ini object
-    //文本替换
-    if(ini.textReplace){
+  //------------------Read configuration area------------------
+  if (ini) {
+    // if there was an ini object
+    //Text replacement
+    if (ini.textReplace) {
       pnl.textReplaceCheckBox.value = true;
       pnl.textReplaceTextBox.enabled = true;
       pnl.textReplaceTextBox.text = opts.textReplace;
-    }  
-    
-    // 字体  
+    }
+
+    // Font
     if (ini.setFont) {
       pnl.setFontCheckBox.value = true;
-      pnl.font.family.enabled =  true;
-      pnl.font.style.enabled =  true;
-      pnl.font.fontSize.enabled =  true;      
+      pnl.font.family.enabled = true;
+      pnl.font.style.enabled = true;
+      pnl.font.fontSize.enabled = true;
       pnl.font.setFont(ini.font, ini.fontSize);
     }
-    
-    // 导出标号选项
-    if(ini.outputLabelNumber){
+
+    // Export label option
+    if (ini.outputLabelNumber) {
       pnl.outputLabelNumberCheckBox.value = ini.outputLabelNumber;
     }
-  
-    // 输出横排文字
-    if(ini.horizontalText){
+
+    // Output horizontal text
+    if (ini.horizontalText) {
       pnl.outputHorizontalCheckBox.value = ini.horizontalText;
     }
-    // 处理无标号文档
-    if(ini.outputNoSignPsd){
+    // Handling unlabeled documents
+    if (ini.outputNoSignPsd) {
       pnl.outputNoSignPsdCheckBox.value = ini.outputNoSignPsd;
     }
 
-    // 无视LabelPlus文本中的图源文件名
+    // Ignore the source file name in Souka text
     if (ini.ignoreImgFileName) {
-    	pnl.ignoreImgFileNameCheckBox.value = true;
+      pnl.ignoreImgFileNameCheckBox.value = true;
     }
 
-    // 使用指定类型图源
-    if (ini.sourceFileType){    
+    // Use the specified type map source
+    if (ini.sourceFileType) {
       pnl.setSourceFileTypeCheckBox.value = true;
       pnl.setSourceFileTypeList.enabled = true;
       pnl.setSourceFileTypeList.selection.text = ini.sourceFileType;
     }
-  
-    // 执行动作GroupN
-    if (ini.runActionGroup){
+
+    // Execute action GroupN
+    if (ini.runActionGroup) {
       pnl.runActionGroupCheckBox.value = true;
-      pnl.runActionGroupList.enabled = true;      
-      pnl.runActionGroupList.selection.text = ini.runActionGroup;  
-    }  
-  
-    // 导入后不关闭文档
-    if(ini.notClose)
-      pnl.notCloseCheckBox.value = true;
-    
-    // 不对图层进行分组
-    if(ini.layerNotGroup)
-      pnl.layerNotGroupCheckBox.value = true;
+      pnl.runActionGroupList.enabled = true;
+      pnl.runActionGroupList.selection.text = ini.runActionGroup;
+    }
 
-  	// 涂白
-  	if (ini.overloayGroup) {
-  		pnl.overlayCheckBox.value = true;
-  		pnl.overlayGroupTextBox.enabled = true;
-  		pnl.overlayGroupTextBox.text = ini.overloayGroup;
-  	}
+    // Do not close the document after import
+    if (ini.notClose) pnl.notCloseCheckBox.value = true;
 
-  } 
+    // Do not group layers
+    if (ini.layerNotGroup) pnl.layerNotGroupCheckBox.value = true;
 
-  return pnl; 
+    // Paint white
+    if (ini.overloayGroup) {
+      pnl.overlayCheckBox.value = true;
+      pnl.overlayGroupTextBox.enabled = true;
+      pnl.overlayGroupTextBox.text = ini.overloayGroup;
+    }
+  }
+
+  return pnl;
 };
 
 //
-// 自定义读取配框
+// Custom settings
 //
-LabelPlusInput.createSettingsPanel = function(pnl, ini) {
+SoukaInput.createSettingsPanel = function(pnl, ini) {
   var win = GenericUI.getWindow(pnl.parent);
 
   pnl.text = _MT_STRING_LABEL_SETTING;
   pnl.win = win;
 
-  pnl.fileMask = "INI Files: *.ini, All Files: *.*";
-  pnl.loadPrompt = "Read Setting";
-  pnl.savePrompt = "Save Setting";
+  pnl.fileMask = 'INI Files: *.ini, All Files: *.*';
+  pnl.loadPrompt = 'Read Setting';
+  pnl.savePrompt = 'Save Setting';
   pnl.defaultFile = undefined;
 
   var w = pnl.bounds[2] - pnl.bounds[0];
-  var offsets = [w*0.2, w*0.5, w*0.8];
+  var offsets = [w * 0.2, w * 0.5, w * 0.8];
   var y = 15;
   var bw = 90;
 
-  var x = offsets[0]-(bw/2);
-  pnl.load = pnl.add('button', [x,y,x+bw,y+20], _MY_STRING_BUTTON_LOAD);
-  x = offsets[1]-(bw/2);
-  pnl.save = pnl.add('button', [x,y,x+bw,y+20], _MY_STRING_BUTTON_SAVE);
-  x = offsets[2]-(bw/2);
-  pnl.reset = pnl.add('button', [x,y,x+bw,y+20], _MY_STRING_BUTTON_RESET);
+  var x = offsets[0] - bw / 2;
+  pnl.load = pnl.add('button', [x, y, x + bw, y + 20], _MY_STRING_BUTTON_LOAD);
+  x = offsets[1] - bw / 2;
+  pnl.save = pnl.add('button', [x, y, x + bw, y + 20], _MY_STRING_BUTTON_SAVE);
+  x = offsets[2] - bw / 2;
+  pnl.reset = pnl.add('button', [x, y, x + bw, y + 20], _MY_STRING_BUTTON_RESET);
 
   pnl.load.onClick = function() {
     var pnl = this.parent;
@@ -14207,7 +14388,7 @@ LabelPlusInput.createSettingsPanel = function(pnl, ini) {
       if (mgr.iniFile) {
         def = GenericUI.iniFileToFile(mgr.iniFile);
       } else {
-        def = GenericUI.iniFileToFile("~/settings.ini");
+        def = GenericUI.iniFileToFile('~/settings.ini');
       }
     }
 
@@ -14219,7 +14400,7 @@ LabelPlusInput.createSettingsPanel = function(pnl, ini) {
     }
     f = Stdlib.selectFileOpen(prmpt, sel, def);
     if (f) {
-      win.ini =LabelPlusInput.readIni(f);
+      win.ini = SoukaInput.readIni(f);
       win.close(4);
 
       if (pnl.onLoad) {
@@ -14238,7 +14419,7 @@ LabelPlusInput.createSettingsPanel = function(pnl, ini) {
       if (mgr.iniFile) {
         def = GenericUI.iniFileToFile(mgr.iniFile);
       } else {
-        def = GenericUI.iniFileToFile("~/settings.ini");
+        def = GenericUI.iniFileToFile('~/settings.ini');
       }
     }
 
@@ -14255,8 +14436,8 @@ LabelPlusInput.createSettingsPanel = function(pnl, ini) {
       var mgr = win.mgr;
       var res = mgr.validatePanel(win.appPnl, win.ini, true);
 
-      if (typeof(res) != 'boolean') {
-        LabelPlusInput.writeIni(f, res);
+      if (typeof res != 'boolean') {
+        SoukaInput.writeIni(f, res);
 
         if (pnl.onSave) {
           pnl.onSave(f);
@@ -14272,7 +14453,6 @@ LabelPlusInput.createSettingsPanel = function(pnl, ini) {
 
     if (mgr.defaultIniFile) {
       win.ini = mgr.readIniFile(mgr.defaultIniFile);
-
     } else if (mgr.ini) {
       win.ini = mgr.ini;
     }
@@ -14285,28 +14465,27 @@ LabelPlusInput.createSettingsPanel = function(pnl, ini) {
 };
 
 //
-// 读出用户UI数据
+// Read user UI data
 //
-LabelPlusInput.prototype.validatePanel = function(pnl, ini, tofile) {
+SoukaInput.prototype.validatePanel = function(pnl, ini, tofile) {
   var self = this;
-  var opts = new LabelPlusInputOptions(ini);
+  var opts = new SoukaInputOptions(ini);
 
-  // 写配置项时无需存储这些
-  if(!tofile || tofile == false){
-    // 图源文件夹
-    if (pnl.sourceTextBox.text) {    
+  // No need to store these when writing configuration items
+  if (!tofile || tofile == false) {
+    // Map source folder
+    if (pnl.sourceTextBox.text) {
       f = new Folder(pnl.sourceTextBox.text);
-    }
-    else{
-      return self.errorPrompt(_MT_ERROR_NOTFOUNDSOURCE);  
+    } else {
+      return self.errorPrompt(_MT_ERROR_NOTFOUNDSOURCE);
     }
 
     if (!f || !f.exists) {
       return self.errorPrompt(_MT_ERROR_NOTFOUNDSOURCE);
     }
     opts.source = f.toUIString();
-    
-    // 输出目录
+
+    // Output directory
     if (pnl.targetTextBox.text) {
       f = new Folder(pnl.targetTextBox.text);
       if (!f.exists) {
@@ -14314,378 +14493,409 @@ LabelPlusInput.prototype.validatePanel = function(pnl, ini, tofile) {
           return self.errorPrompt(_MT_ERROR_CANNOTBUILDNEWFOLDER);
         }
       }
-    }
-    else{
+    } else {
       return self.errorPrompt(_MT_ERROR_NOTFOUNDTARGET);
     }
-    
-    
+
     if (!f || !f.exists) {
       return self.errorPrompt(_MT_ERROR_NOTFOUNDTARGET);
     }
     opts.target = f.toUIString();
 
-    // LabelPlus文本
+    // Souka text
     f = new File(pnl.lpTextFileTextBox.text);
-    if(!f || !f.exists) {
+    if (!f || !f.exists) {
       return self.errorPrompt(_MT_ERROR_NOTFOUNLABELTEXT);
     }
     opts.labelFilename = pnl.lpTextFileTextBox.text;
 
     var fl = new Folder(f.path);
-    opts.labelFilePath = fl.toUIString();    
-    
-    // Image选择  
-    if(!pnl.chooseImageListBox.selection || pnl.chooseImageListBox.selection.length == 0)
-      return self.errorPrompt(_MT_ERROR_NOTCHOOSEIMAGE);
-    else
-    {
-      var sortedImgSelection = pnl.chooseImageListBox.selection.sort();
-      opts.imageSelected = new Array(); 
+    opts.labelFilePath = fl.toUIString();
 
-      for(var i=0;i<sortedImgSelection.length;i++) {
-        opts.imageSelected[i] = {text  : sortedImgSelection[i].text, 
-        						 index : sortedImgSelection[i].index };        
+    // Image selection
+    if (!pnl.chooseImageListBox.selection || pnl.chooseImageListBox.selection.length == 0)
+      return self.errorPrompt(_MT_ERROR_NOTCHOOSEIMAGE);
+    else {
+      var sortedImgSelection = pnl.chooseImageListBox.selection.sort();
+      opts.imageSelected = new Array();
+
+      for (var i = 0; i < sortedImgSelection.length; i++) {
+        opts.imageSelected[i] = {
+          text: sortedImgSelection[i].text,
+          index: sortedImgSelection[i].index
+        };
       }
     }
-    // 分组选择
-    if(!pnl.chooseGroupListBox.selection || pnl.chooseGroupListBox.selection.length ==0)
-      return self.errorPrompt(_MT_ERROR_NOTCHOOSEGROUP);  
-    else
-    {
+    // Group selection
+    if (!pnl.chooseGroupListBox.selection || pnl.chooseGroupListBox.selection.length == 0)
+      return self.errorPrompt(_MT_ERROR_NOTCHOOSEGROUP);
+    else {
       opts.groupSelected = new Array();
-      for(var i=0;i<pnl.chooseGroupListBox.selection.length;i++)
-        opts.groupSelected[i] = pnl.chooseGroupListBox.selection[i].text;      
+      for (var i = 0; i < pnl.chooseGroupListBox.selection.length; i++)
+        opts.groupSelected[i] = pnl.chooseGroupListBox.selection[i].text;
     }
-      
   }
-  // 文本替换  
-  if(pnl.textReplaceCheckBox.value)
-    opts.textReplace = pnl.textReplaceTextBox.text;  
+  // Text replacement
+  if (pnl.textReplaceCheckBox.value) opts.textReplace = pnl.textReplaceTextBox.text;
 
-  // 字体  
-  if(pnl.setFontCheckBox.value){
+  // Font
+  if (pnl.setFontCheckBox.value) {
     opts.setFont = true;
-    var font = pnl.font.getFont()
+    var font = pnl.font.getFont();
     opts.font = font.font;
     opts.fontSize = font.size;
   }
 
-  // 导出标号选项
-  if(pnl.outputLabelNumberCheckBox.value)
-    opts.outputLabelNumber = true;
-  
-  // 输出横排文字
-  if(pnl.outputHorizontalCheckBox.value)
-    opts.horizontalText = true;
-  
-  // 处理无标号文档
-  if(pnl.outputNoSignPsdCheckBox.value)
-    opts.outputNoSignPsd = true;
+  // Export label option
+  if (pnl.outputLabelNumberCheckBox.value) opts.outputLabelNumber = true;
 
-  // 无视LabelPlus文本中的图源文件名
+  // Output horizontal text
+  if (pnl.outputHorizontalCheckBox.value) opts.horizontalText = true;
+
+  // Handling unlabeled documents
+  if (pnl.outputNoSignPsdCheckBox.value) opts.outputNoSignPsd = true;
+
+  // Ignore the source file name in Souka text
   if (pnl.ignoreImgFileNameCheckBox.value) {
-  	opts.ignoreImgFileName = true;
+    opts.ignoreImgFileName = true;
   }
-  
-  // 使用指定类型图源
-  if (pnl.setSourceFileTypeCheckBox.value){    
+
+  // Use the specified type map source
+  if (pnl.setSourceFileTypeCheckBox.value) {
     opts.sourceFileType = pnl.setSourceFileTypeList.selection.text;
-  }
-  else
-    opts.sourceFileType = undefined;
-  
-  // 执行动作GroupN
-  if (pnl.runActionGroupCheckBox.value)
-    opts.runActionGroup = pnl.runActionGroupList.selection;
-  else
-    opts.runActionGroup = undefined;
-  
-  // 导入后不关闭文档
-  if(pnl.notCloseCheckBox.value)
-    opts.notClose = true;
-    
-  // 不对图层进行分组
-  if(pnl.layerNotGroupCheckBox.value)
-    opts.layerNotGroup = true;
-  
-  // 涂白
-  if (pnl.overlayCheckBox.value) { 
-  	opts.overloayGroup = pnl.overlayGroupTextBox.text;
+  } else opts.sourceFileType = undefined;
+
+  // Execute action GroupN
+  if (pnl.runActionGroupCheckBox.value) opts.runActionGroup = pnl.runActionGroupList.selection;
+  else opts.runActionGroup = undefined;
+
+  // Do not close the document after import
+  if (pnl.notCloseCheckBox.value) opts.notClose = true;
+
+  // Do not group layers
+  if (pnl.layerNotGroupCheckBox.value) opts.layerNotGroup = true;
+
+  // Paint white
+  if (pnl.overlayCheckBox.value) {
+    opts.overloayGroup = pnl.overlayGroupTextBox.text;
   }
 
   return opts;
 };
 
-LabelPlusInput.prototype.doAction = function(action, actionSet)  {
-   
-    if (Stdlib.hasAction(action, actionSet.toString())) {
-        app.doAction(action, actionSet.toString());
-    }
-}
+SoukaInput.prototype.doAction = function(action, actionSet) {
+  if (Stdlib.hasAction(action, actionSet.toString())) {
+    app.doAction(action, actionSet.toString());
+  }
+};
 
 //
-// 执行用户UI功能
+// Perform user UI functions
 //
-LabelPlusInput.prototype.process = function(opts, doc) {
+SoukaInput.prototype.process = function(opts, doc) {
   var self = this;
-  var errorMsg = "";
+  var errorMsg = '';
 
-  Stdlib.log.setFile(opts.labelFilePath + dirSeparator + "LabelPlusInputer.log");//LabelPlusInputOptions.LOG_FILE);
-  Stdlib.log("Start");
-  Stdlib.log("Properties:");
-  Stdlib.log(listProps(opts)); 
+  Stdlib.log.setFile(opts.labelFilePath + dirSeparator + 'SoukaInputer.log'); //SoukaInputOptions.LOG_FILE);
+  Stdlib.log('Start');
+  Stdlib.log('Properties:');
+  Stdlib.log(listProps(opts));
 
-  //读取图源文件夹文件列表 
-  var originFileList = LabelPlusInput.getFilesListOfPath(opts.source);
-    
-  //解析LabelPlus文本
-  var lpFile = new LabelPlusTextReader(opts.labelFilename);
-  
-  //读取文本替换配置
-  if(opts.textReplace)
-    var textReplace = LabelPlusInput.textReplaceReader(opts.textReplace); 
-  
-  //遍历所选图片 导入数据= =
-  for(var i=0; i<opts.imageSelected.length; i++){
+  //Read map source folder file list
+  var originFileList = SoukaInput.getFilesListOfPath(opts.source);
+
+  //Parsing Souka text
+  var lpFile = new SoukaTextReader(opts.labelFilename);
+
+  //Read text replacement configuration
+  if (opts.textReplace) var textReplace = SoukaInput.textReplaceReader(opts.textReplace);
+
+  //Traverse the selected image Import data
+  for (var i = 0; i < opts.imageSelected.length; i++) {
     var originName = opts.imageSelected[i].text;
     var filename;
     var labelData = lpFile.LabelData[originName];
-    var gourpData = lpFile.GroupData;    
-    
-    // 根据sourceFileType替换文件后缀名      
-    if(opts.sourceFileType){
-      filename = originName.substring(0,originName.lastIndexOf("."))  + opts.sourceFileType;
+    var gourpData = lpFile.GroupData;
+
+    // Replace the file suffix name according to sourceFileType
+    if (opts.sourceFileType) {
+      filename = originName.substring(0, originName.lastIndexOf('.')) + opts.sourceFileType;
+    } else filename = originName;
+
+    // Ignore the original image name
+    if (opts.ignoreImgFileName) {
+      filename = originFileList[opts.imageSelected[i].index];
     }
-    else
-      filename = originName;
 
-  	// 忽略原始图片名
-  	if (opts.ignoreImgFileName) {
-  		filename = originFileList[opts.imageSelected[i].index];  		
-  	}
+    // Do not process unlabeled documents
+    if (!opts.outputNoSignPsd && labelData.length == 0) continue;
 
-    // 不处理无标号文档
-    if(!opts.outputNoSignPsd && labelData.length == 0)
-      continue;
-      
-    // 打开图片文件
+    // Open image file
     var bgFile = File(opts.source + dirSeparator + filename);
-    if(!bgFile || !bgFile.exists){
-      var msg = "Image " + filename + " Not Found.";
+    if (!bgFile || !bgFile.exists) {
+      var msg = 'Image ' + filename + ' Not Found.';
       Stdlib.log(msg);
-	  errorMsg = errorMsg + msg + "\r\n";
+      errorMsg = errorMsg + msg + '\r\n';
       continue;
-    } 
-      
-    // 在PS中打开文件 
-	 
-	var bg;
-	try {
-		bg = app.open(bgFile);
-	} catch(e) {
-		var msg =  "open file " + filename + " fail";
-		Stdlib.log(msg);
-		errorMsg = errorMsg + msg + "\r\n";
-		continue;
-	}
-    
-    // 若文档类型为索引色模式 更改为RGB模式
-    if (bg.mode == DocumentMode.INDEXEDCOLOR){
-        bg.changeMode(ChangeMode.RGB);
-    }        
-    
-    var layerGroups = new Array();
-    
-    // 文件打开时执行一次动作"_start"
-    if(opts.runActionGroup) {      
-      try{
-        bg.activeLayer = bg.layers[bg.layers.length-1];
-        this.doAction("_start" , opts.runActionGroup); 
-      }
-      catch(e){ }
-    }  
-        
-    // 涂白
-    if (opts.overloayGroup) {
-	    var labelArr = new Array();
-	    
-	    // 找出需要涂白的标签
-	    for(var j=0; j<labelData.length; j++){
-	        var labelX = labelData[j].LabelheadValue[0];
-	        var labelY = labelData[j].LabelheadValue[1];
-	        var labelXY = { x:labelX, y:labelY };        
-	        var labelGroup = gourpData[labelData[j].LabelheadValue[2]];
-	        
-	        if(labelGroup == opts.overloayGroup){
-	            labelArr.push(labelXY);
-	        }            
-	    }
+    }
 
-	    //执行涂白
-	    MyAction.lp_dialogClear(labelArr, bg.width, bg.height, 16, 1);        
-	}
-    
-    // 遍历LabelData
-    for(var j=0; j<labelData.length; j++){
-        var labelNum = j+1;
+    // Open file in PS
+
+    var bg;
+    try {
+      bg = app.open(bgFile);
+    } catch (e) {
+      var msg = 'open file ' + filename + ' fail';
+      Stdlib.log(msg);
+      errorMsg = errorMsg + msg + '\r\n';
+      continue;
+    }
+
+    // If the document type is index color mode, change to RGB mode.
+    if (bg.mode === DocumentMode.INDEXEDCOLOR) {
+      bg.changeMode(ChangeMode.RGB);
+    }
+
+    var layerGroups = {};
+
+    // Perform an action "_start" when the file is opened
+    if (opts.runActionGroup) {
+      try {
+        bg.activeLayer = bg.layers[bg.layers.length - 1];
+        this.doAction('_start', opts.runActionGroup);
+      } catch (e) {}
+    }
+
+    // Paint white
+    if (opts.overloayGroup) {
+      var labelArr = [];
+
+      // Find out which labels need to be painted
+      for (var j = 0; j < labelData.length; j++) {
         var labelX = labelData[j].LabelheadValue[0];
         var labelY = labelData[j].LabelheadValue[1];
+        var labelXY = { x: labelX, y: labelY };
         var labelGroup = gourpData[labelData[j].LabelheadValue[2]];
-        var labelString = labelData[j].LabelString;
-        var artLayer;
-        
-        // 所在分组是否需要导入
-        if(opts.groupSelected.indexOf(labelGroup) == -1)
-          continue;
-        
-        // 创建分组
-        if(!opts.layerNotGroup && !layerGroups[labelGroup]){
-          layerGroups[labelGroup] = bg.layerSets.add();
-          layerGroups[labelGroup].name = labelGroup;
-        }       
-        if(opts.outputLabelNumber && !layerGroups["_Label"]){
-          layerGroups["_Label"] = bg.layerSets.add();
-          layerGroups["_Label"].name = "Label";
-        }        
-        
-        // 导出标号
-        if(opts.outputLabelNumber){
-          LabelPlusInput.newTextLayer(bg,
-            labelNum,
-            labelX,
-            labelY,
-            "Arial",
-            opts.setFont ? opts.fontSize : undefined,
-            false,
-            90,
-            layerGroups["_Label"]
-            );
+
+        if (labelGroup === opts.overloayGroup) {
+          labelArr.push(labelXY);
         }
-      
-        // 替换文本
-        if(textReplace){
-          for(var k=0;k<textReplace.length;k++){
-            while(labelString.indexOf(textReplace[k].From) != -1)
-              labelString = labelString.replace (textReplace[k].From, textReplace[k].To);
-          }
-        }
-      
-        // 导出文本
-        if(labelString && labelString != ""){
-          artLayer = LabelPlusInput.newTextLayer(bg,
-            labelString,
-            labelX,
-            labelY,
-            opts.setFont ? opts.font : "SimSun",
-            opts.setFont ? opts.fontSize : undefined,
-            !opts.horizontalText,
-            90,
-            opts.layerNotGroup ?  undefined : layerGroups[labelGroup]);
-        }
-        
-        // 执行动作,名称为分组名
-        if(opts.runActionGroup) {            
-          try{
-            bg.activeLayer = artLayer;
-            this.doAction(labelGroup , opts.runActionGroup);
-          }
-          catch(e){
-            Stdlib.log("DoAction " +labelGroup +
-              " in " + opts.runActionGroup +
-              " Error: \r\n" + e);
-          }
-        }        
-    }
-    
-    // 文件关闭时执行一次动作"_end"
-    if(opts.runActionGroup) {      
-      try{
-        bg.activeLayer = bg.layers[bg.layers.length-1];
-        this.doAction("_end" , opts.runActionGroup);
       }
-      catch(e){ }
-    }        
-    
-    // 保存文件
-    var fileOut = new File(opts.target + "//" + filename);
+
+      //Execute white
+      MyAction.lp_dialogClear(labelArr, bg.width, bg.height, 16, 1);
+    }
+
+    // Traversing LabelData
+    Stdlib.log('Label Data');
+    for (var j = 0; j < labelData.length; j++) {
+      var labelNum = j + 1;
+      Stdlib.log(labelData[j].LabelheadValue);
+      var labelX = labelData[j].LabelheadValue[0];
+      var labelY = labelData[j].LabelheadValue[1];
+      var labelWidth = labelData[j].LabelheadValue[2];
+      var labelHeight = labelData[j].LabelheadValue[3];
+      var labelGroup = gourpData[labelData[j].LabelheadValue[4]];
+      var labelString = labelData[j].LabelString;
+      var artLayer;
+
+      // Whether the group needs to be imported
+      if (opts.groupSelected.indexOf(labelGroup) == -1) continue;
+
+      // Create a group
+      if (!opts.layerNotGroup && !layerGroups[labelGroup]) {
+        layerGroups[labelGroup] = bg.layerSets.add();
+        layerGroups[labelGroup].name = labelGroup;
+      }
+      if (opts.outputLabelNumber && !layerGroups['_Label']) {
+        layerGroups['_Label'] = bg.layerSets.add();
+        layerGroups['_Label'].name = 'Label';
+      }
+
+      // Export label
+      if (opts.outputLabelNumber) {
+        SoukaInput.newTextLayer(
+          bg,
+          labelNum,
+          labelX,
+          labelY,
+          labelWidth,
+          labelHeight,
+          'Arial',
+          opts.setFont ? opts.fontSize : undefined,
+          false,
+          90,
+          layerGroups['_Label']
+        );
+      }
+
+      // Replacement text
+      if (textReplace) {
+        for (var k = 0; k < textReplace.length; k++) {
+          while (labelString.indexOf(textReplace[k].From) != -1)
+            labelString = labelString.replace(textReplace[k].From, textReplace[k].To);
+        }
+      }
+
+      // Export text
+      if (labelString && labelString != '') {
+        artLayer = SoukaInput.newTextLayer(
+          bg,
+          labelString,
+          labelX,
+          labelY,
+          labelWidth,
+          labelHeight,
+          opts.setFont ? opts.font : 'SimSun',
+          opts.setFont ? opts.fontSize : undefined,
+          !opts.horizontalText,
+          90,
+          opts.layerNotGroup ? undefined : layerGroups[labelGroup]
+        );
+      }
+
+      // Execute the action, the name is the group name
+      if (opts.runActionGroup) {
+        try {
+          bg.activeLayer = artLayer;
+          this.doAction(labelGroup, opts.runActionGroup);
+        } catch (e) {
+          Stdlib.log('DoAction ' + labelGroup + ' in ' + opts.runActionGroup + ' Error: \r\n' + e);
+        }
+      }
+    }
+
+    // Perform an action "_end" when the file is closed
+    if (opts.runActionGroup) {
+      try {
+        bg.activeLayer = bg.layers[bg.layers.length - 1];
+        this.doAction('_end', opts.runActionGroup);
+      } catch (e) {}
+    }
+
+    // Save document
+    var fileOut = new File(opts.target + '//' + filename);
     var options = PhotoshopSaveOptions;
     var asCopy = false;
     var extensionType = Extension.LOWERCASE;
     bg.saveAs(fileOut, options, asCopy, extensionType);
-    
-    // 关闭文件
-    if(!opts.notClose)
-      bg.close();    
+
+    // Close file
+    if (!opts.notClose) bg.close();
   }
   alert(_MY_STRING_COMPLETE);
-  if (errorMsg != "") {
-	  alert("error:\r\n" + errorMsg);
-  }  
-  Stdlib.log("Complete!");
+  if (errorMsg != '') {
+    alert('error:\r\n' + errorMsg);
+  }
+  Stdlib.log('Complete!');
 };
 
 //
-// 创建文本图层
+// Create a text layer
 //
-LabelPlusInput.newTextLayer = function(doc,text,x,y,font,size,isVertical,opacity,group) {
+SoukaInput.newTextLayer = function(
+  doc,
+  text,
+  x,
+  y,
+  width,
+  height,
+  font,
+  size,
+  isVertical,
+  opacity,
+  group
+) {
   artLayerRef = doc.artLayers.add();
   artLayerRef.kind = LayerKind.TEXT;
-  textItemRef = artLayerRef.textItem; 
-  
-  if(size)
-    textItemRef.size = size;
-  else
-    textItemRef.size = doc.height / 90.0;
-  
+  textItemRef = artLayerRef.textItem;
+
+  if (size) textItemRef.size = size;
+  else textItemRef.size = doc.height / 90.0;
+
   textItemRef.font = font;
-  if(isVertical)
-    textItemRef.direction = Direction.VERTICAL;
-    
+
   textItemRef.antiAliasMethod = AntiAlias.SMOOTH;
-  textItemRef.position = Array(doc.width*x,doc.height*y);
+  textItemRef.position = Array(doc.width * x, doc.height * y);
 
-  if(group)
-    artLayerRef.move(group, ElementPlacement.PLACEATBEGINNING);  
-    
+  textItemRef.kind = TextType.PARAGRAPHTEXT;
+
+  docRef = app.activeDocument;
+  ratio = docRef.measurementScale.pixelLength;
+  docRes = docRef.resolution;
+
+  try {
+    var doc = activeDocument;
+    var startDocResolution = doc.resolution;
+    var startTypeUnits = app.preferences.typeUnits;
+    var startDisplayDialogs = app.displayDialogs;
+    var startRulerUnits = app.preferences.rulerUnits;
+
+    app.preferences.rulerUnits = Units.PIXELS;
+    app.preferences.typeUnits = TypeUnits.PIXELS;
+    app.displayDialogs = DialogModes.NO;
+
+    if (doc.resolution) {
+      doc.resizeImage(undefined, undefined, 20, ResampleMethod.NONE);
+    }
+  } catch (err) {
+    Stdlib.log(err);
+  }
+
+  Stdlib.log(
+    'rulerUnits: ' + app.preferences.rulerUnits + ' typeUnits: ' + app.preferences.typeUnits
+  );
+  Stdlib.log('ratio: ' + ratio + ' docRes: ' + docRes);
+  Stdlib.log('Width: ' + width + ' height: ' + height);
+  Stdlib.log('UWidth: ' + UnitValue(width, 'px') + ' Uheight: ' + UnitValue(height, 'px'));
+
+  textItemRef.width = UnitValue(width, 'px');
+  textItemRef.height = UnitValue(height, 'px');
+  Stdlib.log(textItemRef);
+
+  if (group) artLayerRef.move(group, ElementPlacement.PLACEATBEGINNING);
+
   textItemRef.contents = text;
-  
+
+  app.preferences.rulerUnits = startRulerUnits;
+  app.preferences.typeUnits = startTypeUnits;
+  app.displayDialogs = startDisplayDialogs;
+
+  if (doc.resolution === 20) {
+    doc.resizeImage(undefined, undefined, startDocResolution, ResampleMethod.NONE);
+  }
+
   return artLayerRef;
-}
+};
 
 //
-// 文本替换字符串解析程序
+// Text replacement string parser
 //
-LabelPlusInput.textReplaceReader = function(str){
-  var arr = new Array();
+SoukaInput.textReplaceReader = function(str) {
+  var arr = [];
   var strs = str.split('|');
-  if(!strs)
-    return; //解析失败
-    
-  for(var i=0; i<strs.length; i++){
-    if(!strs[i] || strs[i]=="")
-      continue;
-      
-    var strss = strs[i].split("->");
-    if((strss.length != 2) || (strss[0]=="") )
-      return; //解析失败
-    
+  if (!strs) return; // Parsing failure
+
+  for (var i = 0; i < strs.length; i++) {
+    if (!strs[i] || strs[i] === '') continue;
+
+    var strss = strs[i].split('->');
+    if (strss.length !== 2 || strss[0] === '') return; // Parsing failure
+
     arr.push({
-      From : strss[0],
-      To : strss[1],
+      From: strss[0],
+      To: strss[1]
     });
   }
 
-  if(arr.length != 0)
-    return arr;
-  else 
-    return;
-}
+  if (arr.length !== 0) return arr;
+  else return;
+};
 
 //
-// 写入配置
+// Write configuration
 //
-LabelPlusInput.writeIni = function(iniFile, ini) {
+SoukaInput.writeIni = function(iniFile, ini) {
   //$.level = 1; debugger;
   if (!ini || !iniFile) {
     return;
@@ -14693,11 +14903,11 @@ LabelPlusInput.writeIni = function(iniFile, ini) {
   var file = GenericUI.iniFileToFile(iniFile);
 
   if (!file) {
-    Error.runtimeError(9001, Error("Bad ini file specified: \"" + iniFile + "\"."));
+    Error.runtimeError(9001, Error('Bad ini file specified: "' + iniFile + '".'));
   }
 
-  if (file.open("w", "TEXT", "????")) {
-    file.lineFeed = "unix";
+  if (file.open('w', 'TEXT', '????')) {
+    file.lineFeed = 'unix';
     file.encoding = 'UTF-8';
     var str = GenericUI.iniToString(ini);
     file.write(str);
@@ -14707,9 +14917,9 @@ LabelPlusInput.writeIni = function(iniFile, ini) {
 };
 
 //
-// 读出配置
+// Read configuration
 //
-LabelPlusInput.readIni = function(iniFile, ini) {
+SoukaInput.readIni = function(iniFile, ini) {
   //$.level = 1; debugger;
 
   if (!ini) {
@@ -14721,7 +14931,7 @@ LabelPlusInput.readIni = function(iniFile, ini) {
   var file = GenericUI.iniFileToFile(iniFile);
 
   if (!file) {
-    Error.runtimeError(9001, Error("Bad ini file specified: \"" + iniFile + "\"."));
+    Error.runtimeError(9001, Error('Bad ini file specified: "' + iniFile + '".'));
   }
 
   if (!file.exists) {
@@ -14730,8 +14940,8 @@ LabelPlusInput.readIni = function(iniFile, ini) {
     //
   }
 
-  if (file.exists && file.open("r", "TEXT", "????")) {
-    file.lineFeed = "unix";
+  if (file.exists && file.open('r', 'TEXT', '????')) {
+    file.lineFeed = 'unix';
     file.encoding = 'UTF-8';
     var str = file.read();
     ini = GenericUI.iniFromString(str, ini);
@@ -14746,48 +14956,45 @@ LabelPlusInput.readIni = function(iniFile, ini) {
 };
 
 //
-// 获取文件夹下文件的文件名字符串列表
+// Get a list of file name strings for files under the folder
 //
-LabelPlusInput.getFilesListOfPath = function(path) {
-	var folder = new Folder(path); 
-	  	if (!folder.exists) {
-	  		return null;
-	  	}
+SoukaInput.getFilesListOfPath = function(path) {
+  var folder = new Folder(path);
+  if (!folder.exists) {
+    return null;
+  }
 
-	  	var fileList = folder.getFiles();
-	  	var fileNameList = new Array();
+  var fileList = folder.getFiles();
+  var fileNameList = new Array();
 
-	  	for (var i = 0; i < fileList.length; i++) {
-	  		var file = fileList[i]; 
-	  		if (file instanceof File) {
-	  			var short_name = file.toString().split("/");
-	  			fileNameList.push(short_name[short_name.length - 1]);
-	  		}
-	  	}   
+  for (var i = 0; i < fileList.length; i++) {
+    var file = fileList[i];
+    if (file instanceof File) {
+      var short_name = file.toString().split('/');
+      fileNameList.push(short_name[short_name.length - 1]);
+    }
+  }
 
-  		return fileNameList.sort();
-}
-
-//
-// 获取ListBox选中项目text及index
-//
-LabelPlusInput.getSelectedItemsText = function(listBox) {
-	var selectedItems = new Array();
-
-  	for (var i = 0; i < listBox.children.length; i++) {
-  		if (listBox[i].selected) 
-  			selectedItems.push({ text: listBox[i].text, index: listBox[i].index });
-  	}  
-  	return selectedItems;
-}
-// 主程序
-LabelPlusInput.main = function() {
-  var ui = new LabelPlusInput();
-  ui.exec();  
+  return fileNameList.sort();
 };
 
-LabelPlusInput.main();
+//
+// Get the ListBox selected item text and index
+//
+SoukaInput.getSelectedItemsText = function(listBox) {
+  var selectedItems = new Array();
 
-"LabelPlus_Ps_Script.jsx";
-// EOF
+  for (var i = 0; i < listBox.children.length; i++) {
+    if (listBox[i].selected) selectedItems.push({ text: listBox[i].text, index: listBox[i].index });
+  }
+  return selectedItems;
+};
+// Main program
+SoukaInput.main = function() {
+  var ui = new SoukaInput();
+  ui.exec();
+};
 
+SoukaInput.main();
+
+'ps_script.js';

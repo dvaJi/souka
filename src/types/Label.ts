@@ -3,10 +3,22 @@ export interface Label {
   text: string;
   type: string;
   filename: string;
-  x: number;
-  y: number;
-  image: {
+  startCoordinates: {
     x: number;
     y: number;
+  };
+  endCoordinates: {
+    x: number;
+    y: number;
+  };
+  image: {
+    startCoordinates: {
+      x: number;
+      y: number;
+    };
+    endCoordinates: {
+      x: number;
+      y: number;
+    };
   };
 }
