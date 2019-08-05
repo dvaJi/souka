@@ -1,4 +1,5 @@
 import FileSaver from 'file-saver';
+import { Labels } from '../types/States';
 
 // Render element or component by provided condition
 export function renderIf(condition: boolean, renderFn: () => void) {
@@ -19,7 +20,32 @@ export function isEmpty(obj: any) {
   return true;
 }
 
-export const fileTemplate = '1,0\n-\nInside the box\nOutside the box\n-\nExported by Souka\n';
+export function generateFile(labelList: Labels) {
+  let file = '1,0\n-\nInside the box\nOutside the box\n-\nExported by Souka\n';
+  const keys = Object.keys(labelList);
+  keys.forEach(key => {
+    file += `\n>>>>>>>>[${key}]<<<<<<<<\n`;
+    const labels = labelList[key];
+    const labelsKeys = Object.keys(labelList[key]);
+    labelsKeys.forEach(ki => {
+      const start = {
+        y: labels[ki].startCoordinates.y.toFixed(3),
+        x: labels[ki].startCoordinates.x.toFixed(3)
+      };
+      const size = {
+        height: (labels[ki].endCoordinates.y - labels[ki].startCoordinates.y).toFixed(3),
+        width: (labels[ki].endCoordinates.x - labels[ki].startCoordinates.x).toFixed(3)
+      };
+      file += `----------------[${ki}]----------------[${start.x},${start.y},${size.width},${size.height},1]\n`;
+      if (labels[ki].type !== 'normal') {
+        file += `${labels[ki].type}: `;
+      }
+      file += `${labels[ki].text}\n`;
+    });
+  });
+
+  return file;
+}
 
 export function exportFile(filename: string, data: string) {
   const blob = new Blob([data], {

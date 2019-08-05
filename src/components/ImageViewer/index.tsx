@@ -30,6 +30,7 @@ interface ImageViewerProps {
   image: File;
   availableHeight: number;
   labels: any;
+  labelSelected: any;
   insertLabel: (offset: RectLabel, image: RectLabel) => void;
   onRemoveLabel: (label: any) => void;
 }
@@ -88,7 +89,7 @@ class ImageViewer extends React.Component<ImageViewerProps, ImageViewerState> {
   };
 
   render() {
-    const { image, labels, availableHeight, classes, onRemoveLabel } = this.props;
+    const { image, labels, labelSelected, availableHeight, classes, onRemoveLabel } = this.props;
     let divContainerStyle = {};
     if (this.imageRef.current) {
       divContainerStyle = {
@@ -106,7 +107,13 @@ class ImageViewer extends React.Component<ImageViewerProps, ImageViewerState> {
             style={divContainerStyle}
           >
             {labels.map((l: any, index: number) => (
-              <Label key={l.id} labelNumber={index} label={l} onRemove={onRemoveLabel} />
+              <Label
+                key={l.id}
+                active={labelSelected === l.id}
+                labelNumber={index}
+                label={l}
+                onRemove={onRemoveLabel}
+              />
             ))}
             <img
               ref={this.imageRef}
