@@ -73,7 +73,7 @@ class ImageViewer extends React.Component<ImageViewerProps, ImageViewerState> {
         coordinates: {
           startCoordinates: {
             x: info.point.x - this.containerRef.current.scrollLeft,
-            y: info.point.y - 106 + this.containerRef.current.scrollTop
+            y: info.point.y - 96 + this.containerRef.current.scrollTop
           },
           endCoordinates: { x: info.point.x, y: info.point.y }
         }
@@ -90,7 +90,7 @@ class ImageViewer extends React.Component<ImageViewerProps, ImageViewerState> {
           ...this.state.tempBox.coordinates,
           endCoordinates: {
             x: info.point.x - this.containerRef.current.scrollLeft,
-            y: info.point.y - 106 + this.containerRef.current.scrollTop
+            y: info.point.y - 96 + this.containerRef.current.scrollTop
           }
         }
       };
@@ -121,7 +121,7 @@ class ImageViewer extends React.Component<ImageViewerProps, ImageViewerState> {
         startCoordinates: {
           x: position(startCoordinates.x) / this.imageRef.current.naturalWidth,
           y:
-            position(startCoordinates.y - 106 + this.containerRef.current.scrollTop) /
+            position(startCoordinates.y - 96 + this.containerRef.current.scrollTop) /
             this.imageRef.current.naturalHeight
         },
         endCoordinates: {
@@ -133,11 +133,11 @@ class ImageViewer extends React.Component<ImageViewerProps, ImageViewerState> {
       const image: RectLabel = {
         startCoordinates: {
           x: startCoordinates.x - this.containerRef.current.scrollLeft,
-          y: startCoordinates.y - 106 + this.containerRef.current.scrollTop
+          y: startCoordinates.y - 96 + this.containerRef.current.scrollTop
         },
         endCoordinates: {
           x: info.point.x - this.containerRef.current.scrollLeft,
-          y: info.point.y - 106 + this.containerRef.current.scrollTop
+          y: info.point.y - 96 + this.containerRef.current.scrollTop
         }
       };
 
@@ -193,6 +193,7 @@ class ImageViewer extends React.Component<ImageViewerProps, ImageViewerState> {
               className={classes.image}
               src={image.preview}
               alt={image.filename}
+              draggable={false}
             />
           </motion.div>
         </div>

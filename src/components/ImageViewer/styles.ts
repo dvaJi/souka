@@ -6,7 +6,8 @@ const styles = ({ spacing }: Theme) =>
     image: {
       maxWidth: '100%',
       userDrag: 'none',
-      userSelect: 'none'
+      userSelect: 'none',
+      pointerEvents: 'none'
     },
     container: {
       width: '100vw',
