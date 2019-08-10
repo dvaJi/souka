@@ -72,7 +72,7 @@ class ImageViewer extends React.Component<ImageViewerProps, ImageViewerState> {
         hidden: false,
         coordinates: {
           startCoordinates: {
-            x: info.point.x - this.containerRef.current.scrollLeft,
+            x: info.point.x + this.containerRef.current.scrollLeft,
             y: info.point.y - 96 + this.containerRef.current.scrollTop
           },
           endCoordinates: { x: info.point.x, y: info.point.y }
@@ -89,7 +89,7 @@ class ImageViewer extends React.Component<ImageViewerProps, ImageViewerState> {
         coordinates: {
           ...this.state.tempBox.coordinates,
           endCoordinates: {
-            x: info.point.x - this.containerRef.current.scrollLeft,
+            x: info.point.x + this.containerRef.current.scrollLeft,
             y: info.point.y - 96 + this.containerRef.current.scrollTop
           }
         }
@@ -132,11 +132,11 @@ class ImageViewer extends React.Component<ImageViewerProps, ImageViewerState> {
 
       const image: RectLabel = {
         startCoordinates: {
-          x: startCoordinates.x - this.containerRef.current.scrollLeft,
+          x: startCoordinates.x + this.containerRef.current.scrollLeft,
           y: startCoordinates.y - 96 + this.containerRef.current.scrollTop
         },
         endCoordinates: {
-          x: info.point.x - this.containerRef.current.scrollLeft,
+          x: info.point.x + this.containerRef.current.scrollLeft,
           y: info.point.y - 96 + this.containerRef.current.scrollTop
         }
       };
