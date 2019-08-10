@@ -7,6 +7,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 interface Props {
+  active: boolean;
   onRemove: (label: any) => void;
   classes: any;
   labelNumber: number;
@@ -67,9 +68,10 @@ class Label extends React.Component<Props, { isHover: boolean }> {
 
   render() {
     const { isHover } = this.state;
-    const { labelNumber, label, classes } = this.props;
+    const { active, labelNumber, label, classes } = this.props;
     const positionStyle = this.calculatePositionStyle(label.image);
     const sizeStyle = this.calculateSizeStyle(label.image);
+    const activeStyle = active ? { backgroundColor: 'rgba(0, 173, 255, 0.9)' } : {};
     return (
       <button
         onMouseEnter={this.handleOnHover}
@@ -77,7 +79,7 @@ class Label extends React.Component<Props, { isHover: boolean }> {
         onClick={this.handleOnClick}
         type="button"
         className={classes.labelChip}
-        style={{ ...positionStyle, ...sizeStyle }}
+        style={{ ...positionStyle, ...sizeStyle, ...activeStyle }}
       >
         <div>
           {!isHover ? (
