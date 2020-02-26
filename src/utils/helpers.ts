@@ -33,8 +33,8 @@ export function generateFile(labelList: Labels) {
         x: labels[ki].startCoordinates.x.toFixed(3)
       };
       const size = {
-        height: (labels[ki].endCoordinates.y - labels[ki].startCoordinates.y).toFixed(3),
-        width: (labels[ki].endCoordinates.x - labels[ki].startCoordinates.x).toFixed(3)
+        height: (labels[ki].image.endCoordinates.y - labels[ki].image.startCoordinates.y).toFixed(3),
+        width: (labels[ki].image.endCoordinates.x - labels[ki].image.startCoordinates.x).toFixed(3)
       };
       file += `----------------[${ki}]----------------[${start.x},${start.y},${size.width},${size.height},1]\n`;
       if (labels[ki].type !== 'normal') {

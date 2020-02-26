@@ -14687,10 +14687,8 @@ SoukaInput.prototype.process = function(opts, doc) {
     }
 
     // Traversing LabelData
-    Stdlib.log('Label Data');
     for (var j = 0; j < labelData.length; j++) {
       var labelNum = j + 1;
-      Stdlib.log(labelData[j].LabelheadValue);
       var labelX = labelData[j].LabelheadValue[0];
       var labelY = labelData[j].LabelheadValue[1];
       var labelWidth = labelData[j].LabelheadValue[2];
@@ -14700,7 +14698,7 @@ SoukaInput.prototype.process = function(opts, doc) {
       var artLayer;
 
       // Whether the group needs to be imported
-      if (opts.groupSelected.indexOf(labelGroup) == -1) continue;
+      if (opts.groupSelected.indexOf(labelGroup) === -1) continue;
 
       // Create a group
       if (!opts.layerNotGroup && !layerGroups[labelGroup]) {
@@ -14732,10 +14730,21 @@ SoukaInput.prototype.process = function(opts, doc) {
       // Replacement text
       if (textReplace) {
         for (var k = 0; k < textReplace.length; k++) {
-          while (labelString.indexOf(textReplace[k].From) != -1)
+          while (labelString.indexOf(textReplace[k].From) !== -1)
             labelString = labelString.replace(textReplace[k].From, textReplace[k].To);
         }
       }
+
+      // White background
+      SoukaInput.newWhiteBoxLayer(
+        bg,
+        labelString,
+        labelX,
+        labelY,
+        labelWidth,
+        labelHeight,
+        layerGroups[labelGroup]
+      );
 
       // Export text
       if (labelString && labelString != '') {
@@ -14791,6 +14800,43 @@ SoukaInput.prototype.process = function(opts, doc) {
 };
 
 //
+// Create a white box layer
+//
+SoukaInput.newWhiteBoxLayer = function(doc, text, x, y, width, height, group) {
+  var startDisplayDialogs = app.displayDialogs;
+  try {
+    app.displayDialogs = DialogModes.NO;
+  } catch (err) {
+    Stdlib.log(err);
+  }
+
+  artLayerRef = doc.artLayers.add();
+  artLayerRef.kind = LayerKind.NORMAL;
+  var h = doc.width * x;
+  var v = doc.height * y;
+  var selectionRegion = Array(
+    Array(h, v),
+    Array(h + UnitValue(width, 'px'), v),
+    Array(h + UnitValue(width, 'px'), v + UnitValue(height, 'px')),
+    Array(h, v + UnitValue(height, 'px')),
+    Array(h, v)
+  );
+  app.activeDocument.selection.select(selectionRegion);
+  var whiteColor = new SolidColor();
+  whiteColor.rgb.red=255;
+  whiteColor.rgb.green=255;
+  whiteColor.rgb.blue=255;
+
+  app.activeDocument.selection.fill(whiteColor);
+  app.activeDocument.selection.deselect();
+
+  if (group) artLayerRef.move(group, ElementPlacement.PLACEATBEGINNING);
+  artLayerRef.name = "bg_" + text;
+
+  app.displayDialogs = startDisplayDialogs;
+};
+
+//
 // Create a text layer
 //
 SoukaInput.newTextLayer = function(
@@ -14814,9 +14860,11 @@ SoukaInput.newTextLayer = function(
   else textItemRef.size = doc.height / 90.0;
 
   textItemRef.font = font;
+  textItemRef.hyphenation = true;
+  textItemRef.justification = Justification.CENTER;
 
   textItemRef.antiAliasMethod = AntiAlias.SMOOTH;
-  textItemRef.position = Array(doc.width * x, doc.height * y);
+  textItemRef.position = Array((doc.width * 1.02) * x, (doc.height * 1.01) * y);
 
   textItemRef.kind = TextType.PARAGRAPHTEXT;
 
@@ -14824,46 +14872,21 @@ SoukaInput.newTextLayer = function(
   ratio = docRef.measurementScale.pixelLength;
   docRes = docRef.resolution;
 
+  var startDisplayDialogs = app.displayDialogs;
   try {
-    var doc = activeDocument;
-    var startDocResolution = doc.resolution;
-    var startTypeUnits = app.preferences.typeUnits;
-    var startDisplayDialogs = app.displayDialogs;
-    var startRulerUnits = app.preferences.rulerUnits;
-
-    app.preferences.rulerUnits = Units.PIXELS;
-    app.preferences.typeUnits = TypeUnits.PIXELS;
     app.displayDialogs = DialogModes.NO;
-
-    if (doc.resolution) {
-      doc.resizeImage(undefined, undefined, 20, ResampleMethod.NONE);
-    }
   } catch (err) {
     Stdlib.log(err);
   }
 
-  Stdlib.log(
-    'rulerUnits: ' + app.preferences.rulerUnits + ' typeUnits: ' + app.preferences.typeUnits
-  );
-  Stdlib.log('ratio: ' + ratio + ' docRes: ' + docRes);
-  Stdlib.log('Width: ' + width + ' height: ' + height);
-  Stdlib.log('UWidth: ' + UnitValue(width, 'px') + ' Uheight: ' + UnitValue(height, 'px'));
-
   textItemRef.width = UnitValue(width, 'px');
   textItemRef.height = UnitValue(height, 'px');
-  Stdlib.log(textItemRef);
 
   if (group) artLayerRef.move(group, ElementPlacement.PLACEATBEGINNING);
 
   textItemRef.contents = text;
 
-  app.preferences.rulerUnits = startRulerUnits;
-  app.preferences.typeUnits = startTypeUnits;
   app.displayDialogs = startDisplayDialogs;
-
-  if (doc.resolution === 20) {
-    doc.resizeImage(undefined, undefined, startDocResolution, ResampleMethod.NONE);
-  }
 
   return artLayerRef;
 };
