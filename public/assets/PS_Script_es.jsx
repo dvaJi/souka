@@ -14686,6 +14686,22 @@ SoukaInput.prototype.process = function(opts, doc) {
       MyAction.lp_dialogClear(labelArr, bg.width, bg.height, 16, 1);
     }
 
+    // Set Preferences values
+    var startDocResolution = doc.resolution;
+    var startTypeUnits = app.preferences.typeUnits;
+    var startDisplayDialogs = app.displayDialogs;
+    var startRulerUnits = app.preferences.rulerUnits;
+    try {
+      app.preferences.rulerUnits = Units.PIXELS;
+      app.preferences.typeUnits = TypeUnits.PIXELS;
+      app.displayDialogs = DialogModes.NO;
+      if (doc.resolution) {
+        doc.resizeImage(undefined, undefined, 72, ResampleMethod.NONE);
+      }
+    } catch (err) {
+      Stdlib.log(err);
+    }
+
     // Traversing LabelData
     for (var j = 0; j < labelData.length; j++) {
       var labelNum = j + 1;
@@ -14774,6 +14790,15 @@ SoukaInput.prototype.process = function(opts, doc) {
       }
     }
 
+    //end set preferences
+    app.preferences.rulerUnits = startRulerUnits;
+    app.preferences.typeUnits = startTypeUnits;
+    app.displayDialogs = startDisplayDialogs;
+
+    if (doc.resolution === 72) {
+      doc.resizeImage(undefined, undefined, startDocResolution, ResampleMethod.NONE);
+    }
+
     // Perform an action "_end" when the file is closed
     if (opts.runActionGroup) {
       try {
@@ -14793,7 +14818,7 @@ SoukaInput.prototype.process = function(opts, doc) {
     if (!opts.notClose) bg.close();
   }
   alert(_MY_STRING_COMPLETE);
-  if (errorMsg != '') {
+  if (errorMsg !== '') {
     alert('error:\r\n' + errorMsg);
   }
   Stdlib.log('Complete!');
@@ -14872,21 +14897,12 @@ SoukaInput.newTextLayer = function(
   ratio = docRef.measurementScale.pixelLength;
   docRes = docRef.resolution;
 
-  var startDisplayDialogs = app.displayDialogs;
-  try {
-    app.displayDialogs = DialogModes.NO;
-  } catch (err) {
-    Stdlib.log(err);
-  }
-
   textItemRef.width = UnitValue(width, 'px');
   textItemRef.height = UnitValue(height, 'px');
 
   if (group) artLayerRef.move(group, ElementPlacement.PLACEATBEGINNING);
 
   textItemRef.contents = text;
-
-  app.displayDialogs = startDisplayDialogs;
 
   return artLayerRef;
 };

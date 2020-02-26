@@ -14687,7 +14687,6 @@ SoukaInput.prototype.process = function(opts, doc) {
     }
 
     // Set Preferences values
-    var doc = activeDocument;
     var startDocResolution = doc.resolution;
     var startTypeUnits = app.preferences.typeUnits;
     var startDisplayDialogs = app.displayDialogs;
@@ -14791,7 +14790,7 @@ SoukaInput.prototype.process = function(opts, doc) {
       }
     }
 
-    //end preferences
+    //end set preferences
     app.preferences.rulerUnits = startRulerUnits;
     app.preferences.typeUnits = startTypeUnits;
     app.displayDialogs = startDisplayDialogs;
@@ -14819,7 +14818,7 @@ SoukaInput.prototype.process = function(opts, doc) {
     if (!opts.notClose) bg.close();
   }
   alert(_MY_STRING_COMPLETE);
-  if (errorMsg != '') {
+  if (errorMsg !== '') {
     alert('error:\r\n' + errorMsg);
   }
   Stdlib.log('Complete!');
