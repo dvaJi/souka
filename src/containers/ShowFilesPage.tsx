@@ -4,7 +4,6 @@ import { RootState } from '../types/States';
 
 import ShowFiles from '../components/ShowFiles';
 import * as FilesActions from '../actions/files';
-import * as LabelActions from '../actions/labels';
 
 function mapStateToProps({ files, router }: RootState, own: any) {
   return {
@@ -16,7 +15,6 @@ function mapStateToProps({ files, router }: RootState, own: any) {
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    init: (keys: string[]) => dispatch(LabelActions.init(keys)),
     select: (filename: string) => dispatch(FilesActions.select(filename)),
     add: (file: File) => dispatch(FilesActions.add(file)),
     addAll: (files: File[]) => dispatch(FilesActions.addAll(files)),
@@ -25,9 +23,4 @@ function mapDispatchToProps(dispatch: any) {
   };
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ShowFiles)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShowFiles));

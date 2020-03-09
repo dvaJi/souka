@@ -1,5 +1,4 @@
 import FileSaver from 'file-saver';
-import { Labels } from '../types/States';
 
 // Render element or component by provided condition
 export function renderIf(condition: boolean, renderFn: () => void) {
@@ -20,7 +19,7 @@ export function isEmpty(obj: any) {
   return true;
 }
 
-export function generateFile(labelList: Labels) {
+export function generateFile(labelList: any) {
   let file = '1,0\n-\nInside the box\nOutside the box\n-\nExported by Souka\n';
   const keys = Object.keys(labelList);
   keys.forEach(key => {
@@ -33,7 +32,9 @@ export function generateFile(labelList: Labels) {
         x: labels[ki].startCoordinates.x.toFixed(3)
       };
       const size = {
-        height: (labels[ki].image.endCoordinates.y - labels[ki].image.startCoordinates.y).toFixed(3),
+        height: (labels[ki].image.endCoordinates.y - labels[ki].image.startCoordinates.y).toFixed(
+          3
+        ),
         width: (labels[ki].image.endCoordinates.x - labels[ki].image.startCoordinates.x).toFixed(3)
       };
       file += `----------------[${ki}]----------------[${start.x},${start.y},${size.width},${size.height},1]\n`;

@@ -1,13 +1,14 @@
 import React from 'react';
+import { Store } from 'redux';
+import { History } from 'history';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
 import brown from '@material-ui/core/colors/brown';
 
-import { Store } from '../reducers/types';
 import Routes from '../Routes';
-import { History } from 'history';
 
 interface Props {
   store: Store;

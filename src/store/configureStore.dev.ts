@@ -5,7 +5,6 @@ import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
 import * as filesActions from '../actions/files';
-import * as labelsActions from '../actions/labels';
 import { RootState } from '../types/States';
 
 const history = createHashHistory();
@@ -38,7 +37,6 @@ const configureStore = (initialState?: RootState) => {
   // Redux DevTools Configuration
   const actionCreators = {
     ...filesActions,
-    ...labelsActions,
     ...routerActions
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
@@ -54,9 +52,7 @@ const configureStore = (initialState?: RootState) => {
   const store = createStore(rootReducer, initialState, enhancer);
 
   if (module.hot) {
-    module.hot.accept('../reducers', () =>
-      store.replaceReducer(require('../reducers').default)
-    );
+    module.hot.accept('../reducers', () => store.replaceReducer(require('../reducers').default));
   }
 
   return store;
