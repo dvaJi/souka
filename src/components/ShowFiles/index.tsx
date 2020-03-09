@@ -2,26 +2,8 @@ import * as React from 'react';
 import Dropzone from 'react-dropzone';
 import { History } from 'history';
 
-// UI Imports
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { Icon, Row, Col, Button, Card, Typography } from 'antd';
 
-import IconButton from '@material-ui/core/IconButton';
-import CloudIcon from '@material-ui/icons/Cloud';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-
-import Grow from '@material-ui/core/Grow';
-
-// App imports
-import { renderIf } from '../../utils/helpers';
-import { styles } from './styles';
 import routes from '../../constants/routes';
 import { FilesState } from '../../types/States';
 
@@ -32,7 +14,6 @@ interface Props {
   addAll: (files: File[]) => void;
   remove: (file: File | any) => void;
   removeAll: () => void;
-  classes: any;
   files: FilesState;
   history: History;
 }
@@ -62,81 +43,74 @@ class ShowFiles extends React.Component<Props> {
   };
 
   render() {
-    const { classes, removeAll, files } = this.props;
+    const { removeAll, files } = this.props;
     const hasFiles = files.keys.length > 0;
     return (
-      <Grid className={classes.container} container spacing={0}>
-        <Grid item xs={12}>
-          <Grow in timeout={200}>
-            <Paper className={classes.paper}>
-              <div className={classes.actions}>
-                <Button
-                  onClick={this.selectFile}
-                  color="primary"
-                  variant="contained"
-                  className={classes.buttons}
-                  disabled={!hasFiles}
+      <Row>
+        <Row>
+          <Col span={6} offset={18}>
+            <Button icon="edit" onClick={this.selectFile} disabled={!hasFiles}>
+              Translate
+            </Button>
+            <Button icon="delete" type="danger" onClick={removeAll} disabled={!hasFiles}>
+              Remove All
+            </Button>
+          </Col>
+        </Row>
+        <div>
+          <Dropzone accept="image/*" onDrop={this.onDrop}>
+            {({ getRootProps, getInputProps, isDragActive }) => (
+              <div
+                style={{ margin: '0 auto', width: '100%', minHeight: '80vh', outlineWidth: 0 }}
+                {...getRootProps()}
+              >
+                <input
+                  {...getInputProps({
+                    onClick: evt => evt.preventDefault()
+                  })}
+                />
+                <div
+                  style={{
+                    display: !hasFiles || isDragActive ? 'initial' : 'none',
+                    padding: '10px 100px',
+                    position: 'fixed',
+                    top: '60%',
+                    left: '35%',
+                    zIndex: 99
+                  }}
                 >
-                  <EditIcon />
-                  Translate
-                </Button>
-                <Button
-                  onClick={removeAll}
-                  color="secondary"
-                  variant="contained"
-                  className={classes.buttons}
-                  disabled={!hasFiles}
-                >
-                  <DeleteIcon />
-                  Remove All
-                </Button>
-              </div>
-              <div className={classes.dropzone}>
-                <Dropzone accept="image/*" onDrop={this.onDrop}>
-                  {({ getRootProps, getInputProps, isDragActive }) => (
-                    <div className={classes.dropzone} {...getRootProps()}>
-                      <input
-                        {...getInputProps({
-                          onClick: evt => evt.preventDefault()
-                        })}
+                  <Typography.Title level={4}>
+                    <Icon type="cloud" /> Drop your files here
+                  </Typography.Title>
+                </div>
+                {hasFiles &&
+                  files.keys.map((key: string) => (
+                    <Card
+                      key={files.files[key].name}
+                      hoverable
+                      style={{ width: 240 }}
+                      cover={<img alt={files.files[key].name} src={files.files[key].preview} />}
+                      actions={[
+                        <Icon
+                          type="delete"
+                          key="delete"
+                          onClick={this.handleOnRemove(files.files[key])}
+                        />
+                      ]}
+                    >
+                      <Card.Meta
+                        title={files.files[key].name}
+                        description={<span>by: {files.files[key].size}</span>}
                       />
-
-                      <Grow in={!hasFiles || isDragActive}>
-                        <div className={classes.dropzoneContent}>
-                          <Typography variant="overline" gutterBottom>
-                            <CloudIcon className={classes.cloudIcon} /> Drop your files here
-                          </Typography>
-                        </div>
-                      </Grow>
-
-                      {renderIf(hasFiles, () => (
-                        <GridList cellHeight={180} className={classes.gridList} cols={4}>
-                          {files.keys.map((key: string) => (
-                            <GridListTile key={files.files[key].name}>
-                              <img alt={files.files[key].name} src={files.files[key].preview} />
-                              <GridListTileBar
-                                title={files.files[key].name}
-                                subtitle={<span>by: {files.files[key].size}</span>}
-                                actionIcon={
-                                  <IconButton className={classes.icon}>
-                                    <DeleteIcon onClick={this.handleOnRemove(files.files[key])} />
-                                  </IconButton>
-                                }
-                              />
-                            </GridListTile>
-                          ))}
-                        </GridList>
-                      ))}
-                    </div>
-                  )}
-                </Dropzone>
+                    </Card>
+                  ))}
               </div>
-            </Paper>
-          </Grow>
-        </Grid>
-      </Grid>
+            )}
+          </Dropzone>
+        </div>
+      </Row>
     );
   }
 }
 
-export default withStyles(styles)(ShowFiles);
+export default ShowFiles;

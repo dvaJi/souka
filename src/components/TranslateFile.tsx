@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { Icon } from 'antd';
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -12,7 +14,7 @@ import Grid from '@material-ui/core/Grid';
 
 import { Theme, withStyles } from '@material-ui/core/styles';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import SaveIcon from '@material-ui/icons/Save';
+import { SaveFill } from '@ant-design/icons';
 
 // App imports
 import routes from '../constants/routes';
@@ -155,7 +157,7 @@ class TranslateFile extends React.Component<Props, State> {
               <ArrowBackIcon />
             </IconButton>
             <Button color="primary" onClick={this.handleModalToggle}>
-              <SaveIcon />
+              <Icon type="save" />
               Export
             </Button>
           </Toolbar>

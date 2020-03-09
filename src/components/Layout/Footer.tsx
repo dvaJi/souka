@@ -1,30 +1,10 @@
 import * as React from 'react';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { Layout } from 'antd';
 
-interface Props {
-  classes: any;
-}
-const styles = createStyles({
-  root: {
-    flexGrow: 1,
-    textAlign: 'center',
-    padding: 10
-  },
-  url: {
-    color: 'inherit',
-    fontSize: '1.3em'
-  }
-});
+const { Footer } = Layout;
 
-function Footer(props: Props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <a className={classes.url} href="/assets/PS_Script_en.jsx" download>
-        Download photoshop script
-      </a>
-    </div>
-  );
+function FooterLayout() {
+  return <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>;
 }
 
-export default withStyles(styles)(Footer);
+export default FooterLayout;

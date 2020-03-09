@@ -1,33 +1,35 @@
 import * as React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { withStyles, Theme } from '@material-ui/core/styles';
+import { Layout, Breadcrumb } from 'antd';
 
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 
-interface Props {
-  classes: { root: string };
+import './App.css';
+
+const { Content } = Layout;
+
+interface AppProps {
   children: React.ReactNode;
 }
 
-const styles = (theme: Theme) => ({
-  root: {
-    flexGrow: 1
-  }
-});
-
-class App extends React.Component<Props> {
+class App extends React.Component<AppProps> {
   render() {
-    const { classes, children } = this.props;
+    const { children } = this.props;
     return (
-      <React.Fragment>
-        <CssBaseline />
+      <Layout className="layout">
         <Header />
-        <div className={classes.root}>{children}</div>
-        <Footer />
-      </React.Fragment>
+        <Content style={{ padding: '0 50px' }}>
+          <Breadcrumb style={{ margin: '16px 0' }}>
+            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            {/* <Breadcrumb.Item>List</Breadcrumb.Item>
+            <Breadcrumb.Item>App</Breadcrumb.Item> */}
+          </Breadcrumb>
+          <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>{children}</div>
+          <Footer />
+        </Content>
+      </Layout>
     );
   }
 }
 
-export default withStyles(styles)(App);
+export default App;
