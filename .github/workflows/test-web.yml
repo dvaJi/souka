@@ -2,6 +2,9 @@ name: Web pipeline
 
 on: [push, pull_request]
 
+env:
+  CI: true
+
 jobs:
   run:
     name: Node ${{ matrix.node }}
