@@ -1,37 +1,25 @@
 import * as React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { Layout, Menu } from 'antd';
+import './Header.css';
 
-interface Props {
-  classes: { root: string; menuButton: string };
-}
-const styles = {
-  root: {
-    flexGrow: 1
-  },
-  menuButton: {
-    marginLeft: -18,
-    marginRight: 10
-  }
-};
+const { Header } = Layout;
 
-// TODO: Header should show a sidebar
-
-function Header(props: Props) {
-  const { classes } = props;
+function HeaderLayout() {
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar variant="dense">
-          <Typography variant="h6" color="inherit">
-            Souka
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </div>
+    <Header>
+      <div className="logo">Souka</div>
+      <Menu
+        theme="dark"
+        mode="horizontal"
+        defaultSelectedKeys={['2']}
+        style={{ lineHeight: '64px' }}
+      >
+        {/* <Menu.Item key="1">nav 1</Menu.Item>
+        <Menu.Item key="2">nav 2</Menu.Item>
+        <Menu.Item key="3">nav 3</Menu.Item> */}
+      </Menu>
+    </Header>
   );
 }
 
-export default withStyles(styles)(Header);
+export default HeaderLayout;
