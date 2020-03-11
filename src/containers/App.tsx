@@ -4,8 +4,6 @@ import { Layout, Breadcrumb } from 'antd';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 
-import './App.css';
-
 const { Content } = Layout;
 
 interface AppProps {
@@ -22,7 +20,7 @@ const App: React.FC<AppProps> = ({ children }) => {
           {/* <Breadcrumb.Item>List</Breadcrumb.Item>
             <Breadcrumb.Item>App</Breadcrumb.Item> */}
         </Breadcrumb>
-        <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>{children}</div>
+        <div>{children}</div>
         <Footer />
       </Content>
     </Layout>
