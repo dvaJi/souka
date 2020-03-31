@@ -11,7 +11,7 @@
     "connected-react-router": "^6.7.0",
     "customize-cra": "^0.9.1",
     "file-saver": "^2.0.2",
-    "framer-motion": "^1.9.1",
+    "framer-motion": "^1.10.3",
     "history": "^4.10.1",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
