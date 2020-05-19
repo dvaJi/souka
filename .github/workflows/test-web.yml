@@ -1,4 +1,4 @@
-name: Web pipeline
+name: Pipeline
 
 on: [push, pull_request]
 
