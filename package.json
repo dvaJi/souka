@@ -1,87 +1,59 @@
 {
-  "name": "souka",
+  "name": "nosep",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ant-design/icons": "^4.0.2",
-    "ag-psd": "^11.0.1",
-    "antd": "^4.0.2",
-    "babel-plugin-import": "^1.13.0",
-    "classnames": "^2.2.6",
-    "connected-react-router": "^6.8.0",
-    "customize-cra": "^0.9.1",
-    "file-saver": "^2.0.2",
-    "framer-motion": "^1.9.1",
-    "history": "^4.10.1",
-    "less": "^3.11.1",
-    "less-loader": "^5.0.0",
-    "react": "^16.13.1",
-    "react-app-rewired": "^2.1.5",
-    "react-dom": "^16.13.1",
-    "react-dropzone": "^10.2.2",
-    "react-redux": "^7.2.0",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.4.1",
-    "react-spring": "^8.0.27",
-    "redux": "^4.0.5",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0",
-    "typescript": "3.8.2"
-  },
-  "devDependencies": {
-    "@types/classnames": "^2.2.10",
-    "@types/enzyme": "^3.10.5",
-    "@types/enzyme-adapter-react-16": "^1.0.6",
-    "@types/file-saver": "^2.0.1",
-    "@types/jest": "^25.2.1",
-    "@types/node": "13.7.4",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.6",
-    "@types/react-redux": "^7.1.7",
-    "@types/react-router-dom": "^5.1.4",
-    "@types/redux": "^3.6.0",
-    "@types/redux-logger": "^3.0.7",
-    "@types/webpack-env": "^1.15.1",
-    "concat": "^1.0.3",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
+    "@fullhuman/postcss-purgecss": "^2.2.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "autoprefixer": "^9.8.0",
     "husky": "^4.2.5",
-    "lint-staged": "^10.1.6",
-    "prettier": "^1.19.1",
-    "tslint": "^6.1.1",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-react": "^4.2.0"
+    "lint-staged": "^10.2.4",
+    "npm-run-all": "^4.1.5",
+    "postcss-cli": "^7.1.1",
+    "prettier": "^2.0.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build && npm run ps-script",
-    "test": "react-app-rewired test",
-    "test:ci": "react-app-rewired test --watchAll=false --coverage",
-    "lint": "tslint -c tslint.json src/**/*.{ts,tsx}",
-    "ps-script": "node ./scripts/generate_ps_script.js"
+    "build:tailwind": "postcss src/tailwind.css -o src/tailwind.generated.css",
+    "watch:tailwind": "postcss -w src/tailwind.css -o src/tailwind.generated.css",
+    "start": "run-p watch:tailwind start:react",
+    "start:react": "react-scripts start",
+    "prebuild": "npm run build:tailwind",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint src"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "tailwindcss": "^1.4.6"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  },
-  "lint-staged": {
-    "{src,test,mocks}/**/*.{js,ts,tsx,json,css,scss,md}": [
-      "prettier --config ./.prettierrc --write",
-      "git add"
-    ],
-    "{src,test,mocks}/**/*.{js,ts,tsx}": [
-      "tslint -c tslint.json --fix",
-      "git add"
-    ]
   }
 }
