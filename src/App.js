@@ -6,11 +6,11 @@ function App() {
     <div className="h-full w-full flex overflow-hidden antialiased text-gray-800 bg-white">
       <nav
         aria-label="side bar"
-        aria-orientation="vertical"
         class="flex-none flex flex-col items-center text-center bg-teal-900 text-gray-400 border-r"
       >
         <div class="h-16 flex items-center w-full">
           <img
+            alt="leaves"
             class="h-6 w-6 mx-auto"
             src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/leaves.png"
           />
@@ -118,6 +118,7 @@ function App() {
           <img
             style={{ filter: 'invert(85%)' }}
             class="h-8 w-10 mx-auto"
+            alt="chi"
             src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/chi.png"
           />
         </div>
@@ -125,7 +126,7 @@ function App() {
 
       <div class="flex-1 flex flex-col">
         <nav aria-label="top bar" class="flex-none flex justify-between bg-white h-16">
-          <ul aria-label="top bar left" aria-orientation="horizontal" class="flex">
+          <ul aria-label="top bar left" class="flex">
             <li class="group relative">
               <button
                 aria-controls="add"
@@ -156,38 +157,23 @@ function App() {
                     <label class="block px-4 py-3 font-semibold">New</label>
                     <hr />
                   </li>
-                  <li
-                    role="option"
-                    class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer"
-                  >
+                  <li class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer">
                     Ticket
                   </li>
-                  <li
-                    role="option"
-                    class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer"
-                  >
+                  <li class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer">
                     User
                   </li>
-                  <li
-                    role="option"
-                    class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer"
-                  >
+                  <li class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer">
                     Organization
                   </li>
-                  <li
-                    role="option"
-                    class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer"
-                  >
+                  <li class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer">
                     Search
                   </li>
                   <li role="separator" class="mb-2">
                     <label class="block px-4 py-3 font-semibold">Recently Viewed</label>
                     <hr />
                   </li>
-                  <li
-                    role="option"
-                    class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer"
-                  >
+                  <li class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer">
                     <div class="flex">
                       <div class="pr-2">
                         <span
@@ -207,10 +193,7 @@ function App() {
                       </div>
                     </div>
                   </li>
-                  <li
-                    role="option"
-                    class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer"
-                  >
+                  <li class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer">
                     <div class="flex">
                       <div class="pr-2">
                         <span
@@ -230,10 +213,7 @@ function App() {
                       </div>
                     </div>
                   </li>
-                  <li
-                    role="option"
-                    class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer"
-                  >
+                  <li class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer">
                     <div class="flex">
                       <div class="pr-2">
                         <span
@@ -253,10 +233,7 @@ function App() {
                       </div>
                     </div>
                   </li>
-                  <li
-                    role="option"
-                    class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer"
-                  >
+                  <li class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer">
                     <div class="flex">
                       <div class="pr-2">
                         <span
@@ -277,10 +254,7 @@ function App() {
                     </div>
                   </li>
 
-                  <li
-                    role="option"
-                    class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer"
-                  >
+                  <li class="px-6 py-1 my-1 focus:outline-none focus:bg-blue-100 hover:bg-blue-100 cursor-pointer">
                     <div class="flex">
                       <div class="pr-2">
                         <span
@@ -305,11 +279,7 @@ function App() {
             </li>
           </ul>
 
-          <ul
-            aria-label="top bar right"
-            aria-orientation="horizontal"
-            class="px-8 flex items-center"
-          >
+          <ul aria-label="top bar right" class="px-8 flex items-center">
             <li class="relative">
               <input
                 title="Search Bar"
@@ -399,6 +369,7 @@ function App() {
                 class="h-full w-full rounded-full border focus:outline-none focus:shadow-outline"
               >
                 <img
+                  alt="me"
                   class="h-full w-full rounded-full mx-auto"
                   src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/me.jpg"
                 />
@@ -427,6 +398,7 @@ function App() {
                 >
                   <span class="flex-none pt-1 pr-2">
                     <img
+                      alt="avatar"
                       class="h-8 w-8 rounded-md"
                       src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/avatar.png"
                     />
@@ -450,6 +422,7 @@ function App() {
                 >
                   <span class="flex-none pt-1 pr-2">
                     <img
+                      alt="avatar"
                       class="h-8 w-8 rounded-md"
                       src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/avatar.png"
                     />
@@ -473,6 +446,7 @@ function App() {
                 >
                   <span class="flex-none pt-1 pr-2">
                     <img
+                      alt="avatar"
                       class="h-8 w-8 rounded-md"
                       src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/avatar.png"
                     />
@@ -496,6 +470,7 @@ function App() {
                 >
                   <span class="flex-none pt-1 pr-2">
                     <img
+                      alt="avatar"
                       class="h-8 w-8 rounded-md"
                       src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/avatar.png"
                     />
@@ -519,6 +494,7 @@ function App() {
                 >
                   <span class="flex-none pt-1 pr-2">
                     <img
+                      alt="avatar"
                       class="h-8 w-8 rounded-md"
                       src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/avatar.png"
                     />
@@ -542,6 +518,7 @@ function App() {
                 >
                   <span class="flex-none pt-1 pr-2">
                     <img
+                      alt="avatar"
                       class="h-8 w-8 rounded-md"
                       src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/avatar.png"
                     />
@@ -565,6 +542,7 @@ function App() {
                 >
                   <span class="flex-none pt-1 pr-2">
                     <img
+                      alt="avatar"
                       class="h-8 w-8 rounded-md"
                       src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/avatar.png"
                     />
@@ -588,6 +566,7 @@ function App() {
                 >
                   <span class="flex-none pt-1 pr-2">
                     <img
+                      alt="avatar"
                       class="h-8 w-8 rounded-md"
                       src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/avatar.png"
                     />
@@ -611,6 +590,7 @@ function App() {
                 >
                   <span class="flex-none pt-1 pr-2">
                     <img
+                      alt="avatar"
                       class="h-8 w-8 rounded-md"
                       src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/avatar.png"
                     />
@@ -634,6 +614,7 @@ function App() {
                 >
                   <span class="flex-none pt-1 pr-2">
                     <img
+                      alt="avatar"
                       class="h-8 w-8 rounded-md"
                       src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/avatar.png"
                     />
@@ -657,6 +638,7 @@ function App() {
                 >
                   <span class="flex-none pt-1 pr-2">
                     <img
+                      alt="avatar"
                       class="h-8 w-8 rounded-md"
                       src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/avatar.png"
                     />
@@ -680,6 +662,7 @@ function App() {
                 >
                   <span class="flex-none pt-1 pr-2">
                     <img
+                      alt="avatar"
                       class="h-8 w-8 rounded-md"
                       src="https://raw.githubusercontent.com/bluebrown/tailwind-zendesk-clone/master/public/assets/avatar.png"
                     />
@@ -757,7 +740,6 @@ function App() {
                 </h2>
                 <span class="ml-3 group relative">
                   <button
-                    role="details"
                     aria-controls="info-popup"
                     class="text-blue-700 border-b border-dotted border-blue-700 focus:outline-none text-sm"
                   >
