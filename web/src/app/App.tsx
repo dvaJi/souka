@@ -4,7 +4,10 @@ import { Sidebar } from '../components/Sidebar';
 
 const App: React.FC = () => {
   return (
-    <div className="h-full w-full flex overflow-hidden antialiased text-gray-800 bg-gray-900">
+    <div
+      data-testid="app-main"
+      className="h-full w-full flex overflow-hidden antialiased text-gray-800 bg-gray-900"
+    >
       <Header />
 
       <div className="flex-1 flex flex-col">
