@@ -2,13 +2,12 @@ import { Router, Response, Request } from 'express';
 
 import * as fs from 'fs';
 import 'ag-psd/initialize-canvas';
-import { readPsd, Layer, Psd } from 'ag-psd';
+import { readPsd, Psd } from 'ag-psd';
 import * as path from 'path';
 import { createCanvas } from 'canvas';
 import { promisify } from 'util';
 
 const readdirAsync = promisify(fs.readdir);
-const readFileAsync = promisify(fs.readFileSync);
 
 const chapter: Router = Router();
 
@@ -97,10 +96,7 @@ function createImageBackground(psd: Psd, filename: string) {
   }
 
   // generate .png file
-  fs.writeFileSync(
-    path.join(__dirname, '..', '..', 'public', 'ch01', getGeneratedFileName(filename)),
-    (can3 as any).toBuffer(),
-  );
+  fs.writeFileSync(path.join(__dirname, '..', '..', 'public', 'ch01', getGeneratedFileName(filename)), can3.toBuffer());
 }
 
 function getGeneratedFileName(file) {

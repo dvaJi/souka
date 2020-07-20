@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import CONFIG from './config';
+// import CONFIG from './config';
 
 mongoose.set('useCreateIndex', true);
 
