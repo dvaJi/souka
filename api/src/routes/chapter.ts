@@ -13,7 +13,7 @@ const chapter: Router = Router();
 
 // Retrieve all Chapters
 chapter.get('/', (req: Request, res: Response) => {
-  res.json({ a: 'asd' });
+  res.json({ pages: [] });
 });
 
 chapter.get('/:chapterId', async (req: Request, res: Response) => {
