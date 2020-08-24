@@ -10,6 +10,11 @@ export interface Pages {
   height: number;
 }
 
+export interface Chapter {
+  pages: Pages[];
+  originalTexts: any[];
+}
+
 export const pageSelected = atom<string>({
   key: 'pageSelected',
   default: '',
@@ -25,19 +30,17 @@ export const pages = selector({
   get: async ({ get }) => {
     const chapterUniqid = get(chapterSelected);
 
-    let pages = [];
-
     try {
       const data = await getChapter(chapterUniqid);
       console.log(data);
 
       if (data) {
-        pages = data.pages;
+        return data;
       }
     } catch (e) {
       console.log(e.message);
     }
 
-    return pages;
+    return { pages: [], originalTexts: [] };
   },
 });

@@ -6,11 +6,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import './tailwind.generated.css';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')

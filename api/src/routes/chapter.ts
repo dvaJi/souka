@@ -63,7 +63,7 @@ chapter.get('/:chapterId', async (req: Request, res: Response) => {
       filename: psdFile.replace('.psd', ''),
       width: psd2.width,
       height: psd2.height,
-      path: 'http://localhost:3000/ch01/' + getGeneratedFileName(psdFile),
+      path: 'http://localhost:8000/ch01/' + getGeneratedFileName(psdFile),
       textLayers,
     });
 

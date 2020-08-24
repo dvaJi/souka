@@ -1,5 +1,5 @@
 export async function getChapter(uniqid: string): Promise<any> {
-  const url = `http://localhost:3000/v1/chapter/${uniqid}`;
+  const url = `http://localhost:8000/v1/chapter/${uniqid}`;
 
   try {
     let response = await fetch(url);
