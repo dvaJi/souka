@@ -1,6 +1,10 @@
 module.exports = {
   theme: {
-    extend: {},
+    extend: {
+      minHeight: {
+        50: '50px',
+      },
+    },
   },
   variants: {},
   plugins: [],

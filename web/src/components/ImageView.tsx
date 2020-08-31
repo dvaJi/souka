@@ -5,5 +5,5 @@ interface ImageViewProps {
 }
 
 export const ImageView = ({ image }: ImageViewProps) => {
-  return <img src={image} />;
+  return <img src={image} alt="img" />;
 };

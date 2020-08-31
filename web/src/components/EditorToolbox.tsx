@@ -1,5 +1,5 @@
 import * as React from 'react';
-import tw, { css, styled, theme } from 'twin.macro';
+import tw, { styled } from 'twin.macro';
 
 import {
   MdFormatBold,

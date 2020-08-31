@@ -1,33 +1,40 @@
 import * as React from 'react';
+import tw, { styled } from 'twin.macro';
 
 interface TextBlockProps {
   text: string;
 }
 
+const TextBlockWrapper = styled.div(() => [tw`relative border-gray-500 border-b-2 pt-6 pb-3`]);
+const OriginalText = styled.div(() => [tw`text-black leading-4 mb-3`]);
+const WorkBox = styled.div(() => [tw`relative w-4/5 min-h-full mb-3 p-3 bg-gray-300`]);
+const WorkBoxLabel = styled.label(() => [tw`overflow-hidden absolute align-middle`]);
+const WorkBoxTextarea = styled.textarea(() => [
+  tw`overflow-auto block w-full bg-gray-300 text-gray-600 leading-4 break-all text-base min-h-50`,
+]);
+
 export const TextBlock = ({ text }: TextBlockProps) => {
   return (
-    <div>
-      <div id="oriText0" className="source_txt">
-        {text}
-      </div>
-      <div className="wrt_bx">
-        <label htmlFor="transEditorText" className="blind">
-          번역할 내용 입력
-        </label>
-
-        <textarea
-          id="textarea0"
-          style={{ overflow: 'auto' }}
-          className="input_tx"
-          rows={1}
-          cols={1}
-          maxLength={1001}
-          title=""
+    <TextBlockWrapper>
+      <OriginalText>{text}</OriginalText>
+      <WorkBox>
+        <WorkBoxLabel
+          htmlFor="transEditorText"
+          style={{
+            clip: 'rect(0 0 0 0)',
+            width: 1,
+            height: 1,
+            margin: -1,
+          }}
         >
-          ¡SÍ!
-        </textarea>
+          번역할 내용 입력
+        </WorkBoxLabel>
 
-        <div className="sub_btn">
+        <WorkBoxTextarea rows={1} cols={1} maxLength={1001} title="">
+          ¡SÍ!
+        </WorkBoxTextarea>
+
+        <div className="sub_btn absolute right-0 text-sm" style={{ bottom: -25 }}>
           <a href="#" className="lnk_cncl" title="Cancel">
             Cancel
           </a>
@@ -36,16 +43,16 @@ export const TextBlock = ({ text }: TextBlockProps) => {
             Save
           </a>
         </div>
-      </div>
+      </WorkBox>
       <div className="wrt_other">
-        <span className="dsc sentence_noti" style={{ display: 'none' }}></span>
-        <div className="other_translation" id="other2041448" data-sentence-no="2041448">
+        <span className="dsc sentence_noti hidden"></span>
+        <div className="other_translation">
           <a href="#" className="lnk_other">
             View other translations <em>3</em>
           </a>
           <ul className="other_lst"></ul>
         </div>
       </div>
-    </div>
+    </TextBlockWrapper>
   );
 };
