@@ -4,7 +4,7 @@ import tw, { styled } from 'twin.macro';
 
 import { pages, chapterSelected } from './state/chapter';
 import { Header } from 'components/Header';
-import { Sidebar } from 'components/Sidebar';
+// import { Sidebar } from 'components/Sidebar';
 import { ImageView } from 'components/ImageView';
 import { EditorToolbox } from 'components/EditorToolbox';
 import { TextList } from 'components/TextList';
@@ -19,7 +19,7 @@ function App() {
   const setChapterUniqid = useSetRecoilState(chapterSelected);
 
   useEffect(() => {
-    setChapterUniqid('ch01');
+    setChapterUniqid('ch02');
   }, []);
 
   return (
@@ -29,7 +29,7 @@ function App() {
       <div className="flex-1 flex flex-col">
         <main className="flex-grow flex min-h-0">
           <div className="w-full block">
-            <div className="float-left" style={{ width: 768 }}>
+            <div className="float-left" style={{ width: 1089 }}>
               <EditorToolbox />
               {chapter.state === 'loading' ? (
                 <p>loading...</p>
@@ -39,7 +39,7 @@ function App() {
                 <div className="overflow-x-hidden overflow-y-auto h-screen">
                   {chapter.contents &&
                     chapter.contents.pages.map((n: any) => (
-                      <ImageView key={n.filename} image={n.path} />
+                      <ImageView key={n.filename} image={n} />
                     ))}
                 </div>
               )}
@@ -56,7 +56,6 @@ function App() {
           </div>
         </main>
       </div>
-      <Sidebar />
     </AppMain>
   );
 }
