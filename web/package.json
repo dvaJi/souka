@@ -60,7 +60,7 @@
     "@types/webpack-env": "^1.15.2",
     "cross-env": "^7.0.2",
     "cssnano": "^4.1.10",
-    "tailwindcss": "^1.8.6"
+    "tailwindcss": "^1.8.10"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
