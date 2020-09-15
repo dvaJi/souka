@@ -6,7 +6,7 @@
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
     "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.0.2",
+    "@testing-library/react": "^11.0.4",
     "@testing-library/user-event": "^12.1.4",
     "autoprefixer": "^9.8.6",
     "husky": "^4.3.0",
