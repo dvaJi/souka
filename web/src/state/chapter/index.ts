@@ -41,6 +41,6 @@ export const pages = selector({
       console.log(e.message);
     }
 
-    return { pages: [], originalTexts: [] };
+    return { pages: [], originalText: [] };
   },
 });

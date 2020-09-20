@@ -27,11 +27,11 @@ export const TextBlock = ({ text }: TextBlockProps) => {
             margin: -1,
           }}
         >
-          번역할 내용 입력
+          {text}
         </WorkBoxLabel>
 
         <WorkBoxTextarea rows={1} cols={1} maxLength={1001} title="">
-          ¡SÍ!
+          {text}
         </WorkBoxTextarea>
 
         <div className="sub_btn absolute right-0 text-sm" style={{ bottom: -25 }}>

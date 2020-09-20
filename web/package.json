@@ -5,24 +5,14 @@
   "dependencies": {
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.0.2",
-    "@testing-library/user-event": "^12.1.4",
-    "autoprefixer": "^9.8.6",
-    "husky": "^4.3.0",
-    "lint-staged": "^10.3.0",
-    "npm-run-all": "^4.1.5",
-    "postcss-cli": "^7.1.1",
-    "postcss-import": "^12.0.1",
-    "prettier": "^2.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^3.11.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
-    "recoil": "^0.0.10",
-    "twin.macro": "^1.8.1",
-    "typescript": "^3.9.7"
+    "react-use-hyphen": "^1.0.0",
+    "recoil": "^0.0.13",
+    "twin.macro": "^1.9.0"
   },
   "scripts": {
     "build:tailwind": "cross-env NODE_ENV=production postcss src/tailwind.css -o src/tailwind.generated.css",
@@ -51,6 +41,9 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.0.4",
+    "@testing-library/user-event": "^12.1.5",
     "@types/jest": "^26.0.13",
     "@types/node": "^14.6.4",
     "@types/react": "^16.9.49",
@@ -58,9 +51,18 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@types/webpack-env": "^1.15.2",
+    "autoprefixer": "^10.0.0",
     "cross-env": "^7.0.2",
     "cssnano": "^4.1.10",
-    "tailwindcss": "^1.8.6"
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.0.4",
+    "postcss-cli": "^7.1.2",
+    "postcss-import": "^12.0.1",
+    "prettier": "^2.1.2",
+    "tailwindcss": "^1.8.10",
+    "typescript": "^3.9.7"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [

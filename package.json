@@ -1,0 +1,24 @@
+{
+  "name": "souka2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm-run-all --parallel start:web start:api",
+    "start:web": "npm --prefix ./web run start",
+    "start:api": "npm --prefix ./api run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dvaJi/souka.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dvaJi/souka/issues"
+  },
+  "homepage": "https://github.com/dvaJi/souka#readme",
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
